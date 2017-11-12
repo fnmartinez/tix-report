@@ -1,0 +1,322 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\master report-master.lyx
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Introducción
+\end_layout
+
+\begin_layout Subsection
+Sobre el Proyecto TiX
+\end_layout
+
+\begin_layout Standard
+El Proyecto TiX (Traffic Information eXchange) busca crear una herramienta
+ para la medición de calidad y uso en las conexiones a Internet con la menor
+ saturación posible del canal.
+\end_layout
+
+\begin_layout Standard
+El sistema del Proyecto consta de dos partes bien definidas: el cliente,
+ instalado en cada uno de los usuarios, y el servicio, instalado en la infraestr
+uctura de TiX.
+ Mediante la recolección de los tiempos de viaje de paquetes entre el cliente
+ y el servicio, se hace un análisis usando un algoritmo que devuelve el
+ porcentaje de Utilización y de Calidad de conexión, tanto de subida como
+ de bajada.
+ 
+\end_layout
+
+\begin_layout Standard
+Dichas mediciones son realizadas con paquetes UDP en una especie de ping-pong
+ entre el cliente y el servidor.
+ Estos paquetes cuentan con cuatro marcas de tiempo con la cantidad de nanosegun
+dos desde el comienzo del día.
+ Los mismos corresponden a los momentos en que: 
+\end_layout
+
+\begin_layout Itemize
+se envía el paquete desde el cliente al servidor 
+\end_layout
+
+\begin_layout Itemize
+se recibe en el servidor 
+\end_layout
+
+\begin_layout Itemize
+se envía el paquete desde el servidor al cliente 
+\end_layout
+
+\begin_layout Itemize
+se recibe en el cliente 
+\end_layout
+
+\begin_layout Subsubsection
+
+\series bold
+Sincronización de Relojes 
+\end_layout
+
+\begin_layout Standard
+Para la toma de tiempos en las mediciones se usan los relojes de los Sistemas
+ Operativos donde residen el cliente y el servicio.
+ Si bien muchos Sistemas Operativos mantienen sus relojes sincronizados
+ mediante el uso de NTP, esto no necesariamente es cierto para todos los
+ equipos conectados a Internet.
+ A su vez, el protocolo NTP no es lo suficientemente preciso, dando en el
+ mejor de los casos sincronizaciones dentro del milisegundo.
+ También puede haber saltos abruptos de tiempo debido a una sincronización
+ de relojes que pudo haber sucedido entre dos tomas de tiempo de una misma
+ medición.
+ 
+\end_layout
+
+\begin_layout Standard
+Todo esto concluye en que los tiempos que son usados en las mediciones no
+ son confiables.
+ Es por ello que hay un método de sincronización de relojes dentro del sistema
+ que permite mejorar la precisión de las diferencias entre las marcas de
+ tiempo.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+
+\series bold
+Estimación de Calidad y Uso de la Conexión 
+\end_layout
+
+\begin_layout Standard
+Para la estimación de la Calidad y Uso de la Conexión modelamos el tráfico
+ en Internet como si fuera un proceso auto-similar.
+ Existen estudios que indican que el tráfico paquetizado en Internet tiene
+ varias propiedades típicas de estos procesos
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Crovella-et-al,Leland-et-al"
+
+\end_inset
+
+.
+ Además, este modelo permite describir el comportamiento del tráfico tanto
+ para corta como para larga dependencia con sólo tres parámetros: la media
+ de la tasa de tráfico, la varianza del tráfico y el coeficiente de Hurst.
+ 
+\end_layout
+
+\begin_layout Subsection
+Sobre la presente iteración
+\end_layout
+
+\begin_layout Subsubsection
+Motivación
+\end_layout
+
+\begin_layout Standard
+El proyecto se tomó luego de dos iteraciones por parte de dos equipos distintos.
+ En estas los objetivos fueron de inicio y avance del proyecto, agregando
+ mejoras y funcionalidades.
+ 
+\end_layout
+
+\begin_layout Standard
+Por un lado, existía la necesidad de seguir agregando funcionalidades.
+ Tales incluían, pero no se limitaban, a:
+\end_layout
+
+\begin_layout Itemize
+Portar el cliente a dispositivos móviles para medir la calidad de las conexiones
+ de redes celulares
+\end_layout
+
+\begin_layout Itemize
+Lograr que el sistema tenga una alta estabilidad y disponibilidad
+\end_layout
+
+\begin_layout Itemize
+Lograr que el sistema tenga una alta escalabilidad, suficiente para cubrir
+ más de cinco mil usuarios
+\end_layout
+
+\begin_layout Itemize
+La posibilidad de lograr un A-B Testing de distintos métodos para las estimacion
+es.
+\end_layout
+
+\begin_layout Standard
+Por otro lado, se quería mejorar la calidad del producto con la idea de
+ que sea considerado un proyecto de Código Libre de calidad.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, por diversos motivos, la calidad del sistema en ese momento
+ era difícil de medir y comprobar.
+ La instalación era compleja y su reproducción laboriosa, ya que se necesitaba
+ que el entorno estuviese preparado de manera similar al servidor de pruebas.
+ Además, muchos de estos conocimientos no estaban documentados, con lo que
+ hubo que recurrir a los creadores originales.
+\end_layout
+
+\begin_layout Standard
+Todo esto redundó en la imperiosa necesidad de ordenar el código y la arquitectu
+ra, con el fin de que el sistema pudiera llegar a los ideales especificados.
+ Esto también implicaba la provisión de documentación on-line, en el código
+ y facilidades para la implementación del sistema del servicio por parte
+ de privados.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Objetivos
+\end_layout
+
+\begin_layout Standard
+Dadas las motivaciones y las necesidades de continuidad del proyecto, se
+ destilaron los siguientes objetivos:
+\end_layout
+
+\begin_layout Itemize
+Hacer un sistema que logre proveer servicio a por lo menos 5.000 usuarios
+ concurrentes.
+\end_layout
+
+\begin_layout Itemize
+El cliente del sistema debe ser de fácil instalación para el usuario y debe
+ estar pensado para múltiples plataformas por diseño.
+\end_layout
+
+\begin_layout Itemize
+El servicio del sistema debe ser de fácil instalación para cualquier persona
+ que desee replicarlo en su infraestructura, dados los conocimientos básicos
+ necesarios para el mantenimiento de la misma.
+\end_layout
+
+\begin_layout Itemize
+El Proyecto TiX debe contar con una calidad suficiente para que pueda ser
+ continuado de forma ininterrumpida por otro grupo totalmente ajeno al proyecto.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Desarrollo del presente documento
+\end_layout
+
+\begin_layout Standard
+A lo largo de este documento se procede a explicar el desarrollo de la iteración
+ actual, intentando justificar con la mayor profundidad posible la lógica
+ detrás de las decisiones tomadas.
+\end_layout
+
+\begin_layout Standard
+En la sección de Arquitectura se explica en alto nivel el diseño del sistema
+ en general.
+ Se hace un repaso de la arquitectura previa, su funcionamiento, y las ventajas
+ y desventajas de dicho enfoque.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Luego se detalla la arquitectura actual, haciendo hincapié en las razones
+ del cambio, su funcionamiento, y las ventajas y desventajas del nuevo enfoque.
+ 
+\begin_inset Newline newline
+\end_inset
+
+También se detalla y justifica la selección de herramientas y tecnologías
+ de desarrollo, operaciones, orquestación, pruebas y puesta en producción.
+\end_layout
+
+\begin_layout Standard
+En la sección de Implementación se explica a bajo nivel cada una de las
+ partes del sistema.
+ Explayándose debidamente de acuerdo a su funcionalidad, diseño e interoperabili
+dad con el resto de las partes del sistema.
+ Es necesario aclarar que dicha sección está pensada como documentación
+ explícita para desarrolladores del sistema.
+\end_layout
+
+\begin_layout Standard
+En la sección de Ensayos se explican los distintos tipos de pruebas que
+ le fueron realizados al sistema con el fin de comprobar su actual calidad
+ y el grado de cumplimiento para con los objetivos pactados.
+\end_layout
+
+\begin_layout Standard
+Por último, en la sección de Conclusiones se desarrollan los resultados
+ finales de la actual iteración, así como se plantean los lineamientos para
+ la continuación del proyecto.
+ 
+\end_layout
+
+\end_body
+\end_document

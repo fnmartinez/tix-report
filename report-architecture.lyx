@@ -1,0 +1,1085 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\master report-master.lyx
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Arquitectura
+\end_layout
+
+\begin_layout Subsection
+Arquitectura previa
+\end_layout
+
+\begin_layout Standard
+El Proyecto TiX en principio fue pensado como un conjunto de subsistemas.
+ En la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Arquitectura-previa"
+
+\end_inset
+
+ se puede ver un diagrama de los servicios que comprendían y que, a grandes
+ rasgos, aún comprenden el actual sistema de TiX.
+ Estos son el Subsistema de Presentación y Administración, el Subsistema
+ de Procesamiento y el Cliente del sistema.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/tix-old-architecture.png
+	scale 33
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Arquitectura previa del Sistema
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Arquitectura-previa"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Responsabilidades e implementación de los subsistemas
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema de Presentación y Administración
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Este subsistema estaba integrado exclusivamente por la aplicación Web con
+ la que interactuaba el usuario.
+ La misma era una aplicación monolítica hecha en Java, usando la combinación
+ de Spring, Hibernate y Wicket.
+ Su instalación era manual, usando un Apache Tomcat en el servidor de la
+ infraestructura mediante un archivo WAR que se compilaba en la computadora
+ del desarrollador.
+ Cumplía también el rol de administrar los usuarios y sus distintas instalacione
+s.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema de Procesamiento
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Este subsistema estaba integrado por dos servicios que compartían la misma
+ base de código.
+ 
+\end_layout
+
+\begin_layout Standard
+Por un lado estaba el Servicio de Procesamiento de Reportes, el cual era
+ un sistema monolítico, con código principalmente hecho Python 2.7 y con
+ algunas llamadas externas a código escrito en R.
+ Su instalación se realizaba a través de Capistrano, una herramiento escrita
+ en Ruby, y de forma remota en el servidor.
+ La función de este servicio era la de interactuar con el cliente, actuando
+ como servicio de respuesta ante los paquetes enviados.
+\end_layout
+
+\begin_layout Standard
+Por otro lado estaba el IpToAs, el cual era un servicio escrito en Python.
+ El mismo se encargaba de mantener actualizada la tabla que relacionaba
+ IPs con Sistemas Autónomos y Proveedores de Servicio de Internet.
+ El mismo funcionaba en base a una tarea agendada que se ejecutaba automáticamen
+te gracias a un Cron.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema Cliente
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Este subsistema era un archivo ejecutable de Python que se corría en segundo
+ plano.
+ Su principal y única función era la de enviar los distintos paquetes hacia
+ el subsistema de procesamiento con el fin de realizar las mediciones.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Funcionamiento conjunto del sistema
+\end_layout
+
+\begin_layout Standard
+El sistema, para un usuario determinado, comenzaba a funcionar tras la creación
+ de la cuenta y la siguiente descarga del cliente a su computadora a través
+ del Subsistema de Presentación y Administración.
+ En ese momento se creaba una instalación desde la cual se enviaban paquetes
+ UDP y reportes al Subsistema de Procesamiento.
+ Éste recibía los reportes con las mediciones tomadas, comprobaba su integridad
+ y los almacenaba en un directorio del Sistema Operativo.
+ Tras contar la cantidad de reportes recibidos, si estos llegaban a una
+ cantidad suficiente, se procedía a procesarlos con el fin de estimar el
+ uso y calidad de la conexión para el intervalo de tiempo correspondiente.
+ Una vez hecho el procesamiento, se cotejaba el Sistema Autónomo y Proveedor
+ al que pertenecía la IP de donde habían llegado los reportes.
+ Luego el Subsistema de Procesamiento enviaba el resultado al Subsistema
+ de Presentación y Administración a través de una pequeña interfaz REST
+ expuesta.
+ Así es que finalmente el usuario podía visualizar los resultados a través
+ del Subsistema de Presentación y Administración.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Fortelazas de esta arquitectura
+\end_layout
+
+\begin_layout Standard
+La principal fortaleza de esta arquitectura era el buen balance que había
+ entre la distribución de los distintos componentes y el diseño monolítico
+ de los mismos.
+ Esto permitía que estén bien separadas las capas y que pudieran ser montadas
+ o desplegadas en distintos servidores de manera autónoma en infraestructuras
+ que cumplan con los requerimientos propios a cada estrato.
+ A su vez, el hecho de que cada una de estas capas sea monolítica en sí
+ misma confería una gran facilidad en el seguimiento de errores y su eventual
+ solución.
+\end_layout
+
+\begin_layout Standard
+El hacer el cliente exclusivamente en Python tenía como principal idea permitir
+ iteraciones rápidas, y la entrega de actualizaciones constantes y minimalistas
+ al usuario.
+ Esto sería a través de actualizar exclusivamente los archivos de Python
+ modificados, en una suerte de repositorio constante.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Problemas y debilidades de esta arquitectura
+\end_layout
+
+\begin_layout Standard
+Tras trabajar durante unos meses con este sistema, se hicieron evidentes
+ varios problemas y posibles dificultades futuras.
+ 
+\end_layout
+
+\begin_layout Standard
+La forma en que el Subsistema de Presentación y Administración había sido
+ diseñado presentaba problemas sustanciales al momento de interactuar con
+ el resto de los subsistemas, así como para evolucionarlo.
+ Estaba construido con una versión muy antigua de Spring y pensado exclusivament
+e como una aplicación Web, no como un sistema que pudiera interactuar con
+ otros sistemas.
+ La pequeña interfaz REST que se exponía fue una adición que superaba al
+ diseño original, con lo cual tenía falencias infranqueables tanto desde
+ el punto de vista de programación, como desde el punto de vista de seguridad
+ y manejo de datos.
+\end_layout
+
+\begin_layout Standard
+El haber empaquetado todo el subsistema en un único archivo, hacía que fuera
+ muy difícil referenciar ficheros que estuvieran por fuera del paquete.
+ Por este motivo, se terminó decidiendo empaquetar en el mismo archivo WAR
+ los binarios para los clientes.
+ Esto trajo como obvias consecuencias que dicho archivo fuera muy pesado
+ y que debía ser re-empaquetado ante una actualización del cliente.
+\end_layout
+
+\begin_layout Standard
+El Subsistema de Procesamiento era un servicio en Python que se levantaba
+ y corría de forma autónoma.
+ Sin embargo, su diseño estaba pensado para que corriese exclusivamente
+ en la máquina del desarrollador y en el servidor de pruebas de TiX.
+ Hacerlo correr en una entorno distinto a estos implicaba tocar variables
+ definidas en el código de la aplicación para que su configuración sea la
+ adecuada.
+ Estas variables estaban distribuidas a lo largo de toda la aplicación y
+ con poca o nula documentación.
+\end_layout
+
+\begin_layout Standard
+La aplicación Cliente que se instalaba en las computadoras de los usuarios
+ estaba pensada para tener una fácil actualización.
+ Sin embargo, dependía de que el usuario volviese a empaquetar la aplicación.
+ Algo que no se le podía pedir.
+ Finalmente, el protocolo de comunicación, implementado en su totalidad
+ en Python, estaba escrito dos veces - en el cliente y en el Subsistema
+ de Procesamiento - haciéndolo muy difícil de mantener.
+ Además, la implementación no era clara ni mantenía las especificaciones
+ dadas por el protocolo.
+ 
+\end_layout
+
+\begin_layout Subsection
+Arquitectura actual
+\end_layout
+
+\begin_layout Standard
+En base a las observaciones presentes en el capítulo anterior, se decidió
+ hacer una evaluación de la arquitectura.
+ Se hizo evidente que para continuar con el desarrollo y las subsecuentes
+ mejoras se debían hacer cambios profundos en el sistema.
+ Se llegó a la conclusión de que los siguientes tres pilares eran necesarios
+ para finalizar el proyecto exitosamente:
+\end_layout
+
+\begin_layout Enumerate
+El Proyecto tiene que poder ser encarado y progresado por terceros ajenos
+ al desarrollo inicial y con escasa o nula ayuda
+\end_layout
+
+\begin_layout Enumerate
+El Sistema debe ser fácil de medir, para poder ser mejorado de manera contínua
+\end_layout
+
+\begin_layout Enumerate
+El Sistema debe ser robusto, confiable y performante, para cumplimentar
+ con los objetivos del presente Proyecto de Grado
+\end_layout
+
+\begin_layout Standard
+Como consecuencia de los tres postulados anteriores, se destiló que:
+\end_layout
+
+\begin_layout Itemize
+El sistema debía ser sencillo, evitando la repetición de código en donde
+ fuera posible, aislando las funcionalidades en módulos concretos y usando
+ un único servicio externo por tipo, a menos que hubieran razones de performance
+ que lo justificaran
+\end_layout
+
+\begin_layout Itemize
+Todas las partes debían contar con pruebas comprensivas, que ayuden a formalizar
+ el código y a evidenciar su intención
+\end_layout
+
+\begin_layout Itemize
+Todas las partes debían tener una instalación automatizada que garantizaran
+ el correcto despliegue de las mismas independientemente del entorno donde
+ se encontrasen
+\end_layout
+
+\begin_layout Standard
+Teniendo en cuenta estos últimos dos ítems, es que se decidió por utilizar
+ tres herramientas fundamentales en la arquitectura y el trabajo de operaciones
+ del sistema.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+TravisCI
+\series default
+ como sistema para automatizar no sólo las pruebas en cada uno de los repositori
+os, sino también el despliegue
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Docker 
+\series default
+como forma de mantener congeladas las dependencias y el estado de cualquiera
+ de las partes del sistema que se instalasen en el servidor
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+DockerHub 
+\series default
+como repositorio para guardar y distribuir todas las partes con el fin de
+ que más gente lo quisiera adoptar y mejorar, además de como facilidad para
+ la instalación en el servidor
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Docker-Compose 
+\series default
+como mecanismo básico de orquestación para los servicios del sistema
+\end_layout
+
+\begin_layout Standard
+En lo que respecta al primer punto, se tuvieron en consideración los siguientes
+ puntos:
+\end_layout
+
+\begin_layout Itemize
+La arquitectura y la separación de responsabilidades entre los subsistemas
+ existentes era buena, aunque en su implementación se traspasen algunas
+\end_layout
+
+\begin_layout Itemize
+No era necesario el uso de dos bases de datos
+\end_layout
+
+\begin_layout Itemize
+Se debía formalizar el protocolo de comunicación entre el Subsistema Cliente
+ y el Subsistema de Procesamiento mediante una biblioteca que fuera común
+ a ambos
+\end_layout
+
+\begin_layout Itemize
+La información de negocio, y en consecuencia, la de visualización debía
+ estar contenida exclusivamente en el Subsistema de Presentación
+\end_layout
+
+\begin_layout Itemize
+Cada una de las partes debía ser homogénea en sí misma, evitando ejecutar
+ procedimientos que pudieran vulnerar la integridad del sistema
+\end_layout
+
+\begin_layout Standard
+En base a todo esto, se entendió que el Sistema en general debía tener la
+ arquitectura que se muestra en la imagen de la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Arquitectura-actual"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/tix-new-architecture.png
+	scale 33
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Arquitectura actual del Sistema
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Arquitectura-actual"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Responsabilidades y consideraciones de los subsistemas
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Generalidades
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Como se explaya en la subsección previa, se tuvieron en cuenta dos consideracion
+es generales y que tocan a más de un subsistema.
+\end_layout
+
+\begin_layout Standard
+La primera es la necesidad de una biblioteca que formalice el protocolo
+ de TiX.
+ Esta se expone a través de un repositorio central, del cual puede ser descargad
+o como cualquier administrador de dependencias.
+ Dicha biblioteca, tix-time-core, posse una gran batería de pruebas automatizada
+s debido a que es una pieza central de toda la alquitectura y por ese motivo
+ se intenta que sea lo más confiable posible.
+ Por otro lado, la idea de hacerla en Java y exponerla a través de Maven
+ como dependencia responde a las necesidades tanto del Subsistema Cliente
+ como del Subsistema de Ingesta y Procesamiento.
+ Java es un lenguaje multiplataforma, que va bien para hacer un cliente
+ enfocado a distintos Sistemas Operativos.
+ Por otro lado, la JVM es una Máquina Virtual con grandes prestaciones y
+ excelente performance en relación a otros lenguajes de programación.
+ Además, Java cuenta con un rico ecosistema de bibliotecas y frameworks
+ que permiten el fácil desarrollo de sistemas.
+\end_layout
+
+\begin_layout Standard
+La otra gran consideración es la de mover el servicio de IpToAs del Subsistema
+ de Ingesta y Procesamiento al Sistema de Presentación.
+ Dos fueron las ideas detrás de esta decisión:
+\end_layout
+
+\begin_layout Enumerate
+Simplificar el enriquecimiento de los datos para la visualización del usuario,
+ dejando esta tarea exclusivamente al Subsistema de Presentación
+\end_layout
+
+\begin_layout Enumerate
+Usar un único servicio de base de datos para guardar la información
+\end_layout
+
+\begin_layout Standard
+Con respecto a esta última idea, se decidió usar el Sistema de Manejo de
+ Bases de Datos Relacional MySQL por ser altamente confiable, de código
+ libre, con grandes prestaciones y sencilla de usar.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema de Presentación
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+El Subsistema de Presentación fue pensado con los mismos principios que
+ se repiten a lo largo del proyecto.
+ Se buscó generar una arquitectura que fuera altamente escalable y de fácil
+ instalación, por lo que se dividió el subsistema en dos módulos.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+Capa de presentación
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+Esta capa permite al Usuario:
+\end_layout
+
+\begin_layout Itemize
+Visualizar los reportes de sus distintas instalaciones
+\end_layout
+
+\begin_layout Itemize
+Visualizar y editar las instalaciones creadas por el usuario
+\end_layout
+
+\begin_layout Itemize
+Editar sus preferencias de usuario (email/contraseña)
+\end_layout
+
+\begin_layout Itemize
+Visualizar sus reportes mensuales por instalación
+\end_layout
+
+\begin_layout Standard
+También le permite al Administrador:
+\end_layout
+
+\begin_layout Itemize
+Visualizar las instalaciones de todos los usuarios del sistema y sus reportes
+\end_layout
+
+\begin_layout Itemize
+Editar el rol de los demás usuarios, así como deshabilitar cuentas.
+\end_layout
+
+\begin_layout Itemize
+Visualizar gráficos de utilización generales filtrados por ISP, asi como
+ tambien descargar los informes en formato CSV para su posterior análisis.
+\end_layout
+
+\begin_layout Standard
+La principal tecnología de desarrollo es ReactJS, la cual permite, mediante
+ el uso de empaquetadores como Webpack, servir el código ya compilado mediante
+ una Red de Distribución de Contenidos (CDN).
+ Esto asegura que la aplicación pueda llegar a un gran número de usuarios
+ de forma efectiva y a muy bajo costo.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+Capa de de Administración y Reglas de Negocio
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+Esta capa expone una interfaz, la cual puede ser alcanzada por cualquier
+ cliente que sea capaz de autenticarse vía Json Web Token (JWT) o Basic
+ Auth.
+ Esto permite que si en el futuro se decidiera implementar una aplicación
+ mobile, el desarrollador podría, de manera muy simple, conectarse con el
+ servicio y consultar o agregar reportes.
+\end_layout
+
+\begin_layout Standard
+Existen dos roles definidos para los usuarios del sistema, el de Usuario
+ Común y el de Administrador.
+ Cuando el usuario se autentica mediante usuario y contraseña, se le confieren
+ ciertos permisos de acuerdo al rol.
+\end_layout
+
+\begin_layout Standard
+Los permisos para el rol Usuario Común son:
+\end_layout
+
+\begin_layout Itemize
+Consultar sus reportes
+\end_layout
+
+\begin_layout Itemize
+Editar su email
+\end_layout
+
+\begin_layout Itemize
+Editar su contraseña
+\end_layout
+
+\begin_layout Itemize
+Consultar, editar o borrar sus instalaciones.
+ 
+\end_layout
+
+\begin_layout Standard
+Mientras tanto, si el usuario autenticado tiene rol de Administrador, además
+ de tener los mismos permisos que un usuario regular, este puede:
+\end_layout
+
+\begin_layout Itemize
+Consultar los reportes basado en ISP
+\end_layout
+
+\begin_layout Itemize
+Consultar los reportes basado en un usuario particular
+\end_layout
+
+\begin_layout Itemize
+Consultar, editar o borrar instalaciones de otros usuarios
+\end_layout
+
+\begin_layout Itemize
+Generar nuevos reportes para un usuario.
+\end_layout
+
+\begin_layout Standard
+El Rol de Administrador también es usado por el Subsistema de Ingesta para
+ que pueda ingresar datos del usuario sin tener que depender de las credenciales
+ del mismo.
+\end_layout
+
+\begin_layout Standard
+En busca nuevamente de escalabilidad, esta capa se encuentra detrás de un
+ servidor Nginx.
+ Esto permite que, de ser necesario, se puedan instalar múltiples instancias
+ de este servicio y realizar un balanceo de carga.
+ Finalmente, los datos que son consultados y creados por esta capa son almacenad
+os en MySQL, en conjunto con los datos de IpToAs.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema de Ingesta y Procesamiento
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+El Subsistema de Ingesta y Procesamiento fue pensado con las siguientes
+ especificaciones en mente:
+\end_layout
+
+\begin_layout Itemize
+Debe ser capaz de ingerir y procesar la información de 5000 clientes en
+ simultáneo
+\end_layout
+
+\begin_layout Itemize
+Debe ser altamente escalable
+\end_layout
+
+\begin_layout Itemize
+Debe poder validar los paquetes recibidos desde el cliente y asegurar que
+ pertenezcan a instalaciones activas usuarios activos del sistema 
+\end_layout
+
+\begin_layout Standard
+Y además debe contar con las especificaciones generales del Sistema TiX
+ presentes al principio de este capítulo.
+\end_layout
+
+\begin_layout Standard
+Para lograr esto se decidió ir por una arquitectura de microservicios.
+ Esto confería tres grandes ventajas:
+\end_layout
+
+\begin_layout Enumerate
+Fácil escalamiento horizontal y selectivo de acuerdo al cuello de botella
+ en cualquier momento dado
+\end_layout
+
+\begin_layout Enumerate
+Alta especialización de cada uno de sus componentes, permitiendo usar las
+ tecnologías que mejor se ajusten al trabajo que realicen
+\end_layout
+
+\begin_layout Enumerate
+Sencillez en el diseño de cada uno de los componentes
+\end_layout
+
+\begin_layout Standard
+Con esto en mente, se definieron cuatro servicios con funcionalidades bien
+ definidas.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+tix-time-server
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+Es el primer microservicio y la puerta de entrada al sistema.
+ Su trabajo consiste en recibir paquetes, validar que sean paquetes íntegros
+ del protocolo de TiX y devolverlos con las marcas de tiempo correspondientes.
+ Además, si estos paquetes son paquetes con reportes completos, enviarlos
+ al siguiente servicio en la tubería de ingesta.
+\end_layout
+
+\begin_layout Standard
+La decisión de implementarlo en Java sigue la idea que se explaya anteriormente
+ respecto de su gran performance.
+ Es un lenguaje que cuenta con un amplio ecosistema de bibliotecas y particularm
+ente Netty es una de ellas.
+ Ésta permite la creación de servidores de alta performance mediante el
+ patrón de diseño Reactor para servidores web.
+ Además, es una biblioteca que se encuentra disponible tanto para Java para
+ Computadoras como para dispositivos móviles.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+tix-time-condenser
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+Es el segundo microservicio del sistema.
+ El objetivo de éste es validar que los mensajes de reportes sean correctos
+ y pertenezcan a instalaciones activas de usuarios activos del sistema.
+ Una vez hecha esta validación debe dejar los archivos de reportes en el
+ directorio correspondiente al usuario y la instalación para su eventual
+ procesamiento.
+\end_layout
+
+\begin_layout Standard
+Este servicio también está implementado en Java, pero mediante el framework
+ Spring Boot.
+ Este permite la creación de micro-servicios de una forma sencilla y rápida,
+ ofreciendo gran flexibilidad de configuración y un rico entorno para hacer
+ pruebas.
+ Todo esto sin dejar de ofrecer la performance natural de Java y una baja
+ marca de tamaño.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+tix-time-processor
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+Es el tercer y último microservicio del sistema.
+ Fue creado con la idea de ser un servicio que corra de forma programada
+ en un cierto periodo de tiempo.
+ Toma los archivos de acuerdo a como lo haya dejado el anterior servicio
+ y una vez hecho eso, calcula las principales métricas para cada instalación.
+\end_layout
+
+\begin_layout Standard
+La decisión de implementarlo en Python viene con la idea de este servicio
+ cumple un rol más bien analítico y cercano a lo que es la Ciencia de Datos.
+ Python cuenta con un ecosistema de bibliotecas y entornos de trabajo muy
+ favorecido en este sentido, como lo son NumPy, SciPy, Matplotlib y Scikit.
+ Además, dado su rol especial, algunas pruebas del sistema no pueden ser
+ ejecutadas de forma automática.
+ Estas pruebas son las que se refieren al análisis y la mejora de la calidad
+ en la estimación de las métricas.
+ Para eso se tiene en cuenta el uso de Notebooks de Jupyter, un entorno
+ de trabajo natural para la Ciencia de Datos y Python, principalmente para
+ el análisis exploratorio de los datos.
+\end_layout
+
+\begin_layout Standard
+Por último y no menos relevante, el hacerlo en Python también cumple con
+ la motivación de hacer un servicio sencillo y escalable mediante el uso
+ de Celery.
+ Celery es un entorno de trabajo y una cola de trabajos implementada enteramente
+ en Python.
+ La misma cuenta con varios modos de uso.
+ El utilizado por nosotros es el modo programado, el cual se ejecuta de
+ forma autónoma en un determinado período.
+ De esta forma, se puede paralelizar el trabajo de procesar los datos en
+ varios servicios replicados.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+Cola de mensajes
+\series default
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+El cuarto servicio del subsistema.
+ Tiene la responsabilidad de comunicar el tix-time-server con el tix-time-conden
+ser.
+ También sirve como soporte en la comunicación del maestro y los esclavos
+ de la cola de trabajos del tix-time-processor.
+\end_layout
+
+\begin_layout Standard
+La decisión de usar el servicio RabbitMQ para esto fue natural.
+ Es una cola de mensajes con una gran cantidad de conectores para varios
+ lenguajes, y cuenta con funcionalidad directa con Celery y con Spring Boot.
+ Además, es una cola de mensajes muy performante y fácil de administrar.
+\end_layout
+
+\begin_layout Standard
+Como se puede ver, cada componente del Subsistema es autónomo en sí mismo
+ e idempotente.
+ Lo que confiere una gran escalabilidad horizontal.
+ 
+\end_layout
+
+\begin_layout Standard
+A su vez, el que el tix-time-server sea sumamente sencillo y que las dos
+ operaciones más pesadas sean la de procesar el paquete UDP como un paquete
+ válido del protocolo TiX, y poner el paquete de reportes en la cola de
+ mensajes, hace que el sistema entero tenga una gran capacidad de respuesta.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Subsistema Cliente
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Para este subsistema, la consideración primaria se resume en que un único
+ cliente se pueda usar en distintas plataformas, o por lo menos, que el
+ código permita su reuso y adaptación simple para diversas plataformas.
+ Al referirse a plataformas se piensa en computadoras, celulares, consolas,
+ smartwatches, smart TVs, etc.
+\end_layout
+
+\begin_layout Standard
+Tomando esto como punto de partida, se decide programar el cliente en lenguaje
+ Java pensando en su gran ventaja: es un lenguaje multiplataforma.
+ Existen intérpretes del lenguaje para casi todas las plataformas conocidas,
+ incluyendo Windows, Linux, Mac y Android.
+ El código resultante es independiente de la plataforma en la que terminará
+ corriendo, ya que corre sobre la JVM (Java Virtual Machine) que se encarga
+ de interpretar el conjunto de instrucciones al lenguaje de máquina donde
+ se esté ejecutando el programa.
+\end_layout
+
+\begin_layout Standard
+Otra consideración importante es que sea fácil de instalar para un usuario
+ promedio, especialmente usuarios de sistemas operativos populares.
+ Se decide no asumir que el usuario sabe usar una terminal de comandos,
+ y proveer una interfaz visual y cotidiana para la instalación del cliente.
+ Siguiendo el mismo proceso que cualquier otra aplicación, el usuario no
+ tiene dificultades para comenzar a usar este software.
+\end_layout
+
+\begin_layout Standard
+La tercera consideración tiene que ver con proveer una facilidad adicional
+ al usuario: alimentar a la aplicación con actualizaciones de forma automática.
+ Este proceso debe ser transparente para el usuario, es decir, no debe requerir
+ que entre al sitio web de TiX para hacer descargas adicionales.
+ Y tiene otra gran ventaja: asegura que un gran porcentaje de usuarios de
+ TiX usan la versión más actualizada del cliente.
+ Esto es muy útil para asegurarse de que cualquier cambio o agregado al
+ software tendrá efecto rápidamente y los usuarios podrán beneficiarse de
+ estos cambios.
+\end_layout
+
+\begin_layout Standard
+Por último, y siguiendo en línea con los puntos anteriores, se toma la premisa
+ de que el cliente sea lo más simple posible en cuanto a la interfaz gráfica
+ y la interacción que requiere de parte del usuario.
+ Lejos de interrumpir su trabajo diario, el cliente debe exigir datos de
+ autenticación e instalación para una configuración inicial, y a partir
+ de ese instante permanecer latente en la barra de estados.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Funcionamiento conjunto del sistema
+\end_layout
+
+\begin_layout Standard
+Al igual que con la vieja arquitectura, el sistema actual comienza a funcionar
+ tras la creación de la cuenta del usuario a través del servicio tix-web
+ en el servicio tix-api, siendo el primero sólo una interfaz amigable del
+ segundo.
+ Luego de la descarga del cliente a su computadora, se crea la instalación
+ y se comienza a enviar reportes al tix-time-server.
+ Cuando el tix-time-server recibe un reporte, lo pone en la Cola de Mensajes
+ para que sea tomado por el tix-time-condenser.
+ Éste valida que el mensaje sea de una instalación activa de un usuario
+ activo contra tix-api.
+ Entonces chequea la integridad del reporte, para asegurar que no haya sido
+ corrompido.
+ Luego deja el mensaje en el sistema de archivos, en el directorio correspondien
+te al usuario y su instalación.
+ Cuando el momento es correcto, el tix-time-processor toma todos los reportes
+ de la instalación, con los que estima las métricas para esa ventana de
+ tiempo y envía el dato a la tix-api.
+ La misma enriquece los datos del reporte aportando el Sistema Autónomo
+ y el Proveedor de Servicios Internet, cruzando la IP que figura en el reporte
+ con la información que actualiza el servicio IpToAs.
+ Así es que finalmente el usuario puede visualizar los resultados a través
+ del servicio tix-web que consulta al servicio tix-api.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Fortelazas de esta arquitectura
+\end_layout
+
+\begin_layout Standard
+Las principales fortalezas de esta arquitectura nacen de su naturaleza totalment
+e distribuida.
+ 
+\end_layout
+
+\begin_layout Itemize
+Es una arquitectura altamente escalable, incluso dentro de un solo servidor
+\end_layout
+
+\begin_layout Itemize
+Es una arquitectura robusta, en el sentido que si uno de los componentes
+ del subsistema se cae, el servicio se vería degradado pero no necesariamente
+ interrumpido
+\end_layout
+
+\begin_layout Itemize
+El uso de tecnologías idóneas para cada servicio en línea con las tendencias
+ actuales y las mejores prácticas presentes
+\end_layout
+
+\begin_layout Itemize
+La gran performance aparente, consecuencia de poder elegir lo que mejor
+ se comporta en cada caso
+\end_layout
+
+\begin_layout Itemize
+Cada servicio es medible en sí mismo como una caja negra, permitiendo identifica
+r cuellos de botella de forma preventiva mediante el uso de pruebas de carga
+ aisladas
+\end_layout
+
+\begin_layout Itemize
+El tener un servicio central con una interfaz estándar como la tix-api,
+ confiere la posibilidad de hacer clientes e interfaces amigables al usuario
+ de una forma más sencilla y rápida además de una excelente integración
+ con otros sistemas 
+\end_layout
+
+\begin_layout Subsubsection
+Debilidades y problemas de esta arquitectura
+\end_layout
+
+\begin_layout Standard
+Naturalmente, las debilidades y problemas también nacen de la forma distribuida
+ de la arquitectura.
+ 
+\end_layout
+
+\begin_layout Standard
+Las modificaciones entre Subsistemas (e incluso entre servicios) debido
+ a un cambio en el protocolo de comportamiento entre sí, puede llevar a
+ tiempos de desarrollo muchísimo más grandes que con otras arquitecturas.
+ Además, requiere de pruebas y ensayos mucho más severos que con una arquitectur
+a monolítica.
+\end_layout
+
+\begin_layout Standard
+Los errores espontáneos o en tiempo de ejecución son mucho más difíciles
+ de encontrar que en una aplicación monolítica.
+ Esto se debe a la distribución de la información a lo largo de todo el
+ sistema, y no encontrarse en un solo lugar.
+ 
+\end_layout
+
+\begin_layout Subsection
+Conclusiones de la arquitectura actual
+\end_layout
+
+\begin_layout Standard
+Al principio de la sección previa se declaran tres pilares sobre los cuales
+ se basa esta iteración del proyecto, que buscan satisfacer los objetivos
+ y motivaciones planteadas en la Introducción.
+ Estos son:
+\end_layout
+
+\begin_layout Itemize
+El Proyecto tiene que poder ser encarado y progresado por terceros ajenos
+ al desarrollo inicial y con escasa o nula ayuda
+\end_layout
+
+\begin_layout Itemize
+El Sistema debe ser fácil de medir, para poder ser mejorado de manera contínua
+\end_layout
+
+\begin_layout Itemize
+El Sistema debe ser robusto, confiable y performante, para cumplimentar
+ con los objetivos del presente Proyecto de Grado
+\end_layout
+
+\begin_layout Standard
+Con lo que se expone en el capítulo anterior, en contraposición con el principio
+ del actual capítulo, es evidente que la elección de tecnologías de apoyo
+ y operaciones están orientadas a satisfacer el primer punto.
+ En tanto que el cambio de arquitectura y la distribución de servicios estan
+ orientados a satisfacer los últimos dos puntos.
+ 
+\end_layout
+
+\end_body
+\end_document

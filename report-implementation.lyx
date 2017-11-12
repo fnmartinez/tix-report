@@ -1,0 +1,1823 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\master report-master.lyx
+\maintain_unincluded_children false
+\language spanish
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language french
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Implementación
+\end_layout
+
+\begin_layout Subsection
+Protocolo TiX
+\end_layout
+
+\begin_layout Standard
+Como se explica en la sección de Arquitectura, el protocolo de paquetes
+ de TiX fue implementado como una biblioteca común para el Cliente y el
+ servicio tix-time-server del Subsistema de Ingesta y Procesamiento.
+ El código está completamente en Java, contiene las clases básicas para
+ el manejo de los paquetes tanto de parte del cliente como del servidor.
+ 
+\end_layout
+
+\begin_layout Standard
+A su vez, está basado en la biblioteca Netty, la cual contiene facilidades
+ para la implementación de clientes y servidores de alta performance tanto
+ en TCP como UDP.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Diseño​ ​ general​ ​ del​ ​ Protocolo 
+\end_layout
+
+\begin_layout Standard
+El protocolo de TiX cuenta con dos tipos paquetes, uno corto y uno largo.
+ El paquete largo es una extensión del paquete corto en el sentido que los
+ primeros campos son similares.
+ A su vez, el paquete largo puede ser un paquete largo simple o un paquete
+ de datos.
+ La diferencia entre los últimos dos, es que el segundo contiene el reporte
+ con mediciones tomadas en el último período de tiempo.
+ 
+\end_layout
+
+\begin_layout Standard
+La diferencia entre un paquete corto y uno largo es la cantidad de bytes
+ que cada uno contiene.
+ El paquete corto actualmente ocupa el tamaño de cuatro números de tipo
+ long de la JVM 8, es decir, 32 bytes.
+ En tanto que el paquete largo ocupa lo mismo que seis números de tipo long
+ de la JVM 8 más 4.400 bytes, es decir, 4.448 bytes.
+\end_layout
+
+\begin_layout Standard
+Mientras que la funcionalidad del paquete corto es exclusivamente la de
+ crear mediciones para la calidad del enlace, el paquete largo también busca
+ evaluar el ancho de banda.
+ Sin embargo, esta funcionalidad actualmente está deprecada y bajo revisión
+ debido a que un paquete de poco menos de 4,5 KB no alcanza para medir el
+ ancho de banda de los enlaces actuales.
+ Además, es un paquete considerablemente grande para lo que son los límites
+ actuales de transferencia de datos en los planes para celulares.
+ Bajo esta óptica, es necesario estudiar una mejor forma de obtener el ancho
+ de banda real del enlace minimizando el costo para líneas de teléfonos
+ móviles.
+\end_layout
+
+\begin_layout Standard
+Los paquetes del protocolo TiX están pensados para poder ser usados con
+ cualquier protocolo de capa de transporte, como TCP y UDP.
+ De hecho, al no tener ningún tipo de control sobre la transmisión y el
+ correcto arribo de los mensajes, es recomendable utilizarlo sobre TCP.
+ Sin embargo, dados los algoritmos de reconstrucción de paquetes y optimizacione
+s en el protocolo TCP, como el algoritmo de Nagle, las mediciones pueden
+ verse afectadas.
+ Por este motivo, solamente el protocolo UDP es utilizado hasta que exista
+ alguna otra forma de garantizar las correctas mediciones usando TCP.
+ El puerto por defecto del protocolo TiX es el 4500.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Funcionamiento​ ​ del​ ​ Protocolo 
+\end_layout
+
+\begin_layout Standard
+El protocolo tiene dos formas de funcionamiento, de alto uso de ancho de
+ banda y de bajo uso de ancho de banda.
+ La primer forma es la que usaba el viejo Sistema TiX, mientras que el nuevo
+ Sistema usa la segunda.
+\end_layout
+
+\begin_layout Standard
+El funcionamiento general es como se describe a continuación.
+\end_layout
+
+\begin_layout Enumerate
+Se define una frecuencia 
+\begin_inset Formula $f$
+\end_inset
+
+, con la cual se enviarán los mensajes entre el cliente y el servidor.
+\end_layout
+
+\begin_layout Enumerate
+Se define 
+\begin_inset Formula $N$
+\end_inset
+
+, que será la cantidad de mediciones acumuladas en los reportes.
+\end_layout
+
+\begin_layout Enumerate
+Se define 
+\begin_inset Formula $M$
+\end_inset
+
+, que será la cantidad de reintentos de envío del paquete de datos.
+\end_layout
+
+\begin_layout Enumerate
+A los 
+\begin_inset Formula $1/f$
+\end_inset
+
+ segundos se marca un paquete con la cantidad de nanosegundos desde el comienzo
+ del día y se envía al servidor.
+\end_layout
+
+\begin_layout Enumerate
+El servidor al recibir el paquete, lo marca con la cantidad de nanosegundos
+ desde el principio del día.
+\end_layout
+
+\begin_layout Enumerate
+Antes de devolver el paquete al cliente, vuelve a marcarlo con la cantidad
+ de nanosegundos desde el principio del día y lo envía.
+\end_layout
+
+\begin_layout Enumerate
+El cliente recibe el paquete desde el servidor y lo marca con la cantidad
+ de nanosegundos desde el principio del día.
+\end_layout
+
+\begin_layout Enumerate
+Tras 
+\begin_inset Formula $N$
+\end_inset
+
+ intercambios y 
+\begin_inset Formula $1/f$
+\end_inset
+
+ segundos, el cliente genera un paquete de datos y lo marca con la cantidad
+ de nanosegundos desde el principio del día.
+ Con esto se repiten los pasos 5, 6 y 7.
+ En caso del cliente no recibir el paquete en el paso 7, reintentará el
+ envío 
+\begin_inset Formula $M$
+\end_inset
+
+ cada 
+\begin_inset Formula $1/f$
+\end_inset
+
+ segundos, tras lo cual descartará esas mediciones.
+ En caso de recibir el paquete, lo usará como una medición más y volverá
+ al paso 4.
+\end_layout
+
+\begin_layout Standard
+Actualmente, 
+\begin_inset Formula $f$
+\end_inset
+
+ está definida en 1, 
+\begin_inset Formula $N$
+\end_inset
+
+ en 60 y 
+\begin_inset Formula $M$
+\end_inset
+
+ en 5.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Taxonomía​ ​ de​ ​ los​ ​ paquetes 
+\end_layout
+
+\begin_layout Standard
+Los paquetes cortos se definen de la siguiente forma:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_1: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_2: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_3: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_4: long
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde cada campo son 8 bytes que contienen un número de tipo long de la
+ JVM 8 en complemento dos a la base.
+ Dichos números son la cantidad de nanosegundos desde el principio del día
+ cuando el cliente envió el paquete (
+\family typewriter
+t_1
+\family default
+), el servidor recibió el paquete (
+\family typewriter
+t_2
+\family default
+), el servidor devuelve el paquete al cliente (
+\family typewriter
+t_3
+\family default
+) y el cliente recibe paquete (
+\family typewriter
+t_4
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+Los paquetes largos simples se definen de la siguiente manera:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_1: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_2: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_3: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_4: long
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+padding
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde los cuatro primeros campos son idénticos y con la misma funcionalidad
+ que los del paquete corto.
+ El último campo, padding, contiene un conjunto de caracteres aleatorios,
+ con el fin de hacer que el paquete ocupe el tamaño deseado.
+ Por último los paquetes largos con datos se definen de la siguiente forma:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="11" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_1: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_2: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_3: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_4: long
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+data_header: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+data_delimiter: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+user_id: long
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+installation_id: long
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+public_key: byte string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+data_delimiter: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+report: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+data_delimiter: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+signed_hash: byte string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+data_delimiter: char string
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+padding
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde los cuatro primeros campos son idénticos y con la misma funcionalidad
+ que los del paquete corto y largo simple.
+ 
+\end_layout
+
+\begin_layout Standard
+Los campos llamados 
+\family typewriter
+data_delimiter
+\family default
+ son usados para diferenciar los distintos campos de datos dentro del paquete.
+ Estos campos con la cadena de caracteres “
+\family typewriter
+;
+\family default
+;” encodeada en UTF-8.
+\end_layout
+
+\begin_layout Standard
+El campo data_header es un campo diferencial que contiene la cadena de caractere
+s “
+\family typewriter
+DATA
+\family default
+” encodeada en UTF-8.
+ Este campo se usa para distinguir un paquete largo común de un paquete
+ largo con datos.
+ 
+\end_layout
+
+\begin_layout Standard
+El campo 
+\family typewriter
+user_id
+\family default
+ es un campo de 8 bytes que contiene un número de tipo long de la JVM 8
+ con el ID del usuario que realizó las mediciones.
+\end_layout
+
+\begin_layout Standard
+El campo 
+\family typewriter
+installation_id
+\family default
+ es un campo de 8 bytes que contiene un número de tipo long de la JVM 8
+ con el ID de la instalación donde se realizaron las mediciones.
+\end_layout
+
+\begin_layout Standard
+El campo 
+\family typewriter
+public_key
+\family default
+ contiene una cadena de bytes de largo variable con la clave pública de
+ la instalación del usuario que realizó las mediciones.
+ La misma se realiza con el algoritmo RSA con 2048 bits y está encodeada
+ en formato X.509.
+\end_layout
+
+\begin_layout Standard
+El campo 
+\family typewriter
+report
+\family default
+ contiene el reporte del usuario con las mediciones realizadas por esa instalaci
+ón.
+ El mismo es una cadena de bytes encodeada en base64, lo cual resulta en
+ una cadena de caracteres de largo variable.
+\end_layout
+
+\begin_layout Standard
+El campo 
+\family typewriter
+signed_hash
+\family default
+ contiene el hash del reporte firmado por el usuario con la clave privada
+ de la instalación.
+ El mismo es una cadena de bytes que corresponde al algoritmo de firma SHA1
+ con RSA.
+\end_layout
+
+\begin_layout Standard
+El último campo, 
+\family typewriter
+padding
+\family default
+, contiene un conjunto de caracteres aleatorios, con el fin de hacer que
+ el paquete ocupe el tamaño deseado.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Taxonomía​ ​ de​ ​ los​ ​ reportes
+\end_layout
+
+\begin_layout Standard
+Los reportes enviados en los paquetes largos de datos están serializados
+ en binario, con el fin de que ocupen el menor espacio posible.
+ Estos reportes tienen una estructura de lista o bitácora en donde cada
+ entrada está formada por cinco campos de la siguiente forma:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+day_timestamp: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_1: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_2: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_3: long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+t_4: long
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Cada uno de estos campos ocupa 8 bytes y representa un número de tipo 
+\family typewriter
+long
+\family default
+ de la JVM 8 en complemento dos a la base.
+ El campo 
+\family typewriter
+day_timestamp
+\family default
+ representa la cantidad de segundos desde el 1 de Enero de 1970 a las 00:00
+ en que fue realizada esa medición según el reloj del Cliente.
+ Los siguientes campos representan la cantidad nanosegundos desde el comienzo
+ del día cuando se envió el paquete del cliente al servidor, cuando el servidor
+ recibe el paquete, cuando el paquete es enviado desde el servidor al cliente,
+ y cuando finalmente el cliente vuelve a recibir el paquete; respectivamente.
+ Los nanosegundos allí registrados son en relación a los relojes de los
+ respectivos sistemas y no están sincronizados entre sí.
+\end_layout
+
+\begin_layout Subsection
+El Subsistema de Ingesta y Procesamiento
+\end_layout
+
+\begin_layout Subsubsection
+Servicio​ ​tix-time-server 
+\end_layout
+
+\begin_layout Standard
+Este es un micro-servicio que está implementado enteramente en Java.
+ 
+\end_layout
+
+\begin_layout Standard
+Usa la biblioteca Netty para crear el servidor UDP del Protocolo TiX y un
+ servidor HTTP con el fin de verificar la salud del servicio.
+ Ambos servidores pueden configurar su puerto.
+ El punto de entrada para verificar la salud del servicio responde a la
+ dirección /health.
+ 
+\end_layout
+
+\begin_layout Standard
+También importa la biblioteca tix-time-server para poder interpretar el
+ Protocolo TiX y comunicarse con el Cliente.
+ 
+\end_layout
+
+\begin_layout Standard
+Otra importante dependencia es la del cliente AMPQ para RabbitMQ.
+ Esta la utiliza para poder conectarse con la cola de mensajes y poner allí
+ los paquetes de datos del Protocolo TiX.
+\end_layout
+
+\begin_layout Standard
+Con el fin de garantizar una forma estándar de comunicarse con los servicios
+ que consuman de la cola que alimenta, los utiliza la biblioteca Jackson
+ para convertir los objetos del tix-time-core en cadenas de caracteres de
+ formato JSON.
+ Su configuración se realiza a través del objeto ConfigurationManager, el
+ cual tiene la capacidad de tomar los valores de configuración por distintas
+ fuentes, como archivos de configuración, variables de entorno, etc.
+ con distintas precedencias entre sí.
+\end_layout
+
+\begin_layout Standard
+Además adopta el concepto de entorno, el cual define valores por defecto
+ para las distintas variables para un entorno dado.
+ 
+\end_layout
+
+\begin_layout Standard
+Esto confiere una gran flexibilidad al momento de configurar el servicio,
+ ya que la precedencia de los valores de configuración proveniente de las
+ distintas fuentes combinado con el uso de entornos permite tener valores
+ por defecto globales, sumados a valores de entorno propios del servicio
+ más valores sobrescritos por las otras fuentes para el caso de datos sensibles,
+ como pueden ser contraseñas, o de valores dinámicos, como pueden ser niveles
+ de reportes de eventos.
+\end_layout
+
+\begin_layout Standard
+Como se puede apreciar en la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tix-time-server-uml"
+
+\end_inset
+
+, el diseño es sencillo, de acuerdo con lo que debe ser un micro-servicio.
+\end_layout
+
+\begin_layout Standard
+El servicio cuenta con pruebas de unidad que aseguran el correcto funcionamiento
+ de cada uno de sus puntos más importantes.
+ También posee una prueba de integración que asegura la correcta interoperabilid
+ad con los demás servicios.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/uml-tix-time-server.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama UML del servicio tix-time-server
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tix-time-server-uml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Servicio​ ​tix-time-condenser 
+\end_layout
+
+\begin_layout Standard
+Al igual que el servicio tix-time-server, este micro-servicio está hecho
+ enteramente en Java.
+ Pero en vez de ser estar hecho desde cero usando varias librerías, éste
+ usa el entorno de trabajo SpringBoot.
+\end_layout
+
+\begin_layout Standard
+El entorno de trabajo SpringBoot está pensado específicamente para el prototipad
+o y la creación de micro-servicios.
+ Provee una gran cantidad de facilidades e importa de forma automática muchas
+ bibliotecas que facilitan el trabajo.
+ Además provee varias facilidades para las pruebas de unidad y de integración.
+\end_layout
+
+\begin_layout Standard
+Tal es así, que el servicio cuenta con tan solo una clase con lógica de
+ negocio.
+ El resto de las clases son para abstraer las respuestas de la comunicación
+ con el servicio tix-api.
+ Esto se ve representado en el UML de la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tix-time-condenser-uml"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Este servicio también importa la biblioteca tix-time-core.
+ Esto lo hace para poder traducir los mensajes en JSON que consume de la
+ cola de mensajes proveniente de tix-time-server.
+ Además, hace uso de las facilidades de esta biblioteca para validar la
+ integridad de dichos mensajes.
+\end_layout
+
+\begin_layout Standard
+Una vez recibido y verificado el mensaje, el servicio hace llamadas a tix-api
+ para validar el usuario y la instalación del cual provienen.
+ En caso de éxito, procede a dejar el mensaje en el directorio configurado,
+ bajo la ruta acordada.
+ Dicha ruta tiene tiene la forma de /{user_id}/{installation_id}.
+\end_layout
+
+\begin_layout Standard
+Cabe destacar la complejidad y cantidad de operaciones que realiza para
+ ser un micro-servicio, pese a la gran sencillez del diseño.
+\end_layout
+
+\begin_layout Standard
+Al igual que el tix-time-server, posee pruebas de unidad y de integración
+ para asegurar el correcto funcionamiento e interoperabilidad con el resto
+ de los sistemas.
+\end_layout
+
+\begin_layout Standard
+Como detalle importante, este es el único servicio que tiene una prueba
+ de integración en vivo, es decir, que se hace con el servicio compilado
+ y corriendo como si fuera en su entorno normal mediante el uso de Docker.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/uml-tix-time-condenser.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama UML del servicio tix-time-server
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tix-time-condenser-uml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Servicio​ tix-time-processor 
+\end_layout
+
+\begin_layout Standard
+A diferencia de los otros dos micro-servicios, este está implementado enterament
+e en Python3.
+ Se basa en el entorno de trabajo Celery.
+ 
+\end_layout
+
+\begin_layout Standard
+Celery es una cola de trabajos asíncrona y distribuida hecha casi en su
+ totalidad en Python.
+ Tiene una importante interoperabilidad con el servicio de cola de mensajes
+ RabbitMQ, aunque puede utilizar otros servicios similares también.
+ Una de sus principales características es la posibilidad de programar la
+ ejecución de tareas y distribuirla entre sus distintos esclavos.
+ Esto es lo que hizo que Celery sea una respuesta acertada al trabajo por
+ lotes distribuido del procesamiento de estimación de uso de red y calidad
+ de conexión a partir de los reportes de los clientes.
+\end_layout
+
+\begin_layout Standard
+Dentro de las dependencias más importantes de este servicio están las biblioteca
+s Numpy y SciPy.
+ Ambas librerías son de las más conocidas e importantes de la comunidad
+ científica y matemática de Python.
+ Se usan principalmente para hacer algunos cálculos como es la estimación
+ del coeficiente de Hurst, regresiones lineales y simplificar el trabajo
+ matemático.
+ 
+\begin_inset Newline newline
+\end_inset
+
+La tercer dependencia importante de este servicio es la famosísima requests.
+ La cual usa para enviar los resultados de las estimaciones al servicio
+ tix-api.
+\begin_inset Newline newline
+\end_inset
+
+Por último, también usa la biblioteca PyWavelets, con el fin casi exclusivo
+ de computar la transformada wavelet en la estimación del parámetro de Hurst.
+\end_layout
+
+\begin_layout Standard
+Como se puede ver en las Figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tix-time-processor-uml"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tix-time-processor-analysis-uml"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tix-time-processor-reports-uml"
+
+\end_inset
+
+, este servicio es más complejo que los otros dos de este subsistema.
+ Esto se debe a que probablemente tanto el ReportsHandler como el Analyzer
+ deberían ser librerías aparte, con su propia funcionalidad.
+\end_layout
+
+\begin_layout Standard
+El Analyzer es el caso más obvio para esta futura mejora.
+ Ya que las posibilidades de hacer pruebas de unidad con esta parte del
+ código son limitadas y precisa de un análisis exhaustivo de los resultados
+ que arroja.
+ Es por eso que el repositorio posee un Notebook de Python que lo acompaña.
+ Para hacer las veces de forma de prueba exploratoria de los resultados
+ de este paquete.
+\end_layout
+
+\begin_layout Standard
+Por otro lado, el ReportsHandler es prácticamente una librería de serialización
+ y deserialización completa de los reportes del Protocolo TiX.
+ Con lo que puede ser meritoria de su propia base de código aislada.
+\end_layout
+
+\begin_layout Standard
+Por consiguiente, las pruebas de unidad en este servicio están limitadas
+ a los paquetes que son más sencillos de probar, ReportsHandler y el paquete
+ api_communication.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/uml-tix-time-processor.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama UML del servicio tix-time-server
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tix-time-processor-uml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/uml-tix-time-processor-analysis.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama UML del servicio tix-time-server
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tix-time-processor-analysis-uml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/uml-tix-time-processor-reports.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama UML del servicio tix-time-server
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tix-time-processor-reports-uml"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Despliegue​ y puesta​ en producción
+\end_layout
+
+\begin_layout Standard
+Para automatizar la tarea de desplegar el Subsistema de Ingesta y Procesamiento
+ se recurrió a la herramienta Docker Compose.
+ La misma permite mediante el uso de un archivo YAML describir la configuración
+ que debe tener el sistema, los distintos servicios que lo componen y cómo
+ interactúan entre sí, además de sus dependencias.
+ Además posee comandos sencillos que permiten levantar, actualizar, parar
+ y desarmar el sistema.
+\end_layout
+
+\begin_layout Standard
+Esto, junto con la posibilidad de interoperar con la herramienta Docker
+ Swarm, permiten que el sistema en su conjunto pueda ser manejado con sencillez
+ y robustez, además de ser escalado a lo largo de un clúster de máquinas,
+ si es necesario.
+\end_layout
+
+\begin_layout Standard
+Todo esto convierten a la herramienta en indispensable para el manejo de
+ micro-servicios como los aquí explicados.
+\end_layout
+
+\begin_layout Standard
+Este documento se encuentra en el repositorio tix-time-deploy y cuenta también
+ con variables sensibles ya declaradas que se esperan existan definidas
+ en el entorno para poder levantar el sistema completo.
+ Estas variables son credenciales de algunos de los servicios de este Subsistema
+ y de otros servicios de otros subsistemas.
+ 
+\end_layout
+
+\begin_layout Subsection
+El Subsistema Cliente
+\end_layout
+
+\begin_layout Standard
+Tal como se explica en la sección de Arquitectura, el cliente es una de
+ las piezas del proyecto que se programó en lenguaje Java.
+ Esto permite crear una única versión del cliente y despreocuparse por las
+ diferencias de programar en código nativo para los distintos sistemas operativo
+s.
+ Actualmente el cliente funciona en computadoras en el sentido tradicional
+ (laptops, desktops) pero no sería difícil hacer que funcione en otros dispositi
+vos inteligentes como smartphones o smart TVs.
+\end_layout
+
+\begin_layout Standard
+Si bien el binario ejecutable es único, el cliente se distribuye con un
+ instalador nativo que en este caso sí varía según el sistema operativo.
+ Basta con entrar a la página de TiX, crearse una cuenta nueva y en la misma
+ sección descargar el instalador de Windows, el de Linux o el de OSX.
+ En el caso de Windows y OSX, los instaladores son del tipo wizard y van
+ guiando al usuario paso a paso.
+ Para Linux, está disponible el instalador .deb, que se puede instalar rápidament
+e usando la herramienta dpkg desde línea de comando.
+ Y como última alternativa, se ofrece la aplicación sin instalador en formato
+ jar.
+\end_layout
+
+\begin_layout Standard
+Luego de instalar el cliente, el usuario debe ingresar mediante una interfaz
+ visual sus credenciales creadas previamente en la web de TiX y definir
+ el nombre de su nueva instalación.
+ Tanto la autenticación como la creación de la instalación se realizan mediante
+ el uso de forma segura de la API REST de TiX.
+\end_layout
+
+\begin_layout Standard
+Cabe destacar el uso del plugin FXLauncher para ofrecer actualizaciones
+ automáticas para el usuario.
+ Cada vez que el usuario ejecuta el cliente (por ejemplo, al encender la
+ computadora), este plugin se encarga de descargar la versión más reciente
+ de la aplicación principal y sus dependencias, sin necesitar el accionar
+ del usuario.
+ De este modo, el usuario que quiera actualizar su cliente no tiene que
+ pasar por la página web y descargar todo el programa de cero, y hay muy
+ baja probabilidad de tener clientes corriendo con versiones descontinuadas.
+\end_layout
+
+\begin_layout Standard
+La tarea principal del cliente es intercambiar paquetes con el servidor
+ y a partir de esto obtener mediciones de tiempo que reflejen la duración
+ de estos intercambios.
+ Para ello, se envían pequeños paquetes UDP una vez por segundo, que no
+ tienen ningún contenido (payload) definido.
+ Al pasar el minuto, se envían todas las mediciones de tiempo al servidor
+ para luego ser procesadas.
+ Existe un algoritmo que se encarga de confirmar que esta información llegó
+ correctamente al servidor, y en caso contrario hace hasta 5 reintentos
+ de envío de mediciones.
+ Para el envío y recepción de paquetes se empleó Netty, un framework cliente-ser
+vidor para Java que es asincrónico y no bloqueante.
+\end_layout
+
+\begin_layout Standard
+El cliente ofrece dos interfaces posibles: una interfaz por línea de comandos
+ (CLI) y una interfaz gráfica de usuario (GUI).
+ La interfaz por línea de comandos fue pensada a modo de prueba y admite
+ parámetros al correr el cliente - tales como nombre de usuario e instalación
+ - para evitar el uso de un wizard que entorpezca el proceso de automatización.
+ En cambio, la interfaz gráfica no contempla el uso de parámetros y será
+ presentada por default a quienes usen el instalador.
+\end_layout
+
+\begin_layout Standard
+Para la interfaz gráfica se usa JavaFX, la plataforma gráfica de Java que
+ reemplazó hace un tiempo a Swing como el nuevo estándar.
+ El aspecto de una aplicación JavaFX no necesariamente equivale al de una
+ aplicación de código nativo, pero de todas formas es altamente customizable
+ en apariencia.
+ Las distintas ventanas del cliente fueron definidas mediante FXML, un lenguaje
+ markup basado en XML pensado para interfaces de JavaFX.
+ Con el objetivo de asegurar un rendimiento óptimo del cliente, se definió
+ el código del cliente base (que se comunica con el servidor) como un servicio
+ independiente del thread principal de la aplicación.
+ Esto permitió que, por ejemplo, la interfaz gráfica no se congele en ningún
+ momento.
+ 
+\end_layout
+
+\begin_layout Subsection
+El Subsistema de Presentación y Administración de Datos
+\end_layout
+
+\begin_layout Standard
+Esta parte del proyecto puede ser dividida en dos partes que funcionan de
+ manera totalmente autónoma, el sistema que se encarga de guardar los datos
+ y entregarlos a quien lo solicite (la API) y la web, que se encarga de
+ presentar los datos de forma concisa al cliente.
+\end_layout
+
+\begin_layout Standard
+La web fue desarrollada principalmente en React.js, pero utiliza otras librerías,
+ tales como Material-ui, Redux y Redux-forms con el objetivo de minimizar
+ la cantidad de código escrito y presentar la información de manera consistente.
+ React.js es un framework de código abierto bajo la licencia MIT, la cual
+ fue desarrollada por Facebook INC en el año 2013 con el objetivo de generar
+ un framework para el desarrollo de aplicaciones frontend que usan información
+ que cambia durante el tiempo, de manera que no fuera necesaria la recarga
+ del sitio.
+ Asimismo busca generar simplicidad, escalabilidad y velocidad a la aplicación
+ que se está desarrollando.
+ Cabe destacar que React solo se encarga de generar la visualización del
+ sitio.
+\end_layout
+
+\begin_layout Standard
+Luego del lanzamiento de ReactJs, la comunidad comenzó a desarrollar diversas
+ librerías para complementar la falta de modelos y storage para la aplicación,
+ es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
+ del estado de la aplicación altamente predecible que ayuda a mantener el
+ estado de la aplicación consistente durante el tiempo, ya que utiliza una
+ única fuente de verdad (source of truth).
+\end_layout
+
+\begin_layout Standard
+Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
+ decidió implementar los lineamientos de Material Design de Google en una
+ librería basada en React con el fin de facilitar el proceso de desarrollo
+ de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
+ dia mas de 400 desarrolladores han participado del desarrollo de la misma.
+\end_layout
+
+\begin_layout Standard
+El desarrollo de la web se inició utilizando un barebone creado por la comunidad
+, React-boilerplate, el uso del mismo garantiza que se está utilizando las
+ últimas tecnologías y estándares, así como enforzar la calidad del código
+ y además bajar el costo del primer set-up.
+ Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
+ de 100 contribuyentes y cerca de 1000 commits.
+\end_layout
+
+\begin_layout Standard
+Luego de esto, se fueron agregando los distintos componentes que hoy en
+ día conforman la web que ve el usuario cuando ingresa a la web: tix.innova-red.ne
+t.net.
+\end_layout
+
+\begin_layout Standard
+Por otro lado, el sistema de ingesta y consumo de datos, se encuentra desarrolla
+da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
+ tales como ExpressJs, Passport, Knex, Bookshelf y RamdaJs.
+ Finalmente, esta parte del proyecto tiene como dependencia IpToAs, que
+ dada una IP, se encarga de resolver el AS que le corresponde.
+\end_layout
+
+\begin_layout Standard
+NodeJs es un entorno de ejecución de código abierto (bajo licencia MIT),
+ asincrónico, con I/O de datos en una arquitectura basada en eventos y basado
+ en el motor V8 de Google, dada su estructura, es especialmente util para
+ micro-arquitecturas como la propuesta para este proyecto, su packet manager,
+ npm, es considerado el ecosistema más grande de librerías open source existente
+ hoy en dia.
+\end_layout
+
+\begin_layout Standard
+Una de las partes más importantes del servicio es el framework ExpressJs,
+ este se describe como un framework web minimalista, que permite con mucha
+ facilidad agregar nuevas rutas y setear la respuesta deseada.
+ Este framework también es de codigo abierto bajo licencia MIT, cuenta con
+ mas de 5000 commits y 200 contribuyentes.
+\end_layout
+
+\begin_layout Standard
+Por otro lado, el servidor utiliza MySQL para guardar/hacer queries sobre
+ la información correctamente, se decidió utilizar un sistema SQL based,
+ porque se busca priorizar la consistencia de los datos.
+ Para conectar nuestro servidor a la base de datos, se utilizaron dos librerías,
+ Knex, un framework para la generación de queries de forma simple y Bookshelf.js,
+ un ORM que corre sobre Knex, ambos de código abierto bajo licencia MIT.
+\end_layout
+
+\begin_layout Standard
+Finalmente, se utilizó PassportJs para realizar la autentificación de los
+ usuarios correctamente.
+ Este framework permite la utilización de diversos métodos de autenticación
+ mediante "strategies", esto permite al desarrollador, utilizar diversos
+ métodos al mismo tiempo, por ejemplo esto permitiría en el futuro, agregar
+ un método de autenticación via facebook, sin mas que agregar un nuevo strategy.
+\end_layout
+
+\begin_layout Standard
+La conjunción de estos frameworks/librerías conforman el servidor de ingesta/con
+sulta de datos.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Despliegue y puesta en producción
+\end_layout
+
+\begin_layout Standard
+De la misma manera que el Subsistema de Ingesta y Procesamiento, la API
+ utiliza el sistema de docker-compose para su proceso de deployment, es
+ este compose, se encuentra también la base de datos (MySQL) e IpToAs, de
+ modo que una vez iniciado el servicio, tiene todas las dependencias que
+ necesita y está listo para comenzar a procesar datos.
+\end_layout
+
+\begin_layout Standard
+Por otro lado, el deployment de la web se realiza mediante TravisCI, una
+ vez finalizado el build, en donde se generan todos los archivos minificados
+ y listos para el uso, este los copia a la carpeta correspondiente.
+ 
+\end_layout
+
+\end_body
+\end_document
