@@ -1,4 +1,4 @@
 # Lyx temp files
-^\#.*lyx\#$
-.*~$
+\#*.lyx\#
+*~
 
