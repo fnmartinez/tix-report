@@ -173,9 +173,10 @@ filename "report-conclusions.lyx"
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "report-references.lyx"
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "references"
+options "bibtotoc,ieeetr"
 
 \end_inset
 
