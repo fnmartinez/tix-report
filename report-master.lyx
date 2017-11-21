@@ -6,7 +6,10 @@
 \origin unavailable
 \textclass article
 \use_default_options true
-\maintain_unincluded_children false
+\begin_includeonly
+report-architecture.lyx
+\end_includeonly
+\maintain_unincluded_children true
 \language spanish
 \language_package default
 \inputencoding auto
@@ -26,6 +29,7 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement !bh
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -72,6 +76,432 @@
 \begin_body
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%-------------------------------------------------------------------------------
+--------- 
+\end_layout
+
+\begin_layout Plain Layout
+
+%	TITLE PAGE 
+\end_layout
+
+\begin_layout Plain Layout
+
+%-------------------------------------------------------------------------------
+---------
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{titlepage} % Suppresses displaying the page number on the title page
+ and the subsequent page counts as page 1 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newcommand{
+\backslash
+HRule}{
+\backslash
+rule{
+\backslash
+linewidth}{0.5mm}} % Defines a new command for horizontal lines, change thickness
+ here 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+center % Centre everything on the page 
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%	Headings 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+textsc{
+\backslash
+Large INSTITUTO TECNOLÓGICO BUENOS AIRES}
+\backslash
+
+\backslash
+[1.5cm] % Main heading such as the name of your university/college 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+textsc{
+\backslash
+Large Proyecto TiX}
+\backslash
+
+\backslash
+[0.5cm] % Major heading such as course name 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+textsc{
+\backslash
+large Proyecto Final}
+\backslash
+
+\backslash
+[0.5cm] % Minor heading such as course title 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%	Title 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+HRule
+\backslash
+
+\backslash
+[0.4cm] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\backslash
+huge
+\backslash
+bfseries Desarrollo e implementación de una arquitectura horizontalmente
+ escalable}
+\backslash
+
+\backslash
+[0.4cm] % Title of your document 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+HRule
+\backslash
+
+\backslash
+[1.5cm] 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%	Author(s) 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{minipage}[t]{0.4
+\backslash
+textwidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+begin{flushleft}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+large 			
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+textit{Autores}
+\backslash
+
+\backslash
+ 			
+\end_layout
+
+\begin_layout Plain Layout
+
+			Matías Gabriel 
+\backslash
+textsc{Domingues}
+\backslash
+
+\backslash
+ % Your name
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			Facundo Nahuel 
+\backslash
+textsc{Martinez Correa}
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			Javier 
+\backslash
+textsc{Pérez Cuñarro}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+end{flushleft} 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{minipage}
+\end_layout
+
+\begin_layout Plain Layout
+
+	~ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{minipage}[t]{0.4
+\backslash
+textwidth}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+begin{flushright}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+large
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+textit{Tutor}
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			Dr.
+ Ing.
+ José Ignacio 
+\backslash
+textsc{Alvarez-Hamelin} % Supervisor's name
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+end{flushright}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+vfill
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{minipage} 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%	Date 	
+\end_layout
+
+\begin_layout Plain Layout
+
+	%------------------------------------------------ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+vfill
+\backslash
+vfill
+\backslash
+vfill % Position the date 3/4 down the remaining page 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\backslash
+large
+\backslash
+today} % Date, change the 
+\backslash
+today to a set date if you want to be precise 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+vfill % Push the date up 1/4 of the remaining page 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{titlepage} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
@@ -175,8 +605,8 @@ filename "report-conclusions.lyx"
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "references"
-options "bibtotoc,ieeetr"
+bibfiles "references-latin9"
+options "bibtotoc,IEEEtranS"
 
 \end_inset
 

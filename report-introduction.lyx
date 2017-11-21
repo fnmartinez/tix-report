@@ -98,8 +98,14 @@ uctura de TiX.
 \end_layout
 
 \begin_layout Standard
-Dichas mediciones son realizadas con paquetes UDP en una especie de ping-pong
- entre el cliente y el servidor.
+Dichas mediciones son realizadas con paquetes UDP
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Postel1980"
+
+\end_inset
+
+ en una especie de ping-pong entre el cliente y el servidor.
  Estos paquetes cuentan con cuatro marcas de tiempo con la cantidad de nanosegun
 dos desde el comienzo del día.
  Los mismos corresponden a los momentos en que: 
@@ -131,8 +137,14 @@ Sincronización de Relojes
 Para la toma de tiempos en las mediciones se usan los relojes de los Sistemas
  Operativos donde residen el cliente y el servicio.
  Si bien muchos Sistemas Operativos mantienen sus relojes sincronizados
- mediante el uso de NTP, esto no necesariamente es cierto para todos los
- equipos conectados a Internet.
+ mediante el uso de NTP
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Mills1985"
+
+\end_inset
+
+, esto no necesariamente es cierto para todos los equipos conectados a Internet.
  A su vez, el protocolo NTP no es lo suficientemente preciso, dando en el
  mejor de los casos sincronizaciones dentro del milisegundo.
  También puede haber saltos abruptos de tiempo debido a una sincronización
@@ -209,8 +221,8 @@ Lograr que el sistema tenga una alta escalabilidad, suficiente para cubrir
 \end_layout
 
 \begin_layout Itemize
-La posibilidad de lograr un A-B Testing de distintos métodos para las estimacion
-es.
+La posibilidad de lograr pruebas comparativas simultáneas de distintos métodos
+ para las estimaciones.
 \end_layout
 
 \begin_layout Standard

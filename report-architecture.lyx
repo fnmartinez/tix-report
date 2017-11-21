@@ -148,11 +148,44 @@ Subsistema de Presentación y Administración
 
 Este subsistema estaba integrado exclusivamente por la aplicación Web con
  la que interactuaba el usuario.
- La misma era una aplicación monolítica hecha en Java, usando la combinación
- de Spring, Hibernate y Wicket.
+ La misma era una aplicación monolítica hecha en Java
+\begin_inset CommandInset citation
+LatexCommand cite
+key "javadoc"
+
+\end_inset
+
+, usando la combinación de Spring
+\begin_inset CommandInset citation
+LatexCommand cite
+key "springmvc"
+
+\end_inset
+
+, Hibernate
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hibernateorm"
+
+\end_inset
+
+ y Wicket
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wicket"
+
+\end_inset
+
+.
  Su instalación era manual, usando un Apache Tomcat en el servidor de la
- infraestructura mediante un archivo WAR que se compilaba en la computadora
- del desarrollador.
+ infraestructura mediante un archivo WAR
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jsr154servlet"
+
+\end_inset
+
+ que se compilaba en la computadora del desarrollador.
  Cumplía también el rol de administrar los usuarios y sus distintas instalacione
 s.
 \end_layout
@@ -173,20 +206,53 @@ Este subsistema estaba integrado por dos servicios que compartían la misma
 
 \begin_layout Standard
 Por un lado estaba el Servicio de Procesamiento de Reportes, el cual era
- un sistema monolítico, con código principalmente hecho Python 2.7 y con
- algunas llamadas externas a código escrito en R.
- Su instalación se realizaba a través de Capistrano, una herramiento escrita
- en Ruby, y de forma remota en el servidor.
+ un sistema monolítico, con código principalmente hecho en Python 2.7
+\begin_inset CommandInset citation
+LatexCommand cite
+key "python2doc"
+
+\end_inset
+
+ y con algunas llamadas externas a código escrito en R
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rdoc"
+
+\end_inset
+
+.
+ Su instalación se realizaba a través de Capistrano
+\begin_inset CommandInset citation
+LatexCommand cite
+key "capistranodoc"
+
+\end_inset
+
+, una herramienta escrita en Ruby
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rubydoc"
+
+\end_inset
+
+, y de forma remota en el servidor.
  La función de este servicio era la de interactuar con el cliente, actuando
  como servicio de respuesta ante los paquetes enviados.
 \end_layout
 
 \begin_layout Standard
-Por otro lado estaba el IpToAs, el cual era un servicio escrito en Python.
+Por otro lado estaba el Ip-to-As, el cual era un servicio escrito en Python.
  El mismo se encargaba de mantener actualizada la tabla que relacionaba
- IPs con Sistemas Autónomos y Proveedores de Servicio de Internet.
+ direcciones IP con Sistemas Autónomos y Proveedores de Servicio de Internet.
  El mismo funcionaba en base a una tarea agendada que se ejecutaba automáticamen
-te gracias a un Cron.
+te gracias a un Cron
+\begin_inset CommandInset citation
+LatexCommand cite
+key "crovella1997self"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -198,10 +264,10 @@ Subsistema Cliente
 \begin_inset Newline newline
 \end_inset
 
-Este subsistema era un archivo ejecutable de Python que se corría en segundo
+Este subsistema era un archivo ejecutable de Python que corría en segundo
  plano.
  Su principal y única función era la de enviar los distintos paquetes hacia
- el subsistema de procesamiento con el fin de realizar las mediciones.
+ el Subsistema de Procesamiento con el fin de realizar las mediciones.
  
 \end_layout
 
@@ -211,19 +277,25 @@ Funcionamiento conjunto del sistema
 
 \begin_layout Standard
 El sistema, para un usuario determinado, comenzaba a funcionar tras la creación
- de la cuenta y la siguiente descarga del cliente a su computadora a través
+ de la cuenta y la posterior descarga del cliente a su computadora a través
  del Subsistema de Presentación y Administración.
  En ese momento se creaba una instalación desde la cual se enviaban paquetes
  UDP y reportes al Subsistema de Procesamiento.
  Éste recibía los reportes con las mediciones tomadas, comprobaba su integridad
  y los almacenaba en un directorio del Sistema Operativo.
- Tras contar la cantidad de reportes recibidos, si estos llegaban a una
+ Tras contar la cantidad de reportes recibidos, si éstos llegaban a una
  cantidad suficiente, se procedía a procesarlos con el fin de estimar el
  uso y calidad de la conexión para el intervalo de tiempo correspondiente.
  Una vez hecho el procesamiento, se cotejaba el Sistema Autónomo y Proveedor
  al que pertenecía la IP de donde habían llegado los reportes.
  Luego el Subsistema de Procesamiento enviaba el resultado al Subsistema
  de Presentación y Administración a través de una pequeña interfaz REST
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fielding2000"
+
+\end_inset
+
  expuesta.
  Así es que finalmente el usuario podía visualizar los resultados a través
  del Subsistema de Presentación y Administración.
@@ -267,15 +339,14 @@ Tras trabajar durante unos meses con este sistema, se hicieron evidentes
 
 \begin_layout Standard
 La forma en que el Subsistema de Presentación y Administración había sido
- diseñado presentaba problemas sustanciales al momento de interactuar con
+ diseñado mostraba problemas sustanciales al momento de interactuar con
  el resto de los subsistemas, así como para evolucionarlo.
- Estaba construido con una versión muy antigua de Spring y pensado exclusivament
-e como una aplicación Web, no como un sistema que pudiera interactuar con
- otros sistemas.
- La pequeña interfaz REST que se exponía fue una adición que superaba al
- diseño original, con lo cual tenía falencias infranqueables tanto desde
- el punto de vista de programación, como desde el punto de vista de seguridad
- y manejo de datos.
+ Estaba construido con una versión muy vieja de Spring y pensado exclusivamente
+ como una aplicación Web, no como un sistema que pudiera interactuar con
+ otros otros.
+ La pequeña interfaz REST que se exponía fue una adición que excedía al
+ diseño original, con lo que se convertía en código con mucha deuda técnica
+ y de muy difícil modificación o mejora.
 \end_layout
 
 \begin_layout Standard
@@ -283,7 +354,7 @@ El haber empaquetado todo el subsistema en un único archivo, hacía que fuera
  muy difícil referenciar ficheros que estuvieran por fuera del paquete.
  Por este motivo, se terminó decidiendo empaquetar en el mismo archivo WAR
  los binarios para los clientes.
- Esto trajo como obvias consecuencias que dicho archivo fuera muy pesado
+ Esto trajo como obvias consecuencias que dicho archivo fuera muy grande
  y que debía ser re-empaquetado ante una actualización del cliente.
 \end_layout
 
@@ -292,7 +363,7 @@ El Subsistema de Procesamiento era un servicio en Python que se levantaba
  y corría de forma autónoma.
  Sin embargo, su diseño estaba pensado para que corriese exclusivamente
  en la máquina del desarrollador y en el servidor de pruebas de TiX.
- Hacerlo correr en una entorno distinto a estos implicaba tocar variables
+ Hacerlo correr en un entorno distinto a estos implicaba tocar variables
  definidas en el código de la aplicación para que su configuración sea la
  adecuada.
  Estas variables estaban distribuidas a lo largo de toda la aplicación y
@@ -304,9 +375,13 @@ La aplicación Cliente que se instalaba en las computadoras de los usuarios
  estaba pensada para tener una fácil actualización.
  Sin embargo, dependía de que el usuario volviese a empaquetar la aplicación.
  Algo que no se le podía pedir.
- Finalmente, el protocolo de comunicación, implementado en su totalidad
- en Python, estaba escrito dos veces - en el cliente y en el Subsistema
- de Procesamiento - haciéndolo muy difícil de mantener.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, el protocolo de comunicación, implementado en su totalidad en
+ Python, estaba escrito dos veces - en el cliente y en el Subsistema de
+ Procesamiento - haciéndolo muy difícil de mantener.
  Además, la implementación no era clara ni mantenía las especificaciones
  dadas por el protocolo.
  
@@ -327,16 +402,16 @@ En base a las observaciones presentes en el capítulo anterior, se decidió
 
 \begin_layout Enumerate
 El Proyecto tiene que poder ser encarado y progresado por terceros ajenos
- al desarrollo inicial y con escasa o nula ayuda
+ al desarrollo inicial y con escasa o nula ayuda.
 \end_layout
 
 \begin_layout Enumerate
-El Sistema debe ser fácil de medir, para poder ser mejorado de manera contínua
+El Sistema debe ser fácil de medir, para poder ser mejorado de manera continua.
 \end_layout
 
 \begin_layout Enumerate
 El Sistema debe ser robusto, confiable y performante, para cumplimentar
- con los objetivos del presente Proyecto de Grado
+ con los objetivos del presente Proyecto de Grado.
 \end_layout
 
 \begin_layout Standard
@@ -344,26 +419,26 @@ Como consecuencia de los tres postulados anteriores, se destiló que:
 \end_layout
 
 \begin_layout Itemize
-El sistema debía ser sencillo, evitando la repetición de código en donde
- fuera posible, aislando las funcionalidades en módulos concretos y usando
- un único servicio externo por tipo, a menos que hubieran razones de performance
- que lo justificaran
+El sistema debía ser sencillo, evitando la repetición de código donde fuera
+ posible, aislando las funcionalidades en módulos concretos y usando un
+ único servicio externo por tipo, a menos que hubieran razones de performance
+ que lo justificaran.
 \end_layout
 
 \begin_layout Itemize
 Todas las partes debían contar con pruebas comprensivas, que ayuden a formalizar
- el código y a evidenciar su intención
+ el código y a evidenciar su intención.
 \end_layout
 
 \begin_layout Itemize
 Todas las partes debían tener una instalación automatizada que garantizaran
  el correcto despliegue de las mismas independientemente del entorno donde
- se encontrasen
+ se encontrasen.
 \end_layout
 
 \begin_layout Standard
-Teniendo en cuenta estos últimos dos ítems, es que se decidió por utilizar
- tres herramientas fundamentales en la arquitectura y el trabajo de operaciones
+Teniendo en cuenta estos últimos dos ítems, es que se decidió utilizar tres
+ herramientas fundamentales en la arquitectura y el trabajo de operaciones
  del sistema.
 \end_layout
 
@@ -371,66 +446,96 @@ Teniendo en cuenta estos últimos dos ítems, es que se decidió por utilizar
 
 \series bold
 TravisCI
+\begin_inset CommandInset citation
+LatexCommand cite
+key "travisci"
+
+\end_inset
+
+
 \series default
  como sistema para automatizar no sólo las pruebas en cada uno de los repositori
-os, sino también el despliegue
+os, sino también el despliegue.
 \end_layout
 
 \begin_layout Itemize
 
 \series bold
-Docker 
+Docker
+\begin_inset CommandInset citation
+LatexCommand cite
+key "docker"
+
+\end_inset
+
+ 
 \series default
 como forma de mantener congeladas las dependencias y el estado de cualquiera
- de las partes del sistema que se instalasen en el servidor
+ de las partes del sistema que se instalasen en el servidor.
 \end_layout
 
 \begin_layout Itemize
 
 \series bold
-DockerHub 
+DockerHub
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dockerhub"
+
+\end_inset
+
+ 
 \series default
 como repositorio para guardar y distribuir todas las partes con el fin de
  que más gente lo quisiera adoptar y mejorar, además de como facilidad para
- la instalación en el servidor
+ la instalación en el servidor.
 \end_layout
 
 \begin_layout Itemize
 
 \series bold
-Docker-Compose 
+Docker-Compose
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dockercompose"
+
+\end_inset
+
+ 
 \series default
-como mecanismo básico de orquestación para los servicios del sistema
+como mecanismo básico de orquestación para los servicios del sistema.
 \end_layout
 
 \begin_layout Standard
 En lo que respecta al primer punto, se tuvieron en consideración los siguientes
- puntos:
+ ítemes:
 \end_layout
 
 \begin_layout Itemize
 La arquitectura y la separación de responsabilidades entre los subsistemas
- existentes era buena, aunque en su implementación se traspasen algunas
+ existentes era buena, aunque en su implementación se filtrasen algunas
+ entre los distintos módulos.
+ por ejemplo, el IP-to-AS.
 \end_layout
 
 \begin_layout Itemize
-No era necesario el uso de dos bases de datos
+No era necesario el uso de dos bases de datos.
 \end_layout
 
 \begin_layout Itemize
 Se debía formalizar el protocolo de comunicación entre el Subsistema Cliente
  y el Subsistema de Procesamiento mediante una biblioteca que fuera común
- a ambos
+ a ambos.
 \end_layout
 
 \begin_layout Itemize
 La información de negocio, y en consecuencia, la de visualización debía
- estar contenida exclusivamente en el Subsistema de Presentación
+ estar contenida exclusivamente en el Subsistema de Presentación.
 \end_layout
 
 \begin_layout Itemize
 Cada una de las partes debía ser homogénea en sí misma, evitando ejecutar
- procedimientos que pudieran vulnerar la integridad del sistema
+ procedimientos que pudieran vulnerar la integridad del sistema.
 \end_layout
 
 \begin_layout Standard
@@ -504,39 +609,59 @@ La primera es la necesidad de una biblioteca que formalice el protocolo
  de TiX.
  Esta se expone a través de un repositorio central, del cual puede ser descargad
 o como cualquier administrador de dependencias.
- Dicha biblioteca, tix-time-core, posse una gran batería de pruebas automatizada
-s debido a que es una pieza central de toda la alquitectura y por ese motivo
+ Dicha biblioteca, tix-time-core, posee una gran batería de pruebas automatizada
+s debido a que es una pieza central de toda la arquitectura y por ese motivo
  se intenta que sea lo más confiable posible.
- Por otro lado, la idea de hacerla en Java y exponerla a través de Maven
+ Por otro lado, la idea de hacerla en Java
+\begin_inset CommandInset citation
+LatexCommand cite
+key "javadoc"
+
+\end_inset
+
+ y exponerla a través de Maven
+\begin_inset CommandInset citation
+LatexCommand cite
+key "mavendoc"
+
+\end_inset
+
  como dependencia responde a las necesidades tanto del Subsistema Cliente
  como del Subsistema de Ingesta y Procesamiento.
- Java es un lenguaje multiplataforma, que va bien para hacer un cliente
- enfocado a distintos Sistemas Operativos.
- Por otro lado, la JVM es una Máquina Virtual con grandes prestaciones y
- excelente performance en relación a otros lenguajes de programación.
+ Java es un lenguaje multiplataforma, que óptimo para hacer un cliente enfocado
+ a distintos Sistemas Operativos.
+ Por otro lado, la JVM
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Lindholm2014"
+
+\end_inset
+
+ es una Máquina Virtual con grandes prestaciones y excelente performance
+ en relación a otros lenguajes de programación.
  Además, Java cuenta con un rico ecosistema de bibliotecas y frameworks
  que permiten el fácil desarrollo de sistemas.
 \end_layout
 
 \begin_layout Standard
-La otra gran consideración es la de mover el servicio de IpToAs del Subsistema
+La otra gran consideración es la de mover el servicio de IP-to-AS del Subsistema
  de Ingesta y Procesamiento al Sistema de Presentación.
  Dos fueron las ideas detrás de esta decisión:
 \end_layout
 
 \begin_layout Enumerate
 Simplificar el enriquecimiento de los datos para la visualización del usuario,
- dejando esta tarea exclusivamente al Subsistema de Presentación
+ dejando esta tarea exclusivamente al Subsistema de Presentación.
 \end_layout
 
 \begin_layout Enumerate
-Usar un único servicio de base de datos para guardar la información
+Usar un único servicio de base de datos para guardar la información.
 \end_layout
 
 \begin_layout Standard
 Con respecto a esta última idea, se decidió usar el Sistema de Manejo de
  Bases de Datos Relacional MySQL por ser altamente confiable, de código
- libre, con grandes prestaciones y sencilla de usar.
+ libre, con grandes prestaciones y sencillo de usar.
 \end_layout
 
 \begin_layout Standard
@@ -548,7 +673,7 @@ Subsistema de Presentación
 \begin_inset Newline newline
 \end_inset
 
-El Subsistema de Presentación fue pensado con los mismos principios que
+El Subsistema de Presentación fue pensado bajo los mismos principios que
  se repiten a lo largo del proyecto.
  Se buscó generar una arquitectura que fuera altamente escalable y de fácil
  instalación, por lo que se dividió el subsistema en dos módulos.
@@ -597,14 +722,29 @@ Editar el rol de los demás usuarios, así como deshabilitar cuentas.
 \end_layout
 
 \begin_layout Itemize
-Visualizar gráficos de utilización generales filtrados por ISP, asi como
- tambien descargar los informes en formato CSV para su posterior análisis.
+Visualizar gráficos de utilización generales filtrados por Proveedor de
+ Servicios de Internet (ISP), así como también descargar los informes en
+ un archivo con formato de Valores Separados por Comas (CSV) para su posterior
+ análisis.
 \end_layout
 
 \begin_layout Standard
-La principal tecnología de desarrollo es ReactJS, la cual permite, mediante
- el uso de empaquetadores como Webpack, servir el código ya compilado mediante
- una Red de Distribución de Contenidos (CDN).
+La principal tecnología de desarrollo es ReactJS
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reactjs"
+
+\end_inset
+
+, la cual permite, mediante el uso de empaquetadores como Webpack
+\begin_inset CommandInset citation
+LatexCommand cite
+key "webpack"
+
+\end_inset
+
+, servir el código ya compilado mediante una Red de Distribución de Contenidos
+ (CDN).
  Esto asegura que la aplicación pueda llegar a un gran número de usuarios
  de forma efectiva y a muy bajo costo.
 \end_layout
@@ -621,11 +761,24 @@ Capa de de Administración y Reglas de Negocio
 \end_inset
 
 Esta capa expone una interfaz, la cual puede ser alcanzada por cualquier
- cliente que sea capaz de autenticarse vía Json Web Token (JWT) o Basic
- Auth.
+ cliente que sea capaz de autenticarse vía Json Web Token (JWT)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Jones2015"
+
+\end_inset
+
+ o Basic Auth
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fielding2014"
+
+\end_inset
+
+.
  Esto permite que si en el futuro se decidiera implementar una aplicación
- mobile, el desarrollador podría, de manera muy simple, conectarse con el
- servicio y consultar o agregar reportes.
+ mobile, entonces el desarrollador podría de manera muy simple conectarla
+ el servicio y consultar o agregar reportes.
 \end_layout
 
 \begin_layout Standard
@@ -688,8 +841,12 @@ En busca nuevamente de escalabilidad, esta capa se encuentra detrás de un
  servidor Nginx.
  Esto permite que, de ser necesario, se puedan instalar múltiples instancias
  de este servicio y realizar un balanceo de carga.
- Finalmente, los datos que son consultados y creados por esta capa son almacenad
-os en MySQL, en conjunto con los datos de IpToAs.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, los datos consultados y creados por esta capa son almacenados
+ en MySQL, en junto con los datos de IP-to-AS.
 \end_layout
 
 \begin_layout Standard
@@ -720,12 +877,12 @@ Debe poder validar los paquetes recibidos desde el cliente y asegurar que
 \end_layout
 
 \begin_layout Standard
-Y además debe contar con las especificaciones generales del Sistema TiX
- presentes al principio de este capítulo.
+Y además debe bajo las especificaciones generales del Sistema TiX presentes
+ al principio de este capítulo.
 \end_layout
 
 \begin_layout Standard
-Para lograr esto se decidió ir por una arquitectura de microservicios.
+Para logralo se decidió ir por una arquitectura de microservicios.
  Esto confería tres grandes ventajas:
 \end_layout
 
@@ -762,17 +919,23 @@ tix-time-server
 Es el primer microservicio y la puerta de entrada al sistema.
  Su trabajo consiste en recibir paquetes, validar que sean paquetes íntegros
  del protocolo de TiX y devolverlos con las marcas de tiempo correspondientes.
- Además, si estos paquetes son paquetes con reportes completos, enviarlos
- al siguiente servicio en la tubería de ingesta.
+ Además, si estos paquetes cuentan con reportes completos, enviarlos al
+ siguiente servicio en la tubería de ingesta.
 \end_layout
 
 \begin_layout Standard
-La decisión de implementarlo en Java sigue la idea que se explaya anteriormente
+La decisión de implementarlo en Java sigue la idea que se explica anteriormente
  respecto de su gran performance.
- Es un lenguaje que cuenta con un amplio ecosistema de bibliotecas y particularm
-ente Netty es una de ellas.
- Ésta permite la creación de servidores de alta performance mediante el
- patrón de diseño Reactor para servidores web.
+ Es un lenguaje que cuenta con un amplio ecosistema de bibliotecas.
+ Siendo Netty
+\begin_inset CommandInset citation
+LatexCommand cite
+key "netty"
+
+\end_inset
+
+ una de ellas.
+ Ésta permite la creación de servidores de alta performance.
  Además, es una biblioteca que se encuentra disponible tanto para Java para
  Computadoras como para dispositivos móviles.
 \end_layout
@@ -797,13 +960,23 @@ Es el segundo microservicio del sistema.
 \end_layout
 
 \begin_layout Standard
-Este servicio también está implementado en Java, pero mediante el framework
- Spring Boot.
- Este permite la creación de micro-servicios de una forma sencilla y rápida,
- ofreciendo gran flexibilidad de configuración y un rico entorno para hacer
- pruebas.
+Este servicio también está implementado en Java, pero mediante el 
+\emph on
+framework
+\emph default
+ Spring Boot
+\begin_inset CommandInset citation
+LatexCommand cite
+key "springBoot"
+
+\end_inset
+
+.
+ El cual permite la creación de micro-servicios de una forma sencilla y
+ rápida, ofreciendo gran flexibilidad de configuración y un rico entorno
+ para hacer pruebas.
  Todo esto sin dejar de ofrecer la performance natural de Java y una baja
- marca de tamaño.
+ marca de tamaño en memoria.
 \end_layout
 
 \begin_layout Standard
@@ -820,34 +993,75 @@ tix-time-processor
 Es el tercer y último microservicio del sistema.
  Fue creado con la idea de ser un servicio que corra de forma programada
  en un cierto periodo de tiempo.
- Toma los archivos de acuerdo a como lo haya dejado el anterior servicio
- y una vez hecho eso, calcula las principales métricas para cada instalación.
+ Toma los archivos de tal como los haya dejado el anterior servicio, para
+ luego calcular las principales métricas para cada instalación.
 \end_layout
 
 \begin_layout Standard
-La decisión de implementarlo en Python viene con la idea de este servicio
- cumple un rol más bien analítico y cercano a lo que es la Ciencia de Datos.
+La decisión de implementarlo en Python se debe a que este servicio cumple
+ un rol más bien analítico y cercano a lo que es la Ciencia de Datos.
  Python cuenta con un ecosistema de bibliotecas y entornos de trabajo muy
- favorecido en este sentido, como lo son NumPy, SciPy, Matplotlib y Scikit.
+ favorecido en este sentido, como lo son NumPy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "numpy"
+
+\end_inset
+
+, SciPy
+\begin_inset CommandInset citation
+LatexCommand cite
+key "scipy"
+
+\end_inset
+
+, Matplotlib
+\begin_inset CommandInset citation
+LatexCommand cite
+key "matplotlib"
+
+\end_inset
+
+ y Scikit-learn
+\begin_inset CommandInset citation
+LatexCommand cite
+key "scikitlearn"
+
+\end_inset
+
+.
  Además, dado su rol especial, algunas pruebas del sistema no pueden ser
  ejecutadas de forma automática.
  Estas pruebas son las que se refieren al análisis y la mejora de la calidad
  en la estimación de las métricas.
- Para eso se tiene en cuenta el uso de Notebooks de Jupyter, un entorno
- de trabajo natural para la Ciencia de Datos y Python, principalmente para
- el análisis exploratorio de los datos.
+ Para eso se tiene en cuenta el uso de Notebooks de Jupyter
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jupyter"
+
+\end_inset
+
+, un entorno de trabajo natural para la Ciencia de Datos y Python, principalment
+e para el análisis exploratorio de los datos.
 \end_layout
 
 \begin_layout Standard
-Por último y no menos relevante, el hacerlo en Python también cumple con
- la motivación de hacer un servicio sencillo y escalable mediante el uso
- de Celery.
+Por último y no por ello menos relevante, el hacerlo en Python también cumple
+ con la motivación de hacer un servicio sencillo y escalable mediante el
+ uso de Celery
+\begin_inset CommandInset citation
+LatexCommand cite
+key "celery"
+
+\end_inset
+
+.
  Celery es un entorno de trabajo y una cola de trabajos implementada enteramente
  en Python.
  La misma cuenta con varios modos de uso.
- El utilizado por nosotros es el modo programado, el cual se ejecuta de
- forma autónoma en un determinado período.
- De esta forma, se puede paralelizar el trabajo de procesar los datos en
+ El elegido por nosotros es el modo programado, el cual se ejecuta de forma
+ autónoma en un determinado período.
+ De esta manera, se puede paralelizar el trabajo de procesar los datos en
  varios servicios replicados.
 \end_layout
 
@@ -862,7 +1076,7 @@ Cola de mensajes
 \begin_inset Newline newline
 \end_inset
 
-El cuarto servicio del subsistema.
+Es el cuarto servicio del subsistema.
  Tiene la responsabilidad de comunicar el tix-time-server con el tix-time-conden
 ser.
  También sirve como soporte en la comunicación del maestro y los esclavos
@@ -870,7 +1084,14 @@ ser.
 \end_layout
 
 \begin_layout Standard
-La decisión de usar el servicio RabbitMQ para esto fue natural.
+La decisión de usar el servicio RabbitMQ
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rabbitmq"
+
+\end_inset
+
+ para esto fue natural.
  Es una cola de mensajes con una gran cantidad de conectores para varios
  lenguajes, y cuenta con funcionalidad directa con Celery y con Spring Boot.
  Además, es una cola de mensajes muy performante y fácil de administrar.
@@ -972,7 +1193,7 @@ te al usuario y su instalación.
  tiempo y envía el dato a la tix-api.
  La misma enriquece los datos del reporte aportando el Sistema Autónomo
  y el Proveedor de Servicios Internet, cruzando la IP que figura en el reporte
- con la información que actualiza el servicio IpToAs.
+ con la información que actualiza el servicio IP-to-AS.
  Así es que finalmente el usuario puede visualizar los resultados a través
  del servicio tix-web que consulta al servicio tix-api.
  
@@ -989,36 +1210,36 @@ e distribuida.
 \end_layout
 
 \begin_layout Itemize
-Es una arquitectura altamente escalable, incluso dentro de un solo servidor
+Es una arquitectura altamente escalable, incluso dentro de un solo servidor.
 \end_layout
 
 \begin_layout Itemize
 Es una arquitectura robusta, en el sentido que si uno de los componentes
  del subsistema se cae, el servicio se vería degradado pero no necesariamente
- interrumpido
+ interrumpido.
 \end_layout
 
 \begin_layout Itemize
 El uso de tecnologías idóneas para cada servicio en línea con las tendencias
- actuales y las mejores prácticas presentes
+ actuales y las mejores prácticas presentes.
 \end_layout
 
 \begin_layout Itemize
 La gran performance aparente, consecuencia de poder elegir lo que mejor
- se comporta en cada caso
+ se comporta en cada caso.
 \end_layout
 
 \begin_layout Itemize
 Cada servicio es medible en sí mismo como una caja negra, permitiendo identifica
 r cuellos de botella de forma preventiva mediante el uso de pruebas de carga
- aisladas
+ aisladas.
 \end_layout
 
 \begin_layout Itemize
 El tener un servicio central con una interfaz estándar como la tix-api,
  confiere la posibilidad de hacer clientes e interfaces amigables al usuario
  de una forma más sencilla y rápida además de una excelente integración
- con otros sistemas 
+ con otros sistemas.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1033,8 +1254,8 @@ Naturalmente, las debilidades y problemas también nacen de la forma distribuida
 
 \begin_layout Standard
 Las modificaciones entre Subsistemas (e incluso entre servicios) debido
- a un cambio en el protocolo de comportamiento entre sí, puede llevar a
- tiempos de desarrollo muchísimo más grandes que con otras arquitecturas.
+ a un cambio en el protocolo de comportamiento entre sí, pueden llevar a
+ tiempos de desarrollo muchísimo más extensos que con otras arquitecturas.
  Además, requiere de pruebas y ensayos mucho más severos que con una arquitectur
 a monolítica.
 \end_layout
@@ -1042,8 +1263,8 @@ a monolítica.
 \begin_layout Standard
 Los errores espontáneos o en tiempo de ejecución son mucho más difíciles
  de encontrar que en una aplicación monolítica.
- Esto se debe a la distribución de la información a lo largo de todo el
- sistema, y no encontrarse en un solo lugar.
+ Esto se debe a la distribución de la bitácora de ejecución a lo largo de
+ todo el sistema, y no en un solo lugar.
  
 \end_layout
 
@@ -1060,22 +1281,21 @@ Al principio de la sección previa se declaran tres pilares sobre los cuales
 
 \begin_layout Itemize
 El Proyecto tiene que poder ser encarado y progresado por terceros ajenos
- al desarrollo inicial y con escasa o nula ayuda
+ al desarrollo inicial y con escasa o nula ayuda.
 \end_layout
 
 \begin_layout Itemize
-El Sistema debe ser fácil de medir, para poder ser mejorado de manera contínua
+El Sistema debe ser fácil de medir, para poder ser mejorado de manera contínua.
 \end_layout
 
 \begin_layout Itemize
 El Sistema debe ser robusto, confiable y performante, para cumplimentar
- con los objetivos del presente Proyecto de Grado
+ con los objetivos del presente Proyecto de Grado.
 \end_layout
 
 \begin_layout Standard
-Con lo que se expone en el capítulo anterior, en contraposición con el principio
- del actual capítulo, es evidente que la elección de tecnologías de apoyo
- y operaciones están orientadas a satisfacer el primer punto.
+Con expuesto, es evidente que la elección de tecnologías de apoyo y operaciones
+ están orientadas a satisfacer el primer punto.
  En tanto que el cambio de arquitectura y la distribución de servicios estan
  orientados a satisfacer los últimos dos puntos.
  
