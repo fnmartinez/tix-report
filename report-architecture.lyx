@@ -98,6 +98,7 @@ reference "fig:Arquitectura-previa"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement !b
 wide false
 sideways false
 status open
@@ -148,28 +149,28 @@ Subsistema de Presentación y Administración
 
 Este subsistema estaba integrado exclusivamente por la aplicación Web con
  la que interactuaba el usuario.
- La misma era una aplicación monolítica hecha en Java
+ La misma era una aplicación monolítica hecha en Java 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "javadoc"
 
 \end_inset
 
-, usando la combinación de Spring
+, usando la combinación de Spring 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "springmvc"
 
 \end_inset
 
-, Hibernate
+, Hibernate 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hibernateorm"
 
 \end_inset
 
- y Wicket
+ y Wicket 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "wicket"
@@ -178,7 +179,7 @@ key "wicket"
 
 .
  Su instalación era manual, usando un Apache Tomcat en el servidor de la
- infraestructura mediante un archivo WAR
+ infraestructura mediante un archivo WAR 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "jsr154servlet"
@@ -206,14 +207,14 @@ Este subsistema estaba integrado por dos servicios que compartían la misma
 
 \begin_layout Standard
 Por un lado estaba el Servicio de Procesamiento de Reportes, el cual era
- un sistema monolítico, con código principalmente hecho en Python 2.7
+ un sistema monolítico, con código principalmente hecho en Python 2.7 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "python2doc"
 
 \end_inset
 
- y con algunas llamadas externas a código escrito en R
+ y con algunas llamadas externas a código escrito en R 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "rdoc"
@@ -221,14 +222,14 @@ key "rdoc"
 \end_inset
 
 .
- Su instalación se realizaba a través de Capistrano
+ Su instalación se realizaba a través de Capistrano 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "capistranodoc"
 
 \end_inset
 
-, una herramienta escrita en Ruby
+, una herramienta escrita en Ruby 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "rubydoc"
@@ -241,14 +242,14 @@ key "rubydoc"
 \end_layout
 
 \begin_layout Standard
-Por otro lado estaba el Ip-to-As, el cual era un servicio escrito en Python.
+Por otro lado estaba el IP2AS, el cual era un servicio escrito en Python.
  El mismo se encargaba de mantener actualizada la tabla que relacionaba
  direcciones IP con Sistemas Autónomos y Proveedores de Servicio de Internet.
  El mismo funcionaba en base a una tarea agendada que se ejecutaba automáticamen
-te gracias a un Cron
+te gracias a un Cron 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "crovella1997self"
+key "crontabdoc"
 
 \end_inset
 
@@ -290,6 +291,7 @@ El sistema, para un usuario determinado, comenzaba a funcionar tras la creación
  al que pertenecía la IP de donde habían llegado los reportes.
  Luego el Subsistema de Procesamiento enviaba el resultado al Subsistema
  de Presentación y Administración a través de una pequeña interfaz REST
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fielding2000"
@@ -445,7 +447,7 @@ Teniendo en cuenta estos últimos dos ítems, es que se decidió utilizar tres
 \begin_layout Itemize
 
 \series bold
-TravisCI
+TravisCI 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "travisci"
@@ -461,7 +463,7 @@ os, sino también el despliegue.
 \begin_layout Itemize
 
 \series bold
-Docker
+Docker 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "docker"
@@ -477,7 +479,7 @@ como forma de mantener congeladas las dependencias y el estado de cualquiera
 \begin_layout Itemize
 
 \series bold
-DockerHub
+DockerHub 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dockerhub"
@@ -494,7 +496,7 @@ como repositorio para guardar y distribuir todas las partes con el fin de
 \begin_layout Itemize
 
 \series bold
-Docker-Compose
+Docker-Compose 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dockercompose"
@@ -515,7 +517,7 @@ En lo que respecta al primer punto, se tuvieron en consideración los siguientes
 La arquitectura y la separación de responsabilidades entre los subsistemas
  existentes era buena, aunque en su implementación se filtrasen algunas
  entre los distintos módulos.
- por ejemplo, el IP-to-AS.
+ por ejemplo, el IP2AS.
 \end_layout
 
 \begin_layout Itemize
@@ -612,14 +614,14 @@ o como cualquier administrador de dependencias.
  Dicha biblioteca, tix-time-core, posee una gran batería de pruebas automatizada
 s debido a que es una pieza central de toda la arquitectura y por ese motivo
  se intenta que sea lo más confiable posible.
- Por otro lado, la idea de hacerla en Java
+ Por otro lado, la idea de hacerla en Java 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "javadoc"
 
 \end_inset
 
- y exponerla a través de Maven
+ y exponerla a través de Maven 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "mavendoc"
@@ -630,7 +632,7 @@ key "mavendoc"
  como del Subsistema de Ingesta y Procesamiento.
  Java es un lenguaje multiplataforma, que óptimo para hacer un cliente enfocado
  a distintos Sistemas Operativos.
- Por otro lado, la JVM
+ Por otro lado, la JVM 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Lindholm2014"
@@ -644,7 +646,7 @@ key "Lindholm2014"
 \end_layout
 
 \begin_layout Standard
-La otra gran consideración es la de mover el servicio de IP-to-AS del Subsistema
+La otra gran consideración es la de mover el servicio de IP2AS del Subsistema
  de Ingesta y Procesamiento al Sistema de Presentación.
  Dos fueron las ideas detrás de esta decisión:
 \end_layout
@@ -729,14 +731,14 @@ Visualizar gráficos de utilización generales filtrados por Proveedor de
 \end_layout
 
 \begin_layout Standard
-La principal tecnología de desarrollo es ReactJS
+La principal tecnología de desarrollo es ReactJS 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "reactjs"
 
 \end_inset
 
-, la cual permite, mediante el uso de empaquetadores como Webpack
+, la cual permite, mediante el uso de empaquetadores como Webpack 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "webpack"
@@ -761,14 +763,14 @@ Capa de de Administración y Reglas de Negocio
 \end_inset
 
 Esta capa expone una interfaz, la cual puede ser alcanzada por cualquier
- cliente que sea capaz de autenticarse vía Json Web Token (JWT)
+ cliente que sea capaz de autenticarse vía Json Web Token (JWT) 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Jones2015"
 
 \end_inset
 
- o Basic Auth
+ o Basic Auth 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fielding2014"
@@ -846,7 +848,7 @@ En busca nuevamente de escalabilidad, esta capa se encuentra detrás de un
 
 \begin_layout Standard
 Finalmente, los datos consultados y creados por esta capa son almacenados
- en MySQL, en junto con los datos de IP-to-AS.
+ en MySQL, en junto con los datos de IP2AS.
 \end_layout
 
 \begin_layout Standard
@@ -964,7 +966,7 @@ Este servicio también está implementado en Java, pero mediante el
 \emph on
 framework
 \emph default
- Spring Boot
+ Spring Boot 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "springBoot"
@@ -1001,28 +1003,28 @@ Es el tercer y último microservicio del sistema.
 La decisión de implementarlo en Python se debe a que este servicio cumple
  un rol más bien analítico y cercano a lo que es la Ciencia de Datos.
  Python cuenta con un ecosistema de bibliotecas y entornos de trabajo muy
- favorecido en este sentido, como lo son NumPy
+ favorecido en este sentido, como lo son NumPy 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "numpy"
 
 \end_inset
 
-, SciPy
+, SciPy 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "scipy"
 
 \end_inset
 
-, Matplotlib
+, Matplotlib 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "matplotlib"
 
 \end_inset
 
- y Scikit-learn
+ y Scikit-learn 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "scikitlearn"
@@ -1034,7 +1036,7 @@ key "scikitlearn"
  ejecutadas de forma automática.
  Estas pruebas son las que se refieren al análisis y la mejora de la calidad
  en la estimación de las métricas.
- Para eso se tiene en cuenta el uso de Notebooks de Jupyter
+ Para eso se tiene en cuenta el uso de Notebooks de Jupyter 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "jupyter"
@@ -1048,7 +1050,7 @@ e para el análisis exploratorio de los datos.
 \begin_layout Standard
 Por último y no por ello menos relevante, el hacerlo en Python también cumple
  con la motivación de hacer un servicio sencillo y escalable mediante el
- uso de Celery
+ uso de Celery 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "celery"
@@ -1084,7 +1086,7 @@ ser.
 \end_layout
 
 \begin_layout Standard
-La decisión de usar el servicio RabbitMQ
+La decisión de usar el servicio RabbitMQ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "rabbitmq"
@@ -1193,7 +1195,7 @@ te al usuario y su instalación.
  tiempo y envía el dato a la tix-api.
  La misma enriquece los datos del reporte aportando el Sistema Autónomo
  y el Proveedor de Servicios Internet, cruzando la IP que figura en el reporte
- con la información que actualiza el servicio IP-to-AS.
+ con la información que actualiza el servicio IP2AS.
  Así es que finalmente el usuario puede visualizar los resultados a través
  del servicio tix-web que consulta al servicio tix-api.
  

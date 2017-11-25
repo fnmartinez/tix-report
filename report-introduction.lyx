@@ -98,7 +98,7 @@ uctura de TiX.
 \end_layout
 
 \begin_layout Standard
-Dichas mediciones son realizadas con paquetes UDP
+Dichas mediciones son realizadas con paquetes UDP 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Postel1980"
@@ -137,7 +137,7 @@ Sincronización de Relojes
 Para la toma de tiempos en las mediciones se usan los relojes de los Sistemas
  Operativos donde residen el cliente y el servicio.
  Si bien muchos Sistemas Operativos mantienen sus relojes sincronizados
- mediante el uso de NTP
+ mediante el uso de NTP 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Mills1985"
@@ -172,7 +172,7 @@ Estimación de Calidad y Uso de la Conexión
 Para la estimación de la Calidad y Uso de la Conexión modelamos el tráfico
  en Internet como si fuera un proceso auto-similar.
  Existen estudios que indican que el tráfico paquetizado en Internet tiene
- varias propiedades típicas de estos procesos
+ varias propiedades típicas de estos procesos 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "crovella1997self,leland1994self"
