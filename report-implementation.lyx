@@ -92,7 +92,14 @@ Como se explica en la sección de Arquitectura, el protocolo de paquetes
 \begin_layout Standard
 A su vez, está basado en la biblioteca Netty, la cual contiene facilidades
  para la implementación de clientes y servidores de alta performance tanto
- en TCP como UDP.
+ en TCP 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Postel1981"
+
+\end_inset
+
+ como UDP.
  
 \end_layout
 
@@ -140,8 +147,14 @@ Los paquetes del protocolo TiX están pensados para poder ser usados con
  De hecho, al no tener ningún tipo de control sobre la transmisión y el
  correcto arribo de los mensajes, es recomendable utilizarlo sobre TCP.
  Sin embargo, dados los algoritmos de reconstrucción de paquetes y optimizacione
-s en el protocolo TCP, como el algoritmo de Nagle, las mediciones pueden
- verse afectadas.
+s en el protocolo TCP, como el algoritmo de Nagle 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nagle1984"
+
+\end_inset
+
+, las mediciones pueden verse afectadas.
  Por este motivo, solamente el protocolo UDP es utilizado hasta que exista
  alguna otra forma de garantizar las correctas mediciones usando TCP.
  El puerto por defecto del protocolo TiX es el 4500.
@@ -944,7 +957,14 @@ data_delimiter
 \family typewriter
 ;
 \family default
-;” encodeada en UTF-8.
+;” codificada en UTF-8 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Yergeau2003"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -953,7 +973,7 @@ s “
 \family typewriter
 DATA
 \family default
-” encodeada en UTF-8.
+” codificada en UTF-8.
  Este campo se usa para distinguir un paquete largo común de un paquete
  largo con datos.
  
@@ -984,8 +1004,21 @@ public_key
 \family default
  contiene una cadena de bytes de largo variable con la clave pública de
  la instalación del usuario que realizó las mediciones.
- La misma se realiza con el algoritmo RSA con 2048 bits y está encodeada
- en formato X.509.
+ La misma se realiza con el algoritmo RSA 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "rivest1977"
+
+\end_inset
+
+ con 2048 bits y está encodeada en formato X.509 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Cooper2005"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1007,7 +1040,21 @@ signed_hash
  contiene el hash del reporte firmado por el usuario con la clave privada
  de la instalación.
  El mismo es una cadena de bytes que corresponde al algoritmo de firma SHA1
- con RSA.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dang2015"
+
+\end_inset
+
+ con RSA 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Kaliski1998"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1155,7 +1202,14 @@ También importa la biblioteca tix-time-server para poder interpretar el
 \end_layout
 
 \begin_layout Standard
-Otra importante dependencia es la del cliente AMPQ para RabbitMQ.
+Otra importante dependencia es la del cliente AMPQ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Aiyagari2008"
+
+\end_inset
+
+ para RabbitMQ.
  Esta la utiliza para poder conectarse con la cola de mensajes y poner allí
  los paquetes de datos del Protocolo TiX.
 \end_layout
@@ -1164,7 +1218,14 @@ Otra importante dependencia es la del cliente AMPQ para RabbitMQ.
 Con el fin de garantizar una forma estándar de comunicarse con los servicios
  que consuman de la cola que alimenta, los utiliza la biblioteca Jackson
  para convertir los objetos del tix-time-core en cadenas de caracteres de
- formato JSON.
+ formato JSON 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bray2014"
+
+\end_inset
+
+.
  Su configuración se realiza a través del objeto ConfigurationManager, el
  cual tiene la capacidad de tomar los valores de configuración por distintas
  fuentes, como archivos de configuración, variables de entorno, etc.
@@ -1395,8 +1456,15 @@ La tercer dependencia importante de este servicio es la famosísima requests.
 \begin_inset Newline newline
 \end_inset
 
-Por último, también usa la biblioteca PyWavelets, con el fin casi exclusivo
- de computar la transformada wavelet en la estimación del parámetro de Hurst.
+Por último, también usa la biblioteca PyWavelets 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pywavelets"
+
+\end_inset
+
+, con el fin casi exclusivo de computar la transformada wavelet en la estimación
+ del parámetro de Hurst.
 \end_layout
 
 \begin_layout Standard
