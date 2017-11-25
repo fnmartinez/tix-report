@@ -76,35 +76,780 @@ Ensayos
 \end_layout
 
 \begin_layout Subsection
-Prueba del sistema
+Prueba de Sistema
 \end_layout
 
 \begin_layout Subsubsection
 Objetivos
 \end_layout
 
-\begin_layout Subsubsection
-Metodología
+\begin_layout Standard
+La Prueba de Sistema está apuntada a corroborar el correcto funcionamiento
+ del Servicio de TiX en su totalidad en condiciones normales.
+ Esto significa, que se debe probar de punta a punta el Sistema, con una
+ carga normal, para una persona determinada.
+ La idea de esto es asegurar una calidad mínima de servicio en base a parámetros
+ prestablecidos.
 \end_layout
 
 \begin_layout Subsubsection
 Indicadores propuestos
+\end_layout
+
+\begin_layout Standard
+Las métricas sobre las cuales se va a determinar que el sistema funciona
+ correctamente son:
+\end_layout
+
+\begin_layout Enumerate
+Tiempo de funcionamiento, entendiéndose como la cantidad de tiempo que estuvo
+ vivo el sistema durante el prueba, para lo cual pudo recibir mediciones
+ del Subsistema Cliente y mostrar el progreso de la prueba a través del
+ Subsistema de Presentación.
+\end_layout
+
+\begin_layout Enumerate
+Tiempo medio de demora en obtenerse una métrica, entendiéndose como el promedio
+ de los tiempos que tarda el Subsistema de Procesamiento de entregar el
+ resultado de un conjunto de mediciones más el Subsistema de Presentación
+ en mostrarlo.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Error medio relativo de la métrica de Uso de Ancho de Banda, entendiéndose
+ como el promedio de los errores relativos entre el valor mostrado y el
+ valor real para cada punto de la métrica calculado durante la prueba.
+\end_layout
+
+\begin_layout Standard
+Para cada una, los valores esperados son los siguientes:
+\end_layout
+
+\begin_layout Enumerate
+Tiempo de funcionamiento esperado: 99.99%
+\end_layout
+
+\begin_layout Enumerate
+Tiempo medio de demora en obtenerse una métrica: 19 min ±1 min 
+\end_layout
+
+\begin_layout Enumerate
+Error medio relativo de la métrica de Uso de Ancho de Banda esperado: ±10%
+\end_layout
+
+\begin_layout Subsubsection
+Consideraciones
+\end_layout
+
+\begin_layout Standard
+Para esta prueba se tienen lo siguientes considerandos y supuestos:
+\end_layout
+
+\begin_layout Itemize
+Se considera que el sistema es robusto y que el Tiempo de funcionamiento
+ a lo largo de la prueba es una muestra lo suficientemente representativa
+ del mismo en todo momento.
+\end_layout
+
+\begin_layout Itemize
+Se considera que la prueba es lo suficientemente compleja para que su automatiza
+ción total no sea relevante ni un punto a considerar para la presente disertació
+n.
+\end_layout
+
+\begin_layout Itemize
+Se considera una métrica aquella que puede ser visualizada a través del
+ servicio tix-web del Subsistema de Presentación y Administración.
+\end_layout
+
+\begin_layout Itemize
+Se considera negligible el efecto que tiene en el Uso de Ancho de Banda
+ la carga de páginas web, la descarga esporádica de archivos con tamaño
+ inferior a 1 MB y el uso en segundo plano de la conexión por parte de servicios
+ como los son las redes sociales (e.g.: Facebook, Instagram, Twitter), medios
+ de comunicación instantánea (e.g.: Slack, Whatsapp, Discord), portales web
+ y agentes de correo electróncio (e.g.: GMail, Outlook, Outlook Express, Thunderbi
+rd).
+\end_layout
+
+\begin_layout Itemize
+No se considera negligible el efecto que tiene en el Uso de Ancho de Banda
+ la descarga constante de archivos o de archivos con tamaño superior a 1
+ MB, el uso de servicios o portales web de flujo de datos, sea de video
+ (e.g.: YouTube, Netflix), audio (e.g.: iTunes, Spotify), u otro tipos de aplicacion
+es en tiempo real (i.e.: video juegos on-line, proyectos de cómputo distribuido,
+ etc).
+\end_layout
+
+\begin_layout Itemize
+Si bien en general los Proveedores de Servicio de Internet no entregan velocidad
+es simétricas, lo que podría suponer una diferencia en la calidad de las
+ conexiones de subida y bajada, se considera que: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Como método para medir el Uso de Ancho de Banda es el mismo tanto para subida
+ como para la bajada.
+\end_layout
+
+\begin_layout Itemize
+Y que el método es robusto a esto ante la diferencia de calidad.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Por el considerando anterior, sólo se medirá el Uso de Ancho de Banda de
+ bajada.
+\end_layout
+
+\begin_layout Itemize
+No se medirá la Calidad de la conexión debido a los muchos factores externos
+ que juegan con ella.
+\end_layout
+
+\begin_layout Itemize
+Se considera que una vez insertada la métrica en la base de datos del Subsistema
+ de Presentación, está lista para ser mostrada.
+ Con lo que si no puede ser mostrada es que está caído el Subsistema de
+ Presentación en sí.
+\end_layout
+
+\begin_layout Subsubsection
+Metodología
+\end_layout
+
+\begin_layout Standard
+Se instala crea un usuario en el Sistema TiX a través del Subsistema de
+ Presentación, por medio de la página web.
+ Luego se descarga y se instala el cliente.
+\end_layout
+
+\begin_layout Standard
+Se instala un cliente de bittorrent en la computadora que va a realizar
+ la prueba.
+ La idea es saturar el enlace de forma programada para así poder tener valores
+ de medición contra los cuales comparar.
+ A su vez se debe asegurar que durante el periodo de la prueba ningún otro
+ servicio salvo el cliente de bittorrent, el cliente de TiX y aquellos considera
+dos negligibles para la saturación del ancho de banda, mantengan conexiones
+ con internet.
+ Durante las pruebas se utilizó el cliente Vuze 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "vuze"
+
+\end_inset
+
+.
+ Este permite programar de forma muy granular las velocidades máximas de
+ transferencia de carga y descarga.
+ Para la gran mayoría de las pruebas se utilizó la configuración del programador
+ de velocidades de Vuze que se muestran en el Cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:vuze-scheduler"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily pause_all from 00:00 to 01:00 # No downloads
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily unlimited from 01:00 to 02:00 # Download at 100%
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily 80_pct_speed from 02:00 to 03:00 # Download at 80%
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily 75_pct_speed from 03:00 to 04:00 # Download at 75%
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily half_speed from 04:00 to 05:00 Download at 50%
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily 25_pct_speed from 05:00 to 06:00 # Download at 25%
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+daily pause_all from 06:00 to 23:59 # No downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Programación de las velocidades de descarga de Vuze
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:vuze-scheduler"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para saturar la conexión se usaron los torrents de varias distribuciones
+ de linux, ya que esto asegura descargas de gran tamaño por el tiempo prolongado
+ que dura la prueba.
+\end_layout
+
+\begin_layout Standard
+Una vez iniciado el cliente de bittorrent, se procede a iniciar el cliente
+ de TiX y se los deja corriendo durante todo el tiempo de la prueba.
+ 
+\end_layout
+
+\begin_layout Standard
+Tras la finalización de la misma
+\end_layout
+
+\begin_layout Subsubsection
+Resultados
 \end_layout
 
 \begin_layout Subsection
-Prueba de carga
+Prueba de Carga
 \end_layout
 
 \begin_layout Subsubsection
 Objetivos
 \end_layout
 
-\begin_layout Subsubsection
-Metodología
+\begin_layout Standard
+La Prueba de Carga está apuntada a medir la carga máxima del Sistema TiX
+ y encontrar los cuellos de botella del mismo.
+ Además, sirve como experimento para entender cómo es que se comporta un
+ Sistema Complejo como esto y cuales son sus posibles mejoras.
 \end_layout
 
 \begin_layout Subsubsection
 Indicadores propuestos
+\end_layout
+
+\begin_layout Standard
+Para esta Prueba se considera una única
+\end_layout
+
+\begin_layout Enumerate
+Cantidad máxima de usuarios con el sistema saturado.
+\end_layout
+
+\begin_layout Standard
+Si bien existen muchas otras métricas que podrían resultar interesantes,
+ como tiempo de funcionamiento para el sistema saturado, o degradación de
+ la calidad del servicio con el sistema saturado, se entiende que el objetivo
+ del presente Proyecto no es hacer una auditoría exahustiva del Sistema,
+ sino asegurar métricas mínimas de funcionamiento.
+\end_layout
+
+\begin_layout Subsubsection
+Consideraciones
+\end_layout
+
+\begin_layout Standard
+Para esta prueba se tienen los siguientes considerandos y supuestos:
+\end_layout
+
+\begin_layout Itemize
+La infraestructura sobre la que corre el sistema está compuesta por un servidor
+ con las especificaciones descritas en el Cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:server-specs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+La arquitectura fue desplegada con una réplica de cada servicio a excepción
+ del tix-time-processor, para el cual fueron desplegados más de un contenedor.
+ Para este último servicio se desplegó un contenedor en modo 
+\noun on
+beat
+\noun default
+ para programar la ejecución de las tareas y luego se desplegaron dos contenedor
+es en modo 
+\noun on
+worker
+\noun default
+ para atender a dichas tareas.
+ 
+\end_layout
+
+\begin_layout Itemize
+Dado el funcionamiento del Subsistema de Ingesta y Procesamiento, se considera
+ que para probar la carga del sistema no es necesario usar múltiples usuarios,
+ pero sí múltiples instalaciones.
+\end_layout
+
+\begin_layout Itemize
+Se considera que para probar la carga del sistema, los resultados de las
+ métricas no influyen.
+ Es decir, el procesamiento de las mediciones y los resultados que estos
+ arrojen no cambian el resultado de la Prueba de Carga.
+ Por lo que los clientes pueden ser desplegados en cualquier infraestructura,
+ desde cualquier lugar del mundo.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+System: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Host: tix.innova-red.net 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Kernel: 4.4.0-83-generic x86_64 (64 bit gcc: 5.4.0) 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Console: tty 1 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Distro: Ubuntu 16.04 xenial
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Machine: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+System: Dell product: PowerEdge R210 II serial: BQK2TW1 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Mobo: Dell model: 03X6X0 v: A02 serial: ..CN708212BR2HYQ.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Bios: Dell v: 2.2.3 date: 10/25/2012
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+CPU: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Quad core Intel Xeon E31220 (-HT-MCP-) cache: 8192 KB flags: (lm nx sse
+ sse2 sse3 sse4_1 sse4_2 ssse3 vmx) bmips: 24744 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+clock speeds: max: 3400 MHz 1: 1652 MHz 2: 1600 MHz 3: 1686 MHz 4: 1600
+ MHz
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Graphics: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Card: Matrox Systems MGA G200eW WPCM450 bus-ID: 03:03.0 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Display Server: N/A driver: N/A tty size: 237x56 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Advanced Data: N/A for root out of X
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Network: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Card-1: Broadcom NetXtreme II BCM5716 Gigabit Ethernet driver: bnx2 v: 2.2.6
+ bus-ID: 02:00.0 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+
+\begin_inset space \qquad{}
+\end_inset
+
+IF: eno1 state: up speed: 1000 Mbps duplex: full mac: d4:ae:52:c7:83:53
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Card-2: Broadcom NetXtreme II BCM5716 Gigabit Ethernet driver: bnx2 v: 2.2.6
+ bus-ID: 02:00.1
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+
+\begin_inset space \qquad{}
+\end_inset
+
+IF: eno2 state: down mac: d4:ae:52:c7:83:54
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Drives: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+HDD Total Size: 499.6GB (9.8% used) ID-1: /dev/sda model: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Virtual_Disk size: 499.6GB temp: 0C
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Partition: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+ID-1: / size: 19G used: 13G (75%) fs: ext4 dev: /dev/sda7
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+ID-2: swap-1 size: 4.09GB used: 0.87GB (21%) fs: swap dev: /dev/sda6
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+RAID: No RAID devices: /proc/mdstat, md_mod kernel module present
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Sensors: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+System Temperatures: cpu: 29.8C mobo: N/A
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Fan Speeds (in rpm): cpu: N/A
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+Info: 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Processes: 203 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Uptime: 144 days 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Memory: 1166.0/3921.2MB 
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Init: systemd runlevel: 5 Gcc sys: 5.4.0
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset space \qquad{}
+\end_inset
+
+Client: Shell (bash 4.3.481) inxi: 2.2.35 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Especificaciones del Servidor de acuerdo a la salida del script inxi 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "inxidoc"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:server-specs"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Metodolagía
+\end_layout
+
+\begin_layout Subsubsection
+Resultados
 \end_layout
 
 \begin_layout Subsection
