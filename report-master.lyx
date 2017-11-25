@@ -7,7 +7,7 @@
 \textclass article
 \use_default_options true
 \begin_includeonly
-report-architecture.lyx
+report-tests.lyx
 \end_includeonly
 \maintain_unincluded_children true
 \language spanish
@@ -32,7 +32,16 @@ report-architecture.lyx
 \float_placement !bh
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize default
 \use_geometry false
 \use_package amsmath 1
