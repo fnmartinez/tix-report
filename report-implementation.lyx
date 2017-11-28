@@ -1709,8 +1709,14 @@ Luego de instalar el cliente, el usuario debe ingresar mediante una interfaz
 \end_layout
 
 \begin_layout Standard
-Cabe destacar el uso del plugin FXLauncher para ofrecer actualizaciones
- automáticas para el usuario.
+Cabe destacar el uso del plugin FXLauncher 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fxlauncher"
+
+\end_inset
+
+ para ofrecer actualizaciones automáticas para el usuario.
  Cada vez que el usuario ejecuta el cliente (por ejemplo, al encender la
  computadora), este plugin se encarga de descargar la versión más reciente
  de la aplicación principal y sus dependencias, sin necesitar el accionar
@@ -1731,8 +1737,14 @@ La tarea principal del cliente es intercambiar paquetes con el servidor
  Existe un algoritmo que se encarga de confirmar que esta información llegó
  correctamente al servidor, y en caso contrario hace hasta 5 reintentos
  de envío de mediciones.
- Para el envío y recepción de paquetes se empleó Netty, un framework cliente-ser
-vidor para Java que es asincrónico y no bloqueante.
+ Para el envío y recepción de paquetes se empleó Netty 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "netty"
+
+\end_inset
+
+, un framework cliente-servidor para Java que es asincrónico y no bloqueante.
 \end_layout
 
 \begin_layout Standard
@@ -1746,13 +1758,32 @@ El cliente ofrece dos interfaces posibles: una interfaz por línea de comandos
 \end_layout
 
 \begin_layout Standard
-Para la interfaz gráfica se usa JavaFX, la plataforma gráfica de Java que
- reemplazó hace un tiempo a Swing como el nuevo estándar.
+Para la interfaz gráfica se usa JavaFX 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "javafx"
+
+\end_inset
+
+, la plataforma gráfica de Java que reemplazó hace un tiempo a Swing 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "swing"
+
+\end_inset
+
+ como el nuevo estándar.
  El aspecto de una aplicación JavaFX no necesariamente equivale al de una
  aplicación de código nativo, pero de todas formas es altamente customizable
  en apariencia.
- Las distintas ventanas del cliente fueron definidas mediante FXML, un lenguaje
- markup basado en XML pensado para interfaces de JavaFX.
+ Las distintas ventanas del cliente fueron definidas mediante FXML 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fxml"
+
+\end_inset
+
+, un lenguaje markup basado en XML pensado para interfaces de JavaFX.
  Con el objetivo de asegurar un rendimiento óptimo del cliente, se definió
  el código del cliente base (que se comunica con el servidor) como un servicio
  independiente del thread principal de la aplicación.
