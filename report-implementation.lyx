@@ -1676,15 +1676,25 @@ Este documento se encuentra en el repositorio tix-time-deploy y cuenta también
 El Subsistema Cliente
 \end_layout
 
+\begin_layout Subsubsection
+Aplicación Cliente
+\end_layout
+
 \begin_layout Standard
 Tal como se explica en la sección de Arquitectura, el cliente es una de
- las piezas del proyecto que se programó en lenguaje Java.
+ las piezas del proyecto que está programada en lenguaje Java.
  Esto permite crear una única versión del cliente y despreocuparse por las
  diferencias de programar en código nativo para los distintos sistemas operativo
 s.
  Actualmente el cliente funciona en computadoras en el sentido tradicional
  (laptops, desktops) pero no sería difícil hacer que funcione en otros dispositi
 vos inteligentes como smartphones o smart TVs.
+ Para asegurar que el cliente no tenga paths del sistema hardcodeados, se
+ hace uso del método de Java System.getProperty(), que retorna paths y otras
+ variables propias del sistema que está ejecutando el programa.
+ De esta manera, no hace falta definir un puñado de sistemas operativos
+ de antemano con sus respectivos paths, sino que Java se encarga de obtener
+ los valores correctos ad-hoc.
 \end_layout
 
 \begin_layout Standard
@@ -1692,59 +1702,15 @@ Si bien el binario ejecutable es único, el cliente se distribuye con un
  instalador nativo que en este caso sí varía según el sistema operativo.
  Basta con entrar a la página de TiX, crearse una cuenta nueva y en la misma
  sección descargar el instalador de Windows, el de Linux o el de OSX.
- En el caso de Windows y OSX, los instaladores son del tipo wizard y van
- guiando al usuario paso a paso.
+ En el caso de Windows, el instalador es un archivo .exe de tipo wizard y
+ va guiando al usuario paso a paso.
+ Para OSX, es un archivo .dmg que solo requiere que el usuario haga drag-and-drop
+ del ícono de la aplicación en la carpeta Applications, un procedimiento
+ familiar para usuarios de este OS.
  Para Linux, está disponible el instalador .deb, que se puede instalar rápidament
 e usando la herramienta dpkg desde línea de comando.
- Y como última alternativa, se ofrece la aplicación sin instalador en formato
- jar.
-\end_layout
-
-\begin_layout Standard
-Luego de instalar el cliente, el usuario debe ingresar mediante una interfaz
- visual sus credenciales creadas previamente en la web de TiX y definir
- el nombre de su nueva instalación.
- Tanto la autenticación como la creación de la instalación se realizan mediante
- el uso de forma segura de la API REST de TiX.
-\end_layout
-
-\begin_layout Standard
-Cabe destacar el uso del plugin FXLauncher 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "fxlauncher"
-
-\end_inset
-
- para ofrecer actualizaciones automáticas para el usuario.
- Cada vez que el usuario ejecuta el cliente (por ejemplo, al encender la
- computadora), este plugin se encarga de descargar la versión más reciente
- de la aplicación principal y sus dependencias, sin necesitar el accionar
- del usuario.
- De este modo, el usuario que quiera actualizar su cliente no tiene que
- pasar por la página web y descargar todo el programa de cero, y hay muy
- baja probabilidad de tener clientes corriendo con versiones descontinuadas.
-\end_layout
-
-\begin_layout Standard
-La tarea principal del cliente es intercambiar paquetes con el servidor
- y a partir de esto obtener mediciones de tiempo que reflejen la duración
- de estos intercambios.
- Para ello, se envían pequeños paquetes UDP una vez por segundo, que no
- tienen ningún contenido (payload) definido.
- Al pasar el minuto, se envían todas las mediciones de tiempo al servidor
- para luego ser procesadas.
- Existe un algoritmo que se encarga de confirmar que esta información llegó
- correctamente al servidor, y en caso contrario hace hasta 5 reintentos
- de envío de mediciones.
- Para el envío y recepción de paquetes se empleó Netty 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "netty"
-
-\end_inset
-
-, un framework cliente-servidor para Java que es asincrónico y no bloqueante.
+ Para otros sistemas operativos, como última alternativa, se puede usar
+ la aplicación sin instalador ejecutando directamente el archivo .jar.
 \end_layout
 
 \begin_layout Standard
@@ -1784,12 +1750,117 @@ key "fxml"
 \end_inset
 
 , un lenguaje markup basado en XML pensado para interfaces de JavaFX.
- Con el objetivo de asegurar un rendimiento óptimo del cliente, se definió
- el código del cliente base (que se comunica con el servidor) como un servicio
- independiente del thread principal de la aplicación.
- Esto permitió que, por ejemplo, la interfaz gráfica no se congele en ningún
- momento.
+\end_layout
+
+\begin_layout Standard
+Luego de instalar el cliente, el usuario que opte por la GUI (comportamiento
+ default) debe ingresar mediante una interfaz visual sus credenciales creadas
+ previamente en la web de TiX y definir el nombre de su nueva instalación.
+ Tanto la autenticación como la creación de la instalación se realizan mediante
+ el uso de forma segura de la API REST de TiX.
+ La instalación consiste de un wizard de 3 pasos en una ventana flotante
+ de la aplicación.
+ Con una interfaz simple y amigable, va guiando a los usuarios para que
+ en menos de un minuto cuenten con el cliente ya funcionando en sus computadoras.
+\end_layout
+
+\begin_layout Standard
+Los datos de login y nombre de instalación quedan guardados en la máquina
+ de cada usuario.
+ Se hace uso de la Java Preferences API para que el mismo Java se encargue
+ de almacenar las preferencias de forma eficiente según cada sistema operativo.
+\end_layout
+
+\begin_layout Standard
+Con el objetivo de asegurar un rendimiento óptimo del cliente, el cliente
+ base (que se comunica con el servidor) está definido como un servicio independi
+ente del thread principal de la aplicación.
+ Esto permite que, por ejemplo, la interfaz gráfica no se congele en ningún
+ momento de su ejecución.
+\end_layout
+
+\begin_layout Standard
+Cabe destacar el uso del plugin FXLauncher 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fxlauncher"
+
+\end_inset
+
+ para ofrecer actualizaciones automáticas para el usuario.
+ Cada vez que el usuario ejecuta el cliente (por ejemplo, al encender la
+ computadora), este plugin se encarga de descargar la versión más reciente
+ de la aplicación principal y sus dependencias, sin necesitar el accionar
+ manual del usuario.
+ De este modo, el usuario que quiera actualizar su cliente no tiene que
+ pasar por la página web y descargar todo el programa de cero, y hay muy
+ baja probabilidad de tener clientes corriendo con versiones descontinuadas.
+\end_layout
+
+\begin_layout Subsubsection
+Reporter
+\end_layout
+
+\begin_layout Standard
+La tarea principal del cliente es intercambiar paquetes con el servidor
+ y a partir de esto obtener mediciones de tiempo que reflejen la duración
+ de estos intercambios.
  
+\end_layout
+
+\begin_layout Standard
+La clase Reporter se dedica exclusivamente a conectarse con el servidor,
+ mandar y recibir los paquetes, y persistirlos localmente según haga falta.
+\end_layout
+
+\begin_layout Standard
+La primer tarea del Reporter es conseguir la interfaz de red correcta y
+ entablar un canal de comunicación con el servidor.
+ Una vez que se cuenta con la conexión, se hace uso de la clase auxiliar
+ TixUdpClientHandler para recibir información externa y persistirla de forma
+ temporal en un archivo local, en forma de bytes.
+\end_layout
+
+\begin_layout Standard
+Los intercambios puntualmente consisten en envíos de pequeños paquetes UDP
+ una vez por segundo, que no tienen ningún contenido (payload) definido.
+ Se toma nota de los cuatro timestamps de envío y recepción (ver detalles
+ en la sección 3.1.4) para luego calcular la diferencia de tiempo entre ellos.
+ Los timestamps se persisten temporalmente hasta llegar a tener un minuto
+ entero de información.
+\end_layout
+
+\begin_layout Standard
+Al pasar el minuto, se envía un paquete "largo" con un payload definido.
+ Aquí se envían todas las mediciones de tiempo al servidor para luego ser
+ procesadas.
+ Existe un algoritmo que se encarga de confirmar que esta información llegó
+ correctamente al servidor, y en caso contrario hace hasta 5 reintentos
+ de envío de mediciones.
+ Apenas se recibe la confirmación de recepción exitosa, se detienen los
+ reintentos.
+\end_layout
+
+\begin_layout Standard
+Existe la opción de persistir los timestamps localmente, de forma permanente.
+ En la ventana de Preferencias, al tildar el checkbox de "Guardar logs de
+ forma local", se generará de ahí en más un archivo por minuto con la informació
+n en bytes.
+ Se usará el directorio /tix-client-logs dentro de la carpeta home de cada
+ usuario.
+\end_layout
+
+\begin_layout Standard
+En cuanto a tecnologías usadas, la clase Reporter emplea Netty 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "netty"
+
+\end_inset
+
+ para el envío y recepción de paquetes.
+ Netty es un framework cliente-servidor para Java que es asincrónico y no
+ bloqueante.
 \end_layout
 
 \begin_layout Subsection
