@@ -1871,18 +1871,29 @@ El Subsistema de Presentación y Administración de Datos
 Esta parte del proyecto puede ser dividida en dos partes que funcionan de
  manera totalmente autónoma, el sistema que se encarga de guardar los datos
  y entregarlos a quien lo solicite (la API) y la web, que se encarga de
- presentar los datos de forma concisa al cliente.
+ presentar los datos de forma concisa al usuario.
+ 
 \end_layout
 
 \begin_layout Standard
-La web fue desarrollada principalmente en React.js, pero utiliza otras librerías,
- tales como Material-ui, Redux y Redux-forms con el objetivo de minimizar
- la cantidad de código escrito y presentar la información de manera consistente.
- React.js es un framework de código abierto bajo la licencia MIT, la cual
- fue desarrollada por Facebook INC en el año 2013 con el objetivo de generar
- un framework para el desarrollo de aplicaciones frontend que usan información
- que cambia durante el tiempo, de manera que no fuera necesaria la recarga
- del sitio.
+La web fue desarrollada principalmente en React.js
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reactjs"
+
+\end_inset
+
+, pero utiliza otras librerías, tales como Material-ui , Redux y Redux-forms
+ con el objetivo de minimizar la cantidad de código escrito y presentar
+ la información de manera consistente.
+ 
+\end_layout
+
+\begin_layout Standard
+React.js es una librería de código abierto bajo la licencia MIT, la cual
+ fue desarrollada por Facebook INC en el año 2013 para el desarrollo de
+ aplicaciones frontend que manejan grandes volúmenes de información, de
+ manera que no fuera necesaria la recarga del sitio.
  Asimismo busca generar simplicidad, escalabilidad y velocidad a la aplicación
  que se está desarrollando.
  Cabe destacar que React solo se encarga de generar la visualización del
@@ -1891,11 +1902,12 @@ La web fue desarrollada principalmente en React.js, pero utiliza otras librería
 
 \begin_layout Standard
 Luego del lanzamiento de ReactJs, la comunidad comenzó a desarrollar diversas
- librerías para complementar la falta de modelos y storage para la aplicación,
- es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
+ librerías para compensar la falta de modelos y almacenamiento para la aplicació
+n, es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
  del estado de la aplicación altamente predecible que ayuda a mantener el
  estado de la aplicación consistente durante el tiempo, ya que utiliza una
  única fuente de verdad (source of truth).
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1904,6 +1916,7 @@ Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
  librería basada en React con el fin de facilitar el proceso de desarrollo
  de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
  dia mas de 400 desarrolladores han participado del desarrollo de la misma.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1913,12 +1926,13 @@ El desarrollo de la web se inició utilizando un barebone creado por la comunida
  y además bajar el costo del primer set-up.
  Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
  de 100 contribuyentes y cerca de 1000 commits.
+ 
 \end_layout
 
 \begin_layout Standard
 Luego de esto, se fueron agregando los distintos componentes que hoy en
  día conforman la web que ve el usuario cuando ingresa a la web: tix.innova-red.ne
-t.net.
+t.net 
 \end_layout
 
 \begin_layout Standard
@@ -1927,41 +1941,45 @@ da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
  tales como ExpressJs, Passport, Knex, Bookshelf y RamdaJs.
  Finalmente, esta parte del proyecto tiene como dependencia IpToAs, que
  dada una IP, se encarga de resolver el AS que le corresponde.
+ 
 \end_layout
 
 \begin_layout Standard
 NodeJs es un entorno de ejecución de código abierto (bajo licencia MIT),
  asincrónico, con I/O de datos en una arquitectura basada en eventos y basado
- en el motor V8 de Google, dada su estructura, es especialmente util para
- micro-arquitecturas como la propuesta para este proyecto, su packet manager,
- npm, es considerado el ecosistema más grande de librerías open source existente
- hoy en dia.
+ en el motor V8 de Google, dada su estructura, es especialmente útil para
+ micro-arquitecturas como la propuesta para este proyecto, su manager de
+ paquetes, npm, es considerado el ecosistema más grande de librerías open
+ source existente hoy en dia.
+ 
 \end_layout
 
 \begin_layout Standard
 Una de las partes más importantes del servicio es el framework ExpressJs,
  este se describe como un framework web minimalista, que permite con mucha
- facilidad agregar nuevas rutas y setear la respuesta deseada.
- Este framework también es de codigo abierto bajo licencia MIT, cuenta con
- mas de 5000 commits y 200 contribuyentes.
+ facilidad agregar nuevas rutas y setear la respuesta deseada, se desarrollo
+ bajo licencia MIT y cuenta con más de 5000 commits y 200 contribuyentes.
+ 
 \end_layout
 
 \begin_layout Standard
 Por otro lado, el servidor utiliza MySQL para guardar/hacer queries sobre
- la información correctamente, se decidió utilizar un sistema SQL based,
- porque se busca priorizar la consistencia de los datos.
+ la información, se decidió utilizar un sistema basado en SQL, ya que se
+ busca priorizar la consistencia de los datos.
  Para conectar nuestro servidor a la base de datos, se utilizaron dos librerías,
  Knex, un framework para la generación de queries de forma simple y Bookshelf.js,
  un ORM que corre sobre Knex, ambos de código abierto bajo licencia MIT.
+ 
 \end_layout
 
 \begin_layout Standard
 Finalmente, se utilizó PassportJs para realizar la autentificación de los
  usuarios correctamente.
  Este framework permite la utilización de diversos métodos de autenticación
- mediante "strategies", esto permite al desarrollador, utilizar diversos
- métodos al mismo tiempo, por ejemplo esto permitiría en el futuro, agregar
- un método de autenticación via facebook, sin mas que agregar un nuevo strategy.
+ mediante "strategies", esto permite al desarrollador, utilizar varios métodos
+ al mismo tiempo, por ejemplo esto permitiría en el futuro, agregar un método
+ de autenticación via facebook, sin mas que agregar un nuevo strategy.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1976,16 +1994,587 @@ Despliegue y puesta en producción
 
 \begin_layout Standard
 De la misma manera que el Subsistema de Ingesta y Procesamiento, la API
- utiliza el sistema de docker-compose para su proceso de deployment, es
- este compose, se encuentra también la base de datos (MySQL) e IpToAs, de
- modo que una vez iniciado el servicio, tiene todas las dependencias que
- necesita y está listo para comenzar a procesar datos.
+ utiliza el sistema de docker-compose para su proceso de deployment, bajo
+ este compose, se encuentra también la base de datos (MySQL) e IpToAs.
+ De esta forma, una vez que se corre el comando de ejecución, la API ya
+ cuenta con todas las dependencias que necesita para correr correctamente.
+ 
 \end_layout
 
 \begin_layout Standard
 Por otro lado, el deployment de la web se realiza mediante TravisCI, una
- vez finalizado el build, en donde se generan todos los archivos minificados
- y listos para el uso, este los copia a la carpeta correspondiente.
+ vez finalizado el build, en donde se compila y minifica el código, este
+ los copia a la carpeta correspondiente para su ejecución.
+ 
+\end_layout
+
+\begin_layout Subsubsection*
+3.4.2 Definición de la API
+\end_layout
+
+\begin_layout Standard
+Como fue mencionado anteriormente, la API expone una interfaz en la cual
+ cualquier cliente se puede conectar con facilidad y acceder a los datos
+ del sistema, esta se encuentra debajo de la url: https://tix.innova-red.net/api,
+ expone 4 contratos: 
+\end_layout
+
+\begin_layout Standard
+Contrato de Usuario: 
+\end_layout
+
+\begin_layout Itemize
+username: Nombre de usuario 
+\end_layout
+
+\begin_layout Itemize
+role: Rol que cumple el usuario, puede ser usuario o administrador 
+\end_layout
+
+\begin_layout Itemize
+id: ID del usuario
+\end_layout
+
+\begin_layout Itemize
+enabled: Boolean que indica si el usuario está activo o no.
+ 
+\end_layout
+
+\begin_layout Standard
+Contrato de Instalación: 
+\end_layout
+
+\begin_layout Itemize
+id: ID de la instalación 
+\end_layout
+
+\begin_layout Itemize
+name: Nombre de la instalación 
+\end_layout
+
+\begin_layout Itemize
+publickey: Clave pública correspondiente a la instalación 
+\end_layout
+
+\begin_layout Itemize
+providers: (opcional) Lista de proveedores asociados a la instalación 
+\end_layout
+
+\begin_layout Standard
+Contrato de Proveedores: 
+\end_layout
+
+\begin_layout Itemize
+id: ID del proveedor
+\end_layout
+
+\begin_layout Itemize
+name: Nombre del proveedor 
+\end_layout
+
+\begin_layout Standard
+Contrato de Métrica: 
+\end_layout
+
+\begin_layout Itemize
+upUsage: Métrica de uso de la coneccion de subida 
+\end_layout
+
+\begin_layout Itemize
+downUsage: Métrica de uso de la coneccion de bajada 
+\end_layout
+
+\begin_layout Itemize
+upQuality: Métrica de calidad de la coneccion de subida 
+\end_layout
+
+\begin_layout Itemize
+downQuality: Métrica de calidad de la coneccion de bajada 
+\end_layout
+
+\begin_layout Itemize
+timestamp: Hora del reporte 
+\end_layout
+
+\begin_layout Itemize
+location_id: ID de la ubicación donde fue generado el reporte 
+\end_layout
+
+\begin_layout Itemize
+provider_id: ID del proveedor donde fue generado el reporte 
+\end_layout
+
+\begin_layout Itemize
+user_id: ID del usuario que genero el reporte 
+\end_layout
+
+\begin_layout Standard
+y expone los siguientes métodos: 
+\end_layout
+
+\begin_layout Standard
+Método: GET /api 
+\end_layout
+
+\begin_layout Itemize
+Uso: Conocer si el servicio está corriendo actualmente o no 
+\end_layout
+
+\begin_layout Itemize
+Respuesta esperada: 200 OK
+\end_layout
+
+\begin_layout Standard
+Método: POST /api/register 
+\end_layout
+
+\begin_layout Itemize
+Uso: Permite al cliente generar un nuevo usuario dentro del sistema.
+\end_layout
+
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+captcharesponse: string que devuelve el reto de Re-Captcha 
+\end_layout
+
+\begin_layout Itemize
+username: Nombre de usuario que se quiere crear 
+\end_layout
+
+\begin_layout Itemize
+password1: Contraseña del usuario 
+\end_layout
+
+\begin_layout Itemize
+password2: verificación de la contraseña 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato del usuario recién creado.
+ 
+\end_layout
+
+\begin_layout Standard
+Método: POST /api/login 
+\end_layout
+
+\begin_layout Itemize
+Uso: Permite al cliente generar un token para autentificarse con la plataforma
+ 
+\end_layout
+
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+username: Nombre de usuario 
+\end_layout
+
+\begin_layout Itemize
+password: Contraseña del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+token: JWT token utilizado para autenticar al usuario.
+ 
+\end_layout
+
+\begin_layout Itemize
+El resto del contrato de usuario.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Método: POST /api/recover 
+\end_layout
+
+\begin_layout Itemize
+Uso: Permite al cliente generar el token de recupero de contraseña el cual
+ es enviado al email del cliente.
+ 
+\end_layout
+
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+email: Email del usuario a recuperar 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK 
+\end_layout
+
+\begin_layout Standard
+Método: POST /api/recover/code 
+\end_layout
+
+\begin_layout Itemize
+Uso: Permite al usuario modificar su contraseña junto al token enviado anteriorm
+ente.
+ 
+\end_layout
+
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+email: Email del usuario a modificar 
+\end_layout
+
+\begin_layout Itemize
+code: Código de verificación enviado en el email anteriormente 
+\end_layout
+
+\begin_layout Itemize
+password: Contraseña a setear en el usuario seleccionado 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/user/:id 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve la información básica del usuario.
+ 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato del usuario
+\end_layout
+
+\begin_layout Standard
+Método: PUT /api/user/:id 
+\end_layout
+
+\begin_layout Itemize
+Uso: Editar la información del usuario 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato del usuario
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/user/:id/installation 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve la lista de instalaciones pertenecientes al usuario 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con una lista de contratos de instalaciones.
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/user/:id/installation/:installationId 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve una instalación en particular 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\begin_layout Itemize
+installationId: ID de la instalación deseada 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato de la instalación
+\end_layout
+
+\begin_layout Standard
+Método: PUT /api/user/:id/installation/:installationId 
+\end_layout
+
+\begin_layout Itemize
+Uso: Editar una instalación 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\begin_layout Itemize
+installationId: ID de la instalación deseada 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+name: Nombre de la instalación 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta: 200 OK con el contrato de la nueva instalación
+\end_layout
+
+\begin_layout Standard
+Método: DELETE /api/user/:id/installation/:installationId 
+\end_layout
+
+\begin_layout Itemize
+Uso: Borrar la instalación deseada 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\begin_layout Itemize
+installationId: ID de la instalación deseada 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK 
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/user/:id/provider 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve la lista de proveedores asociados al usuario 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con una lista de contratos de proveedores
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/user/:id/provider/:providerId 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve el proveedor deseado 
+\end_layout
+
+\begin_layout Itemize
+Parámetros:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\begin_layout Itemize
+providerId: ID del proovedor 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato de proveedor
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/users/:id/reports 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve los reportes asociados al usuario 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con una lista de contratos de reportes
+\end_layout
+
+\begin_layout Standard
+Método: POST /api/user/:id/installation/:installationId/reports 
+\end_layout
+
+\begin_layout Itemize
+Uso: Crear un nuevo reporte 
+\end_layout
+
+\begin_layout Itemize
+Parámetros: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+id: ID del usuario 
+\end_layout
+
+\begin_layout Itemize
+installationId: ID de la instalación 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Cuerpo requerido: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ip: IP donde se generó el reporte 
+\end_layout
+
+\begin_layout Itemize
+upUsage: Metrica de utilizacion de subida 
+\end_layout
+
+\begin_layout Itemize
+downUsage: Metrica de utilizacion de bajada 
+\end_layout
+
+\begin_layout Itemize
+upQuality: Metrica de calidad de subida 
+\end_layout
+
+\begin_layout Itemize
+downQuality: Metrica de calidad de bajada 
+\end_layout
+
+\begin_layout Itemize
+timestamp: Momento en el que se genero el reporte 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con el contrato de reporte
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/admin/users 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve todos los usuarios actuales en el sistema 
+\end_layout
+
+\begin_layout Itemize
+Respuesta esperada: 200 OK con una lista de contratos de usuario
+\end_layout
+
+\begin_layout Standard
+Método: GET /api/admin/reports 
+\end_layout
+
+\begin_layout Itemize
+Uso: Devuelve todos los reportes según el criterio establecido 
+\end_layout
+
+\begin_layout Itemize
+Parámetros opcionales: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+startDate: Fecha de inicio 
+\end_layout
+
+\begin_layout Itemize
+endDate: Fecha de fin 
+\end_layout
+
+\begin_layout Itemize
+providerId: ID del proveedor 
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Respuesta esperada: 200 OK con una lista de contratos de reportes.
  
 \end_layout
 
