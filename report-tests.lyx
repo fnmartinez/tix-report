@@ -391,6 +391,19 @@ La Prueba de Carga está apuntada a medir la carga máxima del Sistema TiX
  Sistema Complejo como esto y cuales son sus posibles mejoras.
 \end_layout
 
+\begin_layout Standard
+Debido a la dinámica operativa de TiX, el servicio genera un gran nivel
+ de carga, la cual, si bien es constante, es mucho más alta de lo que suele
+ recibir un servidor web con la misma cantidad de usuarios.
+ En un escenario ideal, el servicio tendría que ejecutarse en un espacio
+ el cual permita el libre escalamiento de recursos, para cubrir eventuales
+ picos de tráfico e infinitos usuarios.
+ Lamentablemente esto es financieramente inviable, por lo que es necesario
+ conocer con gran precisión cuál es el máximo número de usuarios que la
+ plataforma puede soportar bajo la infraestructura en la cual se encuentra
+ corriendo el servicio.
+\end_layout
+
 \begin_layout Subsubsection
 Indicadores propuestos
 \end_layout
@@ -845,11 +858,135 @@ name "tab:server-specs"
 \end_layout
 
 \begin_layout Subsubsection
-Metodolagía
+Metodología
+\end_layout
+
+\begin_layout Standard
+La metodología para realizar la prueba de stress consiste en dos partes:
+ por un lado la generación de clientes para realizar la prueba, y por el
+ otro lado el análisis de los resultados para saber si la prueba fue exitosa
+ 
+\end_layout
+
+\begin_layout Paragraph*
+4.2.4.1 Generación de Clientes 
+\end_layout
+
+\begin_layout Standard
+Para la Generación de clientes, se utiliza una versión modificada del cliente
+ actual, la cual cumple el mismo rol que el cliente estándar (loguearse
+ al servicio, crear una instalación y llamar al servidor para comenzar a
+ generar reportes).
+ Esto permite poder correr múltiples instancias del cliente en el mismo
+ dispositivo, con un consumo de memoria moderado.
+ Por otro lado, se utiliza JMeter, una herramienta especializada en generación
+ de pruebas de stress.
+ JMeter, mediante un archivo de configuración, permite crear miles de instancias
+ del cliente que son corridas en simultáneo, y al terminar la prueba genera
+ un informe básico sobre las pruebas corridas.
+ Finalmente, se necesita un dispositivo para poder correr la prueba de stress.
+ Dada la carga generada y la necesidad de mantener el servicio en funcionamiento
+ por, al menos 24 horas, es recomendable que se realice en un servidor donde
+ se pueda monitorear su funcionamiento, aunque también puede ser realizado
+ en cualquier PC.
+ 
+\end_layout
+
+\begin_layout Paragraph*
+4.2.4.2 Analisis de Resultados 
+\end_layout
+
+\begin_layout Standard
+El análisis de resultados comprende todas aquellas herramientas que pueden
+ ser utilizadas para conocer cómo está funcionando internamente el servicio.
+ Esto incluye el análisis de logs, análisis de carga del sistema y finalmente
+ análisis del estado de las colas de procesamiento, siendo este último el
+ crítico para conocer si el sistema está funcionando correctamente o se
+ encuentra pasado del límite.
+ 
+\end_layout
+
+\begin_layout Standard
+Encontramos tres indicadores clave para conocer si la prueba de stress fue
+ corrida exitosamente y poder conocer los resultados de la misma: 
+\end_layout
+
+\begin_layout Itemize
+Cantidad de operaciones de IO en el cliente y CPU consumido.
+ 
+\end_layout
+
+\begin_layout Itemize
+Estado del consumo de CPU en el servidor.
+ 
+\end_layout
+
+\begin_layout Itemize
+Estado de la cola de procesamiento.
+ 
+\end_layout
+
+\begin_layout Standard
+El primero es necesario para asegurarse que el stress-test está efectivamente
+ corriendo al ratio que le fue solicitado, por ejemplo, si se encuentra
+ corriendo aproximadamente 1000 instancias, tendrían que haber aproximadamente
+ 1000 escrituras en archivo por segundo, así mismo, el nivel de CPU consumido
+ tendría que ser estable.
+ Si alguno de estos indicadores muestra algo distinto, entonces el stress
+ test no está corriendo correctamente y sus resultados no pueden ser fiables.
+ 
+\end_layout
+
+\begin_layout Standard
+En segundo lugar, el estado de consumo de CPU es un factor clave para conocer
+ si el servidor se encuentra al límite de procesamiento.
+ Al momento en el que el servidor se queda sin más recursos de procesamiento,
+ las respuestas comienzan a ser más lentas, lo cual termina generando cuellos
+ de botella y finalmente el eventual colapso del sistema.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, el estado de la cola de procesamiento es el factor determinante
+ para conocer si el stress test fue exitoso o no.
+ En términos generales, dada la característica de TiX, en donde el tráfico
+ es constante.
+ Si la cantidad de paquetes que se están encolando para procesamiento es
+ mayor que la capacidad de procesarlos, entonces el sistema se va a ir acercando
+ lentamente al colapso.
+ Esto se puede visualizar analizando el gráfico que provee Rabbit-MQ sobre
+ el estado de la cola, por ejemplo:
+\end_layout
+
+\begin_layout Standard
+Este gráfico muestra un comportamiento estable, en donde el encolado de
+ mensajes no es constante, pero el ratio de consumo (violeta) supera el
+ ratio de ingreso (dorado) sobre un rango de tiempo determinado.
+ Este gráfico claramentemuestra que el sistema, si no se agregan nuevos
+ clientes, se encuentra estable y es capaz de continuar produciendo reportes
+ sin problema.
+ Pero, si se agregan nuevos clientes, ocurre lo siguiente: 
+\end_layout
+
+\begin_layout Standard
+En este gráfico claramente se puede ver que el consumo de mensajes está
+ estable en un promedio de 100/s mientras que el encolamiento de mensajes
+ es superior.
+ Finalmente esto se refleja en el primer gráfico donde no termina de consumir
+ todos los mensajes y ya está encolando el nuevo grupo.
+ En esta situación se puede considerar que el sistema está sobrecargado
+ y que llegó al límite.
+ 
 \end_layout
 
 \begin_layout Subsubsection
 Resultados
+\end_layout
+
+\begin_layout Standard
+Luego de correr el stress-test multiples veces, la conclusion es que el
+ sistema, bajo las condiciones actuales, es capaz de soportar 1900 usuarios
+ concurrentes.
 \end_layout
 
 \begin_layout Subsection
