@@ -1883,7 +1883,27 @@ key "reactjs"
 
 \end_inset
 
-, pero utiliza otras librerías, tales como Material-ui , Redux y Redux-forms
+, pero utiliza otras librerías, tales como Material-ui
+\begin_inset CommandInset citation
+LatexCommand cite
+key "materialui"
+
+\end_inset
+
+, Redux
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redux"
+
+\end_inset
+
+ y Redux-forms
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reduxform"
+
+\end_inset
+
  con el objetivo de minimizar la cantidad de código escrito y presentar
  la información de manera consistente.
  
@@ -1912,18 +1932,31 @@ n, es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
 
 \begin_layout Standard
 Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
- decidió implementar los lineamientos de Material Design de Google en una
- librería basada en React con el fin de facilitar el proceso de desarrollo
- de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
+ decidió implementar los lineamientos de Material Design
+\begin_inset CommandInset citation
+LatexCommand cite
+key "materialdesign"
+
+\end_inset
+
+ en una librería basada en React con el fin de facilitar el proceso de desarroll
+o de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
  dia mas de 400 desarrolladores han participado del desarrollo de la misma.
  
 \end_layout
 
 \begin_layout Standard
 El desarrollo de la web se inició utilizando un barebone creado por la comunidad
-, React-boilerplate, el uso del mismo garantiza que se está utilizando las
- últimas tecnologías y estándares, así como enforzar la calidad del código
- y además bajar el costo del primer set-up.
+, React-boilerplate
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reactboilerplate"
+
+\end_inset
+
+, el uso del mismo garantiza que se está utilizando las últimas tecnologías
+ y estándares, así como enforzar la calidad del código y además bajar el
+ costo del primer set-up.
  Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
  de 100 contribuyentes y cerca de 1000 commits.
  
@@ -1937,8 +1970,49 @@ t.net
 
 \begin_layout Standard
 Por otro lado, el sistema de ingesta y consumo de datos, se encuentra desarrolla
-da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
- tales como ExpressJs, Passport, Knex, Bookshelf y RamdaJs.
+da principalmente en NodeJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "nodejs"
+
+\end_inset
+
+, y diversas librerias basadas en este lenguaje tales como ExpressJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "expressjs"
+
+\end_inset
+
+, PassportJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "passportJs"
+
+\end_inset
+
+, Knex
+\begin_inset CommandInset citation
+LatexCommand cite
+key "knexjs"
+
+\end_inset
+
+, Bookshelf
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bookshelfjs"
+
+\end_inset
+
+ y RamdaJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ramdajs"
+
+\end_inset
+
+.
  Finalmente, esta parte del proyecto tiene como dependencia IpToAs, que
  dada una IP, se encarga de resolver el AS que le corresponde.
  
@@ -1947,10 +2021,23 @@ da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
 \begin_layout Standard
 NodeJs es un entorno de ejecución de código abierto (bajo licencia MIT),
  asincrónico, con I/O de datos en una arquitectura basada en eventos y basado
- en el motor V8 de Google, dada su estructura, es especialmente útil para
- micro-arquitecturas como la propuesta para este proyecto, su manager de
- paquetes, npm, es considerado el ecosistema más grande de librerías open
- source existente hoy en dia.
+ en el motor V8 de Google
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jsv8"
+
+\end_inset
+
+, dada su estructura, es especialmente útil para micro-arquitecturas como
+ la propuesta para este proyecto, su manager de paquetes, npm
+\begin_inset CommandInset citation
+LatexCommand cite
+key "npm"
+
+\end_inset
+
+, es considerado el ecosistema más grande de librerías open source existente
+ hoy en dia.
  
 \end_layout
 
