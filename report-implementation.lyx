@@ -1979,14 +1979,6 @@ Facu says:
 \end_layout
 
 \begin_layout Plain Layout
-Meté las referencias a cada una de las librerías que usás.
- Material-ui, Redux, etc...
- Nacho lo pide, no yo.
- También meté la referencia a Material Design.
- No sé si hay un paper, web, whatever.
-\end_layout
-
-\begin_layout Plain Layout
 Al igual que Chavi, fijate las palabras y evitá la cacofonía.
  Frases como 
 \begin_inset Quotes fld
@@ -2034,7 +2026,27 @@ key "reactjs"
 
 \end_inset
 
-, pero utiliza otras librerías, tales como Material-ui , Redux y Redux-forms
+, pero utiliza otras librerías, tales como Material-ui
+\begin_inset CommandInset citation
+LatexCommand cite
+key "materialui"
+
+\end_inset
+
+, Redux
+\begin_inset CommandInset citation
+LatexCommand cite
+key "redux"
+
+\end_inset
+
+ y Redux-forms
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reduxform"
+
+\end_inset
+
  con el objetivo de minimizar la cantidad de código escrito y presentar
  la información de manera consistente.
  
@@ -2067,18 +2079,31 @@ source of truth
 
 \begin_layout Standard
 Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
- decidió implementar los lineamientos de Material Design de Google en una
- librería basada en React con el fin de facilitar el proceso de desarrollo
- de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
- dia más de 400 desarrolladores han participado del desarrollo de la misma.
- 
+ decidió implementar los lineamientos de Material Design
+\begin_inset CommandInset citation
+LatexCommand cite
+key "materialdesign"
+
+\end_inset
+
+ en una librería basada en React con el fin de facilitar el proceso de desarroll
+o de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
+ dia mas de 400 desarrolladores han participado del desarrollo de la misma.
 \end_layout
 
 \begin_layout Standard
 El desarrollo de la web se inició utilizando un barebone creado por la comunidad
-, React-boilerplate.
- El cual garantiza que se están utilizando las últimas tecnologías y estándares,
- así como enforzar la calidad del código y bajar el costo del primer set-up.
+, React-boilerplate
+\begin_inset CommandInset citation
+LatexCommand cite
+key "reactboilerplate"
+
+\end_inset
+
+.
+ El cual garantiza que se está utilizando las últimas tecnologías y estándares,
+ así como enforzar la calidad del código y además bajar el costo del primer
+ set-up.
  Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
  de 100 contribuyentes y cerca de 1000 commits.
  
@@ -2098,20 +2123,73 @@ target "https://tix.innova-red.net.net"
 
 \begin_layout Standard
 Por otro lado, el sistema de ingesta y consumo de datos, se encuentra desarrolla
-da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
- tales como ExpressJs, Passport, Knex, Bookshelf y RamdaJs.
+da principalmente en NodeJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "nodejs"
+
+\end_inset
+
+, y diversas librerias basadas en este lenguaje tales como ExpressJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "expressjs"
+
+\end_inset
+
+, PassportJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "passportJs"
+
+\end_inset
+
+, Knex
+\begin_inset CommandInset citation
+LatexCommand cite
+key "knexjs"
+
+\end_inset
+
+, Bookshelf
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bookshelfjs"
+
+\end_inset
+
+ y RamdaJs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ramdajs"
+
+\end_inset
+
+.
  Finalmente, esta parte del proyecto tiene como dependencia IP2AS, que dada
  una IP, se encarga de resolver el AS que le corresponde.
- 
 \end_layout
 
 \begin_layout Standard
 NodeJs es un entorno de ejecución de código abierto (bajo licencia MIT),
  asincrónico, con I/O de datos en una arquitectura basada en eventos y basado
- en el motor V8 de Google, dada su estructura, es especialmente útil para
- micro-arquitecturas como la propuesta para este proyecto, su manager de
- paquetes, npm, es considerado el ecosistema más grande de librerías open
- source existente hoy en dia.
+ en el motor V8 de Google
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jsv8"
+
+\end_inset
+
+, dada su estructura, es especialmente útil para micro-arquitecturas como
+ la propuesta para este proyecto, su manager de paquetes, npm
+\begin_inset CommandInset citation
+LatexCommand cite
+key "npm"
+
+\end_inset
+
+, es considerado el ecosistema más grande de librerías open source existente
+ hoy en dia.
  
 \end_layout
 
