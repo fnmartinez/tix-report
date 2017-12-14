@@ -7,7 +7,7 @@
 \textclass article
 \use_default_options true
 \begin_includeonly
-report-tests.lyx
+report-architecture.lyx
 \end_includeonly
 \maintain_unincluded_children true
 \language spanish
@@ -172,7 +172,7 @@ Large INSTITUTO TECNOLÓGICO BUENOS AIRES}
 \backslash
 textsc{
 \backslash
-Large Proyecto TiX}
+Large Proyecto Final}
 \backslash
 
 \backslash
@@ -189,7 +189,7 @@ Large Proyecto TiX}
 \backslash
 textsc{
 \backslash
-large Proyecto Final}
+large Proyecto TiX}
 \backslash
 
 \backslash
@@ -615,7 +615,7 @@ filename "report-conclusions.lyx"
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "references-latin9"
-options "bibtotoc,IEEEtranS"
+options "bibtotoc,IEEEtran"
 
 \end_inset
 

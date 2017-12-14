@@ -77,6 +77,12 @@ Implementación
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Protocolo-TiX"
+
+\end_inset
+
 Protocolo TiX
 \end_layout
 
@@ -1681,6 +1687,96 @@ Aplicación Cliente
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Facu says:
+\end_layout
+
+\begin_layout Plain Layout
+Es raro hablar de computadoras en el sentido 
+\begin_inset Quotes fld
+\end_inset
+
+no tradicional
+\begin_inset Quotes frd
+\end_inset
+
+, así que sacaría eso y aclararía que no es difcíil que funcione en dispositivos
+ móviles (no inteligentes, porque es una jerga muy de marketing...
+ y la gente a la que apuntamos entregarles esto sabe un poquito de tech)
+\end_layout
+
+\begin_layout Plain Layout
+Evitar el uso de la jergua anlgófona.
+ Ejemplo, cambiar 
+\begin_inset Quotes fld
+\end_inset
+
+path
+\begin_inset Quotes frd
+\end_inset
+
+ por 
+\begin_inset Quotes fld
+\end_inset
+
+ruta
+\begin_inset Quotes frd
+\end_inset
+
+.
+ 
+\begin_inset Quotes fld
+\end_inset
+
+Hardcodeados
+\begin_inset Quotes frd
+\end_inset
+
+, 
+\begin_inset Quotes fld
+\end_inset
+
+customizables
+\begin_inset Quotes frd
+\end_inset
+
+, son términos poco felices en español, evitá bajo todo concepto traer palabras
+ del inglés y usarlas como en el castellano.
+ Si ves que una palabra no tiene una acepción sencilla en español (ejemplo:
+ framework), no está mal ponerlo en inglés, si está mal castellanizarla
+ (por ejemplo, frameworkear), pero ponela en itálica/énfasis, como para
+ resaltar que no es en español.
+ También podés hacerlo si tenés que repetir una palabra y querés cortar
+ la cacofonía.
+\end_layout
+
+\begin_layout Plain Layout
+De la misma manera, hay un tema muy fuerte de repitencia de palabras, cacofonía
+ y lenguaje informal en estos párrafos.
+ Intentá escribir menos como hablarías y más como esperarías que sea un
+ texto académico, como un libro y eso.
+ No tiene que ser sumamente formal, pero en este caso está muy coloquial.
+\end_layout
+
+\begin_layout Plain Layout
+Otro tema, es que esta sección es BIEN técnica.
+ Entonces si vas a decir que hacés algo, decí cómo y porqué.
+\end_layout
+
+\begin_layout Plain Layout
+Esta sección se re presta para meter un par de screen shots...
+ dale duro Otto.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Tal como se explica en la sección de Arquitectura, el cliente es una de
  las piezas del proyecto que está programada en lenguaje Java.
  Esto permite crear una única versión del cliente y despreocuparse por las
@@ -1754,11 +1850,11 @@ key "fxml"
 
 \begin_layout Standard
 Luego de instalar el cliente, el usuario que opte por la GUI (comportamiento
- default) debe ingresar mediante una interfaz visual sus credenciales creadas
+ default) debe ingresar mediante una interfaz visual las credenciales creadas
  previamente en la web de TiX y definir el nombre de su nueva instalación.
  Tanto la autenticación como la creación de la instalación se realizan mediante
  el uso de forma segura de la API REST de TiX.
- La instalación consiste de un wizard de 3 pasos en una ventana flotante
+ La instalación consiste de un wizard de tres pasos en una ventana flotante
  de la aplicación.
  Con una interfaz simple y amigable, va guiando a los usuarios para que
  en menos de un minuto cuenten con el cliente ya funcionando en sus computadoras.
@@ -1825,7 +1921,14 @@ La primer tarea del Reporter es conseguir la interfaz de red correcta y
 Los intercambios puntualmente consisten en envíos de pequeños paquetes UDP
  una vez por segundo, que no tienen ningún contenido (payload) definido.
  Se toma nota de los cuatro timestamps de envío y recepción (ver detalles
- en la sección 3.1.4) para luego calcular la diferencia de tiempo entre ellos.
+ en la Sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Protocolo-TiX"
+
+\end_inset
+
+) para luego calcular la diferencia de tiempo entre ellos.
  Los timestamps se persisten temporalmente hasta llegar a tener un minuto
  entero de información.
 \end_layout
@@ -1868,6 +1971,54 @@ El Subsistema de Presentación y Administración de Datos
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Facu says:
+\end_layout
+
+\begin_layout Plain Layout
+Meté las referencias a cada una de las librerías que usás.
+ Material-ui, Redux, etc...
+ Nacho lo pide, no yo.
+ También meté la referencia a Material Design.
+ No sé si hay un paper, web, whatever.
+\end_layout
+
+\begin_layout Plain Layout
+Al igual que Chavi, fijate las palabras y evitá la cacofonía.
+ Frases como 
+\begin_inset Quotes fld
+\end_inset
+
+más de 400 desarrolladores han participado del desarrollo
+\begin_inset Quotes frd
+\end_inset
+
+ son muy violentas.
+ Usá más sinónimos.
+\end_layout
+
+\begin_layout Plain Layout
+Al igual que Chavi, evitá usar palabras en inglés.
+ Si las vas a usar, usalas porque no existe una palabra o frase en castellano
+ que la suplante y ponela en itálica/énfasis.
+\end_layout
+
+\begin_layout Plain Layout
+Lo tuyo no es un sistema de ingesta de datos, es una API.
+ La API está desarrollada en NodeJS.
+ Te lo digo porque si no se va a confundir con lo que escribo yo, que es
+ el pipe de ingesta y procesamiento.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Esta parte del proyecto puede ser dividida en dos partes que funcionan de
  manera totalmente autónoma, el sistema que se encarga de guardar los datos
  y entregarlos a quien lo solicite (la API) y la web, que se encarga de
@@ -1906,7 +2057,11 @@ Luego del lanzamiento de ReactJs, la comunidad comenzó a desarrollar diversas
 n, es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
  del estado de la aplicación altamente predecible que ayuda a mantener el
  estado de la aplicación consistente durante el tiempo, ya que utiliza una
- única fuente de verdad (source of truth).
+ única fuente de verdad (
+\emph on
+source of truth
+\emph default
+).
  
 \end_layout
 
@@ -1915,15 +2070,15 @@ Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
  decidió implementar los lineamientos de Material Design de Google en una
  librería basada en React con el fin de facilitar el proceso de desarrollo
  de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
- dia mas de 400 desarrolladores han participado del desarrollo de la misma.
+ dia más de 400 desarrolladores han participado del desarrollo de la misma.
  
 \end_layout
 
 \begin_layout Standard
 El desarrollo de la web se inició utilizando un barebone creado por la comunidad
-, React-boilerplate, el uso del mismo garantiza que se está utilizando las
- últimas tecnologías y estándares, así como enforzar la calidad del código
- y además bajar el costo del primer set-up.
+, React-boilerplate.
+ El cual garantiza que se están utilizando las últimas tecnologías y estándares,
+ así como enforzar la calidad del código y bajar el costo del primer set-up.
  Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
  de 100 contribuyentes y cerca de 1000 commits.
  
@@ -1931,16 +2086,22 @@ El desarrollo de la web se inició utilizando un barebone creado por la comunida
 
 \begin_layout Standard
 Luego de esto, se fueron agregando los distintos componentes que hoy en
- día conforman la web que ve el usuario cuando ingresa a la web: tix.innova-red.ne
-t.net 
+ día conforman la web que ve el usuario cuando ingresa a la web: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://tix.innova-red.net.net"
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
 Por otro lado, el sistema de ingesta y consumo de datos, se encuentra desarrolla
 da principalmente en NodeJs, y diversas librerias basadas en este lenguaje
  tales como ExpressJs, Passport, Knex, Bookshelf y RamdaJs.
- Finalmente, esta parte del proyecto tiene como dependencia IpToAs, que
- dada una IP, se encarga de resolver el AS que le corresponde.
+ Finalmente, esta parte del proyecto tiene como dependencia IP2AS, que dada
+ una IP, se encarga de resolver el AS que le corresponde.
  
 \end_layout
 
@@ -1995,7 +2156,7 @@ Despliegue y puesta en producción
 \begin_layout Standard
 De la misma manera que el Subsistema de Ingesta y Procesamiento, la API
  utiliza el sistema de docker-compose para su proceso de deployment, bajo
- este compose, se encuentra también la base de datos (MySQL) e IpToAs.
+ este compose, se encuentra también la base de datos (MySQL) e IP2AS.
  De esta forma, una vez que se corre el comando de ejecución, la API ya
  cuenta con todas las dependencias que necesita para correr correctamente.
  
@@ -2015,8 +2176,14 @@ Por otro lado, el deployment de la web se realiza mediante TravisCI, una
 \begin_layout Standard
 Como fue mencionado anteriormente, la API expone una interfaz en la cual
  cualquier cliente se puede conectar con facilidad y acceder a los datos
- del sistema, esta se encuentra debajo de la url: https://tix.innova-red.net/api,
- expone 4 contratos: 
+ del sistema, esta se encuentra debajo de la URL: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://tix.innova-red.net/api"
+
+\end_inset
+
+, expone 4 contratos: 
 \end_layout
 
 \begin_layout Standard
