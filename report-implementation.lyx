@@ -1867,8 +1867,14 @@ o predeterminado) debe ingresar mediante una interfaz visual las credenciales
 \begin_layout Standard
 Los datos de inicio de sesión y nombre de instalación son almacenados en
  la máquina de cada usuario.
- Se hace uso de la Java Preferences API para almacenar las preferencias
- de forma eficiente según cada sistema operativo.
+ Se hace uso de la Java Preferences API 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "javaprefsapi"
+
+\end_inset
+
+ para almacenar las preferencias de forma eficiente según cada sistema operativo.
 \end_layout
 
 \begin_layout Standard
