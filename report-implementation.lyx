@@ -1723,6 +1723,7 @@ Si bien el binario ejecutable es único, la aplicación se distribuye con
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1816,6 +1817,7 @@ o predeterminado) debe ingresar mediante una interfaz visual las credenciales
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1851,6 +1853,7 @@ Ingreso de email y contraseña en cliente de OSX.
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1890,6 +1893,7 @@ Ingreso de nombre de instalación en cliente de OSX.
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1952,6 +1956,7 @@ Una vez finalizada la configuración inicial, la aplicación queda en ejecución
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1997,6 +2002,7 @@ La primer opción "Sobre TiX" abre una ventana que presenta información básica
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -2042,6 +2048,7 @@ La segunda opción "Preferencias" informa el nombre de usuario e instalación
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -2115,6 +2122,7 @@ key "fxlauncher"
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
