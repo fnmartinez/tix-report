@@ -89,7 +89,8 @@ La Prueba de Sistema está apuntada a corroborar el correcto funcionamiento
  Esto significa, que se debe probar de punta a punta el Sistema, con una
  carga normal, para una persona determinada.
  La idea de esto es asegurar una calidad mínima de servicio en base a parámetros
- prestablecidos.
+ preestablecidos.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -98,19 +99,20 @@ Indicadores propuestos
 
 \begin_layout Standard
 Las métricas sobre las cuales se va a determinar que el sistema funciona
- correctamente son:
+ correctamente son: 
 \end_layout
 
 \begin_layout Enumerate
 Tiempo de funcionamiento, entendiéndose como la cantidad de tiempo que estuvo
- vivo el sistema durante el prueba, para lo cual pudo recibir mediciones
+ vivo el sistema durante la prueba, para lo cual pudo recibir mediciones
  del Subsistema Cliente y mostrar el progreso de la prueba a través del
  Subsistema de Presentación.
+ 
 \end_layout
 
 \begin_layout Enumerate
 Tiempo medio de demora en obtenerse una métrica, entendiéndose como el promedio
- de los tiempos que tarda el Subsistema de Procesamiento de entregar el
+ de los tiempos que tarda el Subsistema de Procesamiento en entregar el
  resultado de un conjunto de mediciones más el Subsistema de Presentación
  en mostrarlo.
  
@@ -120,22 +122,24 @@ Tiempo medio de demora en obtenerse una métrica, entendiéndose como el promedi
 Error medio relativo de la métrica de Uso de Ancho de Banda, entendiéndose
  como el promedio de los errores relativos entre el valor mostrado y el
  valor real para cada punto de la métrica calculado durante la prueba.
+ 
 \end_layout
 
 \begin_layout Standard
-Para cada una, los valores esperados son los siguientes:
+Para cada una, los valores esperados son los siguientes: 
 \end_layout
 
 \begin_layout Enumerate
-Tiempo de funcionamiento esperado: 99.99%
+Tiempo de funcionamiento esperado: 97,5% 
 \end_layout
 
 \begin_layout Enumerate
-Tiempo medio de demora en obtenerse una métrica: 19 min ±1 min 
+Tiempo medio de demora en obtenerse una métrica: 2 minutos 
 \end_layout
 
 \begin_layout Enumerate
-Error medio relativo de la métrica de Uso de Ancho de Banda esperado: ±10%
+Error medio relativo de la métrica de Uso de Ancho de Banda esperado: 10%
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -156,11 +160,13 @@ Se considera que el sistema es robusto y que el Tiempo de funcionamiento
 Se considera que la prueba es lo suficientemente compleja para que su automatiza
 ción total no sea relevante ni un punto a considerar para la presente disertació
 n.
+ 
 \end_layout
 
 \begin_layout Itemize
 Se considera una métrica aquella que puede ser visualizada a través del
  servicio tix-web del Subsistema de Presentación y Administración.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -171,6 +177,7 @@ Se considera negligible el efecto que tiene en el Uso de Ancho de Banda
  de comunicación instantánea (e.g.: Slack, Whatsapp, Discord), portales web
  y agentes de correo electróncio (e.g.: GMail, Outlook, Outlook Express, Thunderbi
 rd).
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -180,6 +187,7 @@ No se considera negligible el efecto que tiene en el Uso de Ancho de Banda
  (e.g.: YouTube, Netflix), audio (e.g.: iTunes, Spotify), u otro tipos de aplicacion
 es en tiempo real (i.e.: video juegos on-line, proyectos de cómputo distribuido,
  etc).
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -192,6 +200,7 @@ es simétricas, lo que podría suponer una diferencia en la calidad de las
 \begin_layout Itemize
 Como método para medir el Uso de Ancho de Banda es el mismo tanto para subida
  como para la bajada.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -202,11 +211,13 @@ Y que el método es robusto a esto ante la diferencia de calidad.
 \begin_layout Itemize
 Por el considerando anterior, sólo se medirá el Uso de Ancho de Banda de
  bajada.
+ 
 \end_layout
 
 \begin_layout Itemize
 No se medirá la Calidad de la conexión debido a los muchos factores externos
  que juegan con ella.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -214,6 +225,7 @@ Se considera que una vez insertada la métrica en la base de datos del Subsistem
  de Presentación, está lista para ser mostrada.
  Con lo que si no puede ser mostrada es que está caído el Subsistema de
  Presentación en sí.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -221,9 +233,10 @@ Metodología
 \end_layout
 
 \begin_layout Standard
-Se instala crea un usuario en el Sistema TiX a través del Subsistema de
- Presentación, por medio de la página web.
+Se crea un usuario en el Sistema TiX a través del Subsistema de Presentación,
+ por medio de la página web.
  Luego se descarga y se instala el cliente.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -254,6 +267,7 @@ reference "tab:vuze-scheduler"
 \end_inset
 
 .
+ 
 \end_layout
 
 \begin_layout Standard
@@ -360,20 +374,62 @@ name "tab:vuze-scheduler"
 Para saturar la conexión se usaron los torrents de varias distribuciones
  de linux, ya que esto asegura descargas de gran tamaño por el tiempo prolongado
  que dura la prueba.
-\end_layout
-
-\begin_layout Standard
-Una vez iniciado el cliente de bittorrent, se procede a iniciar el cliente
+ Una vez iniciado el cliente de bittorrent, se procede a iniciar el cliente
  de TiX y se los deja corriendo durante todo el tiempo de la prueba.
  
 \end_layout
 
 \begin_layout Standard
-Tras la finalización de la mismas
+Tras la finalización de la mismas se ejecutan las consultas que se encuentran
+ en el repositorio de la prueba de sistema sobre la base de datos del Subsistema
+ de Presentación.
+ Estas arrojan los resultados de las métricas que nos interesan tener para
+ verificar el éxito de la prueba.
+ 
 \end_layout
 
 \begin_layout Subsubsection
 Resultados
+\end_layout
+
+\begin_layout Standard
+Tras correr algunas pruebas los resultados obtenidos fueron.
+ 
+\end_layout
+
+\begin_layout Itemize
+Tiempo de funcionamiento: 95.0% 
+\end_layout
+
+\begin_layout Itemize
+Tiempo medio de demora en obtenerse una métrica: 2’ 30’ 
+\end_layout
+
+\begin_layout Itemize
+Error medio relativo de la métrica de Uso de Ancho de Banda: 12% 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Observaciones 
+\end_layout
+
+\begin_layout Itemize
+Aunque el tiempo de funcionamiento es menor al esperado, hay que tener en
+ cuenta que se usa una única locación al momento de hacer las métricas,
+ lo cual puede confundir el problema de un funcionamiento subpar con una
+ caída del servicio desde el lado del cliente.
+ 
+\end_layout
+
+\begin_layout Itemize
+El error medio relativo puede dar más que el esperado debido a que el método
+ utilizado, saturación mediante la descarga de torrents.
+ La saturación del canal en este caso, no depende de la máquina desde donde
+ se están haciendo las pruebas, sino de los pares y las semillas del torrent
+ en sí.
+ 
 \end_layout
 
 \begin_layout Subsection
