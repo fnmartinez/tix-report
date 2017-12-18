@@ -79,8 +79,219 @@ Conclusiones
 Aprendizajes y resultados
 \end_layout
 
+\begin_layout Standard
+El proyecto TiX lleva ya unos años en desarrollo y ha tenido unos cuantos
+ colaboradores a lo largo del tiempo.
+ Antes de comenzar esta iteración, han pasado dos equipos de desarrolladores
+ cuyos objetivos eran distintos, principalmente crear el sistema y sumar
+ funcionalidades.
+ Cada uno de ellos se concentró en resolver los problemas propuestos y lograr
+ que el proyecto siga funcionando.
+ Tres años más tarde, el principal desafío fue llevar adelante el desarrollo
+ de un código que estaba en un estado más cercano a una prueba de concepto
+ que a un código apto para ser puesto en producción.
+ Al revisar el material disponible, faltaba documentación de varias funcionalida
+des (o la misma estaba desactualizada), el sistema no estaba diseñado para
+ ser usado por más de una centena de usuarios, se observaban problemas en
+ distintos módulos y existían incompatibilidades con ciertas versiones de
+ sistemas operativos populares.
+ 
+\end_layout
+
+\begin_layout Standard
+Tal como se comentada en la Introducción, esta iteración se centró en que
+ TiX sea un sistema estable y escalable, permitiendo contar con cinco mil
+ usuarios concurrentes.
+ Alcanzar esta meta permitiría abrir el proyecto a una cantidad razonable
+ de usuarios, siempre y cuando quede como un proyecto de uso dentro de la
+ comunidad académica y no de uso masivo.
+ 
+\end_layout
+
+\begin_layout Standard
+Gran parte del paso por el proyecto consistió en analizar el estado actual
+ del código, del sistema en total y de la forma óptima para lograr alcanzar
+ nuestro objetivo de escalabilidad.
+ Luego de muchas discusiones, se acordó que era necesario llevar a cabo
+ importantes cambios.
+ Se replanteó el diseño del sistema, las tecnologías usadas en varios módulos,
+ las interacciones entre ellos, etc.
+ Todas estas modificaciones llevaron a retrabajar el alcance y los plazos
+ que se habían acordado los primeros días de esta iteración.
+ 
+\end_layout
+
+\begin_layout Standard
+Después de mucho trabajo se logró cumplir con las metas propuestas.
+ El sistema es efectivamente escalable y se observa un funcionamiento estable
+ con casi dos mil usuarios concurrentes.
+ Esto está avalado por los distintos ensayos que se presentan en el capítulo
+ dedicado a ellos.
+ 
+\end_layout
+
+\begin_layout Standard
+Las pruebas de carga señalan que el sistema actualmente puede brindar servicio
+ a unos 2000 usuarios al mismo tiempo, lo cual es un gran avance comparado
+ con la iteración anterior.
+ Cabe destacar que no todos los usuarios de un sistema suelen utilizarlo
+ (correr la aplicación) al mismo tiempo - se asume que una fracción de los
+ clientes permanecerán inactivos en cualquier instante.
+ Esto lleva a creer que el sistema hoy en día puede funcionar con más de
+ dos mil usuarios registrados.
+ 
+\end_layout
+
+\begin_layout Standard
+El limitante actual de este número es el servidor de TiX, con lo cual habría
+ que probar el sistema con una infraestructura más avanzada y llevar a cabo
+ nuevas pruebas de carga.
+ Más allá de los posibles resultados que arrojen, es importante señalar
+ que todas las partes del sistema han sido planteadas bajo la premisa de
+ escalabilidad y estabilidad bajo un gran caudal de usuarios.
+ 
+\end_layout
+
+\begin_layout Standard
+En cuanto a las pruebas de sistema, éstas indican que el funcionamiento
+ completo del sistema es el esperado: tanto el Subsistema de Ingesta y Procesami
+ento, el Subsistema Cliente y el Subsistema de Presentación de Datos están
+ cumpliendo debidamente con sus responsabilidades.
+ Los indicadores observados en estas pruebas coinciden con los valores esperados.
+ Y cualquier usuario puede comprobar por su cuenta que hoy es posible instalar
+ el cliente en su sistema operativo, generar mediciones y analizar los resultado
+s desde el sitio web.
+ 
+\end_layout
+
+\begin_layout Standard
+Más allá del objetivo de escalabilidad, se ha trabajado en una serie de
+ mejoras notables.
+ La aplicación cliente es sumamente portable y ha incorporado facilidades
+ para el usuario final tales como actualizaciones automáticas, se ha mejorado
+ la seguridad del sistema mediante la encriptación de datos y comunicaciones
+ entre distintos subsistemas, se presentan diversas mejoras en el Subsistema
+ de Presentación de Datos, etc.
+ 
+\end_layout
+
+\begin_layout Standard
+Otro logro importante ha sido preparar el sistema para un mantenimiento
+ sencillo.
+ Por ejemplo, se optó por usar Docker para agrupar partes de código en distintos
+ componentes, y se incluyeron tests para permitir hacer cambios en código
+ sin que peligre su funcionamiento.
+ El resultado es un proyecto de Código Libre de calidad.
+ Esto es de suma importancia en un proyecto de carácter académico ya que
+ permite que las próximas iteraciones de código se hagan sin grandes sobresaltos
+ y hasta posiblemente se sume gente externa.
+ 
+\end_layout
+
+\begin_layout Standard
+Sin duda, se han puesto en práctica innumerables conocimientos adquiridos
+ a lo largo de la carrera de Ingeniería Informática: nociones de diseño
+ de sistemas, concurrencia, encriptado, aplicaciones web, aplicaciones de
+ escritorio, programación orientada a objetos, protocolos de comunicación
+ y muchos más.
+ Pero lo más importante ha sido aplicar la capacidad de análisis crítico
+ para concluir que sólo sería posible llegar al objetivo replanteando gran
+ parte del trabajo hecho.
+ 
+\end_layout
+
 \begin_layout Subsection
 Trabajo pendiente y posibles mejoras o ampliaciones
+\end_layout
+
+\begin_layout Standard
+A lo largo del proceso de diseño y desarrollo, fueron surgiendo ideas o
+ posibles mejoras para la plataforma, que por no considerarse prioritarias
+ para llegar al objetivo planteado, se dejaron como propuestas a ser resueltas
+ cuando el objetivo sea distinto o se cuente con los recursos para hacerlos
+ realidad.
+ 
+\end_layout
+
+\begin_layout Standard
+Cabe destacar, que si bien el objetivo principal del proyecto era soportar
+ hasta 5000 usuarios concurrentes, esto no pudo ser verificado bajo las
+ condiciones actuales dado la infraestructura con la que se cuenta, pero
+ es posible dada la arquitectura del sistema.
+ Este proceso, generó muchas propuestas sobre cómo llegar al requerimiento
+ con la infraestructura actual, pero la complejidad de este trabajo no justifica
+ la necesidad de nueva infraestructura, además de no existir seguridad que
+ dicha mejora funcione.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, el grupo plantea las siguientes propuestas: 
+\end_layout
+
+\begin_layout Itemize
+Aplicación móvil con un protocolo optimizado.
+ 
+\end_layout
+
+\begin_layout Itemize
+Actualizaciones automáticas del Cliente en todo momento y no sólo cuando
+ se inicia.
+\end_layout
+
+\begin_layout Itemize
+Implementar y poner en producción un conjunto de herramientas que permitan
+ realizar el trabajo de operaciones del día a día en el Sistema TiX instalado
+ en el servidor.
+ 
+\end_layout
+
+\begin_layout Itemize
+Cambiar el diseño del protocolo para que ya no sea solamente por UDP sino
+ que sea por UDP y HTTP.
+ La idea es que los paquetes UDP sean de PING a un servicio especial para
+ esto y los paquetes de reportes vayan a otro servicio que sea HTTP y sea
+ el nuevo tix-time-server.
+ 
+\end_layout
+
+\begin_layout Itemize
+Hacer una biblioteca aparte para el Analyzer y el ReportsHandler en el tix-time-
+processor, que estén distribuidas por PyPi para una fácil instalación.
+ Esto también permitiría poner los notebooks de análisis en otro repositorio
+ que no sea el del tix-time-processor.
+ 
+\end_layout
+
+\begin_layout Itemize
+Mejorar el paquete tix-time-core incluyendo la parte de serialización y
+ deserialización de paquetes no sólo en UDP, sino también en otro formatos
+ como JSON.
+ 
+\end_layout
+
+\begin_layout Itemize
+Hacer pruebas con Celery usando Redis en vez de contra RabbitMQ como soporte
+ para analizar el impacto en la escalabilidad y la performance del servicio.
+ 
+\end_layout
+
+\begin_layout Itemize
+Analizar la posibilidad de hacer el procesamiento por lotes con herramientas
+ de análisis de grandes cantidades de datos, como lo son Apache Hadoop,
+ Apache Spark y Presto.
+ 
+\end_layout
+
+\begin_layout Itemize
+Implementar mejoras a Ip2As que permita hacer queries más eficientemente.
+ 
+\end_layout
+
+\begin_layout Itemize
+Implementar cache en la API para reducir el tiempo de respuesta y no consumir
+ datos desde la base de datos.
+ 
 \end_layout
 
 \end_body
