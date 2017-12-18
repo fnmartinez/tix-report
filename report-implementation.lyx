@@ -125,10 +125,8 @@ El protocolo de TiX cuenta con dos tipos paquetes, uno corto y uno largo.
 \end_layout
 
 \begin_layout Standard
-La diferencia entre un paquete corto y uno largo es la cantidad de bytes
- que cada uno contiene.
- El paquete corto actualmente ocupa el tamaño de cuatro números de tipo
- long de la JVM 8, es decir, 32 bytes.
+El paquete corto actualmente ocupa el tamaño de cuatro números de tipo long
+ de la JVM 8, es decir, 32 bytes.
  En tanto que el paquete largo ocupa lo mismo que seis números de tipo long
  de la JVM 8 más 4.400 bytes, es decir, 4.448 bytes.
 \end_layout
@@ -163,7 +161,7 @@ key "Nagle1984"
 , las mediciones pueden verse afectadas.
  Por este motivo, solamente el protocolo UDP es utilizado hasta que exista
  alguna otra forma de garantizar las correctas mediciones usando TCP.
- El puerto por defecto del protocolo TiX es el 4500.
+ El puerto por defecto del protocolo TiX es el 4444.
  
 \end_layout
 
@@ -961,9 +959,9 @@ data_delimiter
  son usados para diferenciar los distintos campos de datos dentro del paquete.
  Estos campos con la cadena de caracteres “
 \family typewriter
-;
+;;
 \family default
-;” codificada en UTF-8 
+” codificada en UTF-8 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Yergeau2003"
@@ -1696,8 +1694,11 @@ El Cliente es uno de los subsistemas del proyecto que está programado en
  que funcione en dispositivos móviles o televisores que tengan la habilidad
  de ejecutar código Java.
  Para asegurar que el cliente no tenga las rutas del sistema definidas explícita
-mente en el código, se hace uso del método System.getProperty() que retorna
- variables propias del sistema que está ejecutando el programa.
+mente en el código, se hace uso del método 
+\family typewriter
+System.getProperty()
+\family default
+ que retorna variables propias del sistema que está ejecutando el programa.
  De esta manera, no es necesario definir una serie de sistemas operativos
  de antemano con sus respectivas rutas, sino que Java asume la responsabilidad
  de obtener los valores correctos ad-hoc.
@@ -2245,46 +2246,6 @@ framework
 
 \begin_layout Subsection
 El Subsistema de Presentación y Administración de Datos
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Facu says:
-\end_layout
-
-\begin_layout Plain Layout
-Al igual que Chavi, fijate las palabras y evitá la cacofonía.
- Frases como 
-\begin_inset Quotes fld
-\end_inset
-
-más de 400 desarrolladores han participado del desarrollo
-\begin_inset Quotes frd
-\end_inset
-
- son muy violentas.
- Usá más sinónimos.
-\end_layout
-
-\begin_layout Plain Layout
-Al igual que Chavi, evitá usar palabras en inglés.
- Si las vas a usar, usalas porque no existe una palabra o frase en castellano
- que la suplante y ponela en itálica/énfasis.
-\end_layout
-
-\begin_layout Plain Layout
-Lo tuyo no es un sistema de ingesta de datos, es una API.
- La API está desarrollada en NodeJS.
- Te lo digo porque si no se va a confundir con lo que escribo yo, que es
- el pipe de ingesta y procesamiento.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard

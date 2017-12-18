@@ -119,26 +119,10 @@ Tiempo medio de demora en obtenerse una métrica, entendiéndose como el promedi
 \end_layout
 
 \begin_layout Enumerate
-Error medio relativo de la métrica de Uso de Ancho de Banda, entendiéndose
- como el promedio de los errores relativos entre el valor mostrado y el
- valor real para cada punto de la métrica calculado durante la prueba.
- 
-\end_layout
-
-\begin_layout Standard
-Para cada una, los valores esperados son los siguientes: 
-\end_layout
-
-\begin_layout Enumerate
-Tiempo de funcionamiento esperado: 97,5% 
-\end_layout
-
-\begin_layout Enumerate
-Tiempo medio de demora en obtenerse una métrica: 2 minutos 
-\end_layout
-
-\begin_layout Enumerate
-Error medio relativo de la métrica de Uso de Ancho de Banda esperado: 10%
+La media del valor absoluto del error de la métrica de Uso de Ancho de Banda,
+ entendiéndose como el promedio de los valores absolutos de las diferencias
+ entre el valor mostrado y el valor real para cada punto de la métrica calculado
+ durante la prueba.
  
 \end_layout
 
@@ -402,11 +386,15 @@ Tiempo de funcionamiento: 95.0%
 \end_layout
 
 \begin_layout Itemize
-Tiempo medio de demora en obtenerse una métrica: 2’ 30’ 
+Tiempo medio de demora en obtenerse una métrica: 
+\begin_inset Formula $2^{\prime}\,30^{\prime\prime}$
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Itemize
-Error medio relativo de la métrica de Uso de Ancho de Banda: 12% 
+Media del error total de la métrica de Uso de Ancho de Banda: 0.12
 \end_layout
 
 \begin_layout Standard
@@ -420,7 +408,22 @@ Aunque el tiempo de funcionamiento es menor al esperado, hay que tener en
  cuenta que se usa una única locación al momento de hacer las métricas,
  lo cual puede confundir el problema de un funcionamiento subpar con una
  caída del servicio desde el lado del cliente.
- 
+ Ejemplo de esto son las imágenes 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:measurement-1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:measurement-2"
+
+\end_inset
+
+, donde para experimentos similares existen muchos menos puntos de ciertos
+ periodos de la prueba.
 \end_layout
 
 \begin_layout Itemize
@@ -430,6 +433,175 @@ El error medio relativo puede dar más que el esperado debido a que el método
  se están haciendo las pruebas, sino de los pares y las semillas del torrent
  en sí.
  
+\end_layout
+
+\begin_layout Itemize
+Como se puede apreciar desde las imágenes 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:measurement-1"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:measurement-2"
+
+\end_inset
+
+, el error no es homogéneo en todas las mediciones.
+ Hay mayor error cuanto menor es el uso de la conexión.
+ Esto se hace evidente también en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:error-1"
+
+\end_inset
+
+, que además muestra que los puntos de mayor error son aquellos donde existen
+ saltos bruscos de uso de datos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/usage-vs-expected.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Medición contra valor esperado
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:measurement-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/error-1.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Error de la medición de la Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:measurement-1"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:error-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/usage-vs-expected-2.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Otra medición contra su valor esperado
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:measurement-2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1277,7 +1449,20 @@ e.
 \end_layout
 
 \begin_layout Standard
-La primera cola en saturarse, como se puede ver en las imágenes XXX e YYY
+La primera cola en saturarse, como se puede ver en las imágenes 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:server-condenser-staging-saturado"
+
+\end_inset
+
+ e 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:celery-queue-saturado"
+
+\end_inset
+
  es la que conecta el tix-time-server con el tix-time-condenser.
  Agregar más instancias de este último servicio permite mejorar el rendimiento
  general del sistema.
@@ -1328,6 +1513,13 @@ status open
 \begin_layout Plain Layout
 Panel de Control de RabbitMQ mostrando la cola que conecta el tix-time-server
  con el tix-time-condenser saturada
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:server-condenser-staging-saturado"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1363,6 +1555,13 @@ status open
 \begin_layout Plain Layout
 Panel de Control de RabbitMQ mostrando la cola que usa Celery al momento
  de saturación del sistema
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:celery-queue-saturado"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
