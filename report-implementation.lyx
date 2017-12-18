@@ -1687,96 +1687,6 @@ Aplicación Cliente
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Facu says:
-\end_layout
-
-\begin_layout Plain Layout
-Es raro hablar de computadoras en el sentido 
-\begin_inset Quotes fld
-\end_inset
-
-no tradicional
-\begin_inset Quotes frd
-\end_inset
-
-, así que sacaría eso y aclararía que no es difcíil que funcione en dispositivos
- móviles (no inteligentes, porque es una jerga muy de marketing...
- y la gente a la que apuntamos entregarles esto sabe un poquito de tech)
-\end_layout
-
-\begin_layout Plain Layout
-Evitar el uso de la jergua anlgófona.
- Ejemplo, cambiar 
-\begin_inset Quotes fld
-\end_inset
-
-path
-\begin_inset Quotes frd
-\end_inset
-
- por 
-\begin_inset Quotes fld
-\end_inset
-
-ruta
-\begin_inset Quotes frd
-\end_inset
-
-.
- 
-\begin_inset Quotes fld
-\end_inset
-
-Hardcodeados
-\begin_inset Quotes frd
-\end_inset
-
-, 
-\begin_inset Quotes fld
-\end_inset
-
-customizables
-\begin_inset Quotes frd
-\end_inset
-
-, son términos poco felices en español, evitá bajo todo concepto traer palabras
- del inglés y usarlas como en el castellano.
- Si ves que una palabra no tiene una acepción sencilla en español (ejemplo:
- framework), no está mal ponerlo en inglés, si está mal castellanizarla
- (por ejemplo, frameworkear), pero ponela en itálica/énfasis, como para
- resaltar que no es en español.
- También podés hacerlo si tenés que repetir una palabra y querés cortar
- la cacofonía.
-\end_layout
-
-\begin_layout Plain Layout
-De la misma manera, hay un tema muy fuerte de repitencia de palabras, cacofonía
- y lenguaje informal en estos párrafos.
- Intentá escribir menos como hablarías y más como esperarías que sea un
- texto académico, como un libro y eso.
- No tiene que ser sumamente formal, pero en este caso está muy coloquial.
-\end_layout
-
-\begin_layout Plain Layout
-Otro tema, es que esta sección es BIEN técnica.
- Entonces si vas a decir que hacés algo, decí cómo y porqué.
-\end_layout
-
-\begin_layout Plain Layout
-Esta sección se re presta para meter un par de screen shots...
- dale duro Otto.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 El Cliente es uno de los subsistemas del proyecto que está programado en
  lenguaje Java.
  Esto permite crear una única versión de la aplicación y despreocuparse
@@ -1799,7 +1709,7 @@ Si bien el binario ejecutable es único, la aplicación se distribuye con
  La secuencia esperada consiste en acceder a la página web de TiX, crear
  una cuenta nueva y en la misma sección descargar el instalador de Windows,
  el de Linux o el de OSX.
- En el caso de Windows, es un archivo .exe de tipo asistente y guia al usuario
+ En el caso de Windows, es un archivo .exe de tipo asistente y guía al usuario
  paso a paso.
  Para OSX, es un archivo .dmg que requiere que el usuario haga drag-and-drop
  del ícono de la aplicación en la carpeta Applications, un procedimiento
@@ -1808,6 +1718,47 @@ Si bien el binario ejecutable es único, la aplicación se distribuye con
  forma sencilla usando la herramienta dpkg desde línea de comando.
  Para otros sistemas operativos, como última alternativa, se puede usar
  la aplicación sin instalador ejecutando el archivo .jar.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente installer.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Instalador de la aplicación para OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1865,6 +1816,122 @@ o predeterminado) debe ingresar mediante una interfaz visual las credenciales
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente login.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ingreso de email y contraseña en cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente nueva instalacion.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ingreso de nombre de instalación en cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente instalacion exitosa.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Fin de configuración de cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Los datos de inicio de sesión y nombre de instalación son almacenados en
  la máquina de cada usuario.
  Se hace uso de la Java Preferences API 
@@ -1875,6 +1942,150 @@ key "javaprefsapi"
 \end_inset
 
  para almacenar las preferencias de forma eficiente según cada sistema operativo.
+\end_layout
+
+\begin_layout Standard
+Una vez finalizada la configuración inicial, la aplicación queda en ejecución
+ y comienza con las tareas de comunicarse con el servidor y realizar mediciones
+ de tiempo.
+ De aquí en más no es mandatoria la interacción de parte del usuario.
+ En la barra de tareas del sistema aparece un ícono con el logo de TiX que
+ permite acceder al menú de opciones, en caso de desearlo.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente menu.png
+	width 20page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Menú de opciones del cliente en OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La primer opción "Sobre TiX" abre una ventana que presenta información básica
+ sobre el proyecto y provee una forma rápida de llegar a los reportes del
+ usuario.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente sobre tix.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ventana "Sobre TiX" en cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La segunda opción "Preferencias" informa el nombre de usuario e instalación
+ asociadas a la computadora, y permite almacenar registros de tiempos de
+ forma local.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente preferencias.png
+	width 50page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ventana "Preferencias" en cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La última opción "Salir" interrumpe las mediciones y la comunicación con
+ el servidor, remueve el ícono de la barra de tareas y finaliza la ejecución
+ del programa.
 \end_layout
 
 \begin_layout Standard
@@ -1907,6 +2118,46 @@ key "fxlauncher"
  De este modo, quien quiera mantenerse al día no tiene necesidad de acceder
  a la página web y descargar el programa completo, y por otro lado disminuye
  la probabilidad de tener clientes corriendo versiones descontinuadas.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/cliente updater.png
+	width 20page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Búsqueda automática de actualizaciones en cliente de OSX.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
