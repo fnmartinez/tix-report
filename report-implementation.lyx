@@ -1320,7 +1320,7 @@ Servicio​ ​tix-time-condenser
 \begin_layout Standard
 Al igual que el servicio tix-time-server, este micro-servicio está hecho
  enteramente en Java.
- Pero en vez de ser estar hecho desde cero usando varias librerías, éste
+ Pero en vez de ser estar hecho desde cero usando varias bibliotecas, éste
  usa el entorno de trabajo SpringBoot.
 \end_layout
 
@@ -1447,7 +1447,7 @@ Celery es una cola de trabajos asíncrona y distribuida hecha casi en su
 \begin_layout Standard
 Dentro de las dependencias más importantes de este servicio están las biblioteca
 s Numpy y SciPy.
- Ambas librerías son de las más conocidas e importantes de la comunidad
+ Ambas bibliotecas son de las más conocidas e importantes de la comunidad
  científica y matemática de Python.
  Se usan principalmente para hacer algunos cálculos como es la estimación
  del coeficiente de Hurst, regresiones lineales y simplificar el trabajo
@@ -1497,7 +1497,7 @@ reference "fig:tix-time-processor-reports-uml"
 
 , este servicio es más complejo que los otros dos de este subsistema.
  Esto se debe a que probablemente tanto el ReportsHandler como el Analyzer
- deberían ser librerías aparte, con su propia funcionalidad.
+ deberían ser bibliotecas aparte, con su propia funcionalidad.
 \end_layout
 
 \begin_layout Standard
@@ -1511,8 +1511,8 @@ El Analyzer es el caso más obvio para esta futura mejora.
 \end_layout
 
 \begin_layout Standard
-Por otro lado, el ReportsHandler es prácticamente una librería de serialización
- y deserialización completa de los reportes del Protocolo TiX.
+Por otro lado, el ReportsHandler es prácticamente una biblioteca de serializació
+n y deserialización completa de los reportes del Protocolo TiX.
  Con lo que puede ser meritoria de su propia base de código aislada.
 \end_layout
 
@@ -1732,7 +1732,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente installer.png
+	filename img/report-implementation/cliente installer.png
 	width 50page%
 
 \end_inset
@@ -1826,7 +1826,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente login.png
+	filename img/report-implementation/cliente login.png
 	width 50page%
 
 \end_inset
@@ -1862,7 +1862,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente nueva instalacion.png
+	filename img/report-implementation/cliente nueva instalacion.png
 	width 50page%
 
 \end_inset
@@ -1902,7 +1902,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente instalacion exitosa.png
+	filename img/report-implementation/cliente instalacion exitosa.png
 	width 50page%
 
 \end_inset
@@ -1965,7 +1965,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente menu.png
+	filename img/report-implementation/cliente menu.png
 	width 20page%
 
 \end_inset
@@ -2011,7 +2011,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente sobre tix.png
+	filename img/report-implementation/cliente sobre tix.png
 	width 50page%
 
 \end_inset
@@ -2057,7 +2057,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente preferencias.png
+	filename img/report-implementation/cliente preferencias.png
 	width 50page%
 
 \end_inset
@@ -2131,7 +2131,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename img/cliente updater.png
+	filename img/report-implementation/cliente updater.png
 	width 20page%
 
 \end_inset
@@ -2288,11 +2288,10 @@ Lo tuyo no es un sistema de ingesta de datos, es una API.
 \end_layout
 
 \begin_layout Standard
-Esta parte del proyecto puede ser dividida en dos partes que funcionan de
- manera totalmente autónoma, el sistema que se encarga de guardar los datos
- y entregarlos a quien lo solicite (la API) y la web, que se encarga de
- presentar los datos de forma concisa al usuario.
- 
+El subsistema de presentación de datos se puede dividir en dos servicios,
+ los cuales funcionan de manera totalmente autónoma, el sistema encargado
+ de guardar los datos y entregarlos a quien lo solicite (la API) y la web,
+ cuyo fin es presentar los datos de forma concisa al usuario.
 \end_layout
 
 \begin_layout Standard
@@ -2303,7 +2302,7 @@ key "reactjs"
 
 \end_inset
 
-, pero utiliza otras librerías, tales como Material-ui
+, pero utiliza otras bibliotecas, tales como Material-ui
 \begin_inset CommandInset citation
 LatexCommand cite
 key "materialui"
@@ -2330,7 +2329,7 @@ key "reduxform"
 \end_layout
 
 \begin_layout Standard
-React.js es una librería de código abierto bajo la licencia MIT, la cual
+React.js es una biblioteca de código abierto bajo la licencia MIT, la cual
  fue desarrollada por Facebook INC en el año 2013 para el desarrollo de
  aplicaciones frontend que manejan grandes volúmenes de información, de
  manera que no fuera necesaria la recarga del sitio.
@@ -2342,11 +2341,11 @@ React.js es una librería de código abierto bajo la licencia MIT, la cual
 
 \begin_layout Standard
 Luego del lanzamiento de ReactJs, la comunidad comenzó a desarrollar diversas
- librerías para compensar la falta de modelos y almacenamiento para la aplicació
-n, es as como en 2015 un grupo de desarrolladores creó Redux, un contenedor
- del estado de la aplicación altamente predecible que ayuda a mantener el
- estado de la aplicación consistente durante el tiempo, ya que utiliza una
- única fuente de verdad (
+ bibliotecas para compensar la falta de modelos y almacenamiento para la
+ aplicación, es as como en 2015 un grupo de desarrolladores creó Redux,
+ un contenedor del estado de la aplicación altamente predecible que ayuda
+ a mantener el estado de la aplicación consistente durante el tiempo, ya
+ que utiliza una única fuente de verdad (
 \emph on
 source of truth
 \emph default
@@ -2355,40 +2354,18 @@ source of truth
 \end_layout
 
 \begin_layout Standard
-Basados en el éxito de React conforme avanzaba el tiempo, un desarrollador
- decidió implementar los lineamientos de Material Design
-\begin_inset CommandInset citation
-LatexCommand cite
-key "materialdesign"
-
-\end_inset
-
- en una librería basada en React con el fin de facilitar el proceso de desarroll
-o de dichos sitios, dicha librería fue lanzada bajo licencia MIT y hoy en
- dia mas de 400 desarrolladores han participado del desarrollo de la misma.
-\end_layout
-
-\begin_layout Standard
-El desarrollo de la web se inició utilizando un barebone creado por la comunidad
-, React-boilerplate
-\begin_inset CommandInset citation
-LatexCommand cite
-key "reactboilerplate"
-
-\end_inset
-
-.
- El cual garantiza que se está utilizando las últimas tecnologías y estándares,
- así como enforzar la calidad del código y además bajar el costo del primer
- set-up.
- Este boilerplate también se encuentra bajo licencia MIT, cuenta con más
- de 100 contribuyentes y cerca de 1000 commits.
+Para el desarrollo de la plataforma web, se utilizó un código base creado
+ por la comunidad, React-boilerplate, el uso del mismo garantiza la utilización
+ de las últimas tecnologías y estándares, así como también ayudar a mantener
+ la calidad del código y bajar el el costo inicial de creación del aplicativo.
+ Este codigo también se encuentra bajo licencia MIT, cuenta con más de 100
+ contribuyentes y cerca de 1000 commits.
  
 \end_layout
 
 \begin_layout Standard
-Luego de esto, se fueron agregando los distintos componentes que hoy en
- día conforman la web que ve el usuario cuando ingresa a la web: 
+Estos componentes conforman la web a la cual se puede acceder mediante la
+ URL 
 \begin_inset CommandInset href
 LatexCommand href
 target "https://tix.innova-red.net.net"
@@ -2399,15 +2376,14 @@ target "https://tix.innova-red.net.net"
 \end_layout
 
 \begin_layout Standard
-Por otro lado, el sistema de ingesta y consumo de datos, se encuentra desarrolla
-da principalmente en NodeJs
+Por otro lado, la API se encuentra desarrollada principalmente en NodeJs
 \begin_inset CommandInset citation
 LatexCommand cite
 key "nodejs"
 
 \end_inset
 
-, y diversas librerias basadas en este lenguaje tales como ExpressJs
+, y diversas librerias basadas en Javascript, tales como ExpressJs
 \begin_inset CommandInset citation
 LatexCommand cite
 key "expressjs"
@@ -2443,29 +2419,31 @@ key "ramdajs"
 \end_inset
 
 .
- Finalmente, esta parte del proyecto tiene como dependencia IP2AS, que dada
- una IP, se encarga de resolver el AS que le corresponde.
+ Finalmente, esta parte del proyecto tiene como dependencia IP2AS, el cual
+ dada una IP, se encarga de resolver el AS que le corresponde.
 \end_layout
 
 \begin_layout Standard
 NodeJs es un entorno de ejecución de código abierto (bajo licencia MIT),
- asincrónico, con I/O de datos en una arquitectura basada en eventos y basado
- en el motor V8 de Google
+ asincrónico, con E/S de datos en una arquitectura orientada a eventos y
+ basado en el motor V8 de Google
 \begin_inset CommandInset citation
 LatexCommand cite
 key "jsv8"
 
 \end_inset
 
-, dada su estructura, es especialmente útil para micro-arquitecturas como
- la propuesta para este proyecto, su manager de paquetes, npm
+.
+ Dada su estructura, es especialmente útil para micro-arquitecturas como
+ la propuesta para este proyecto.
+ Su manejador de paquetes, npm
 \begin_inset CommandInset citation
 LatexCommand cite
 key "npm"
 
 \end_inset
 
-, es considerado el ecosistema más grande de librerías open source existente
+, es considerado el ecosistema más grande de bibliotecas open source existente
  hoy en dia.
  
 \end_layout
@@ -2473,8 +2451,9 @@ key "npm"
 \begin_layout Standard
 Una de las partes más importantes del servicio es el framework ExpressJs,
  este se describe como un framework web minimalista, que permite con mucha
- facilidad agregar nuevas rutas y setear la respuesta deseada, se desarrollo
- bajo licencia MIT y cuenta con más de 5000 commits y 200 contribuyentes.
+ facilidad agregar nuevas rutas y modificar las existentes.
+ Se desarrollo bajo licencia MIT y cuenta con más de 5000 commits y 200
+ contribuyentes.
  
 \end_layout
 
@@ -2482,25 +2461,38 @@ Una de las partes más importantes del servicio es el framework ExpressJs,
 Por otro lado, el servidor utiliza MySQL para guardar/hacer queries sobre
  la información, se decidió utilizar un sistema basado en SQL, ya que se
  busca priorizar la consistencia de los datos.
- Para conectar nuestro servidor a la base de datos, se utilizaron dos librerías,
- Knex, un framework para la generación de queries de forma simple y Bookshelf.js,
- un ORM que corre sobre Knex, ambos de código abierto bajo licencia MIT.
+ Para conectar nuestro servidor a la base de datos, se utilizaron dos biblioteca
+s, Knex, un framework para la generación de queries de forma simple y Bookshelf.j
+s, un ORM que corre sobre Knex, ambos de código abierto bajo licencia MIT.
  
 \end_layout
 
 \begin_layout Standard
-Finalmente, se utilizó PassportJs para realizar la autentificación de los
- usuarios correctamente.
- Este framework permite la utilización de diversos métodos de autenticación
- mediante "strategies", esto permite al desarrollador, utilizar varios métodos
- al mismo tiempo, por ejemplo esto permitiría en el futuro, agregar un método
- de autenticación via facebook, sin mas que agregar un nuevo strategy.
- 
+Finalmente, se utilizó PassportJs para realizar la autenticación de los
+ usuarios.
+ Este framework utiliza el concepto de 
+\begin_inset Quotes fld
+\end_inset
+
+estrategias
+\begin_inset Quotes frd
+\end_inset
+
+ para cumplir su rol.
+ Lo que permitiría, por ejemplo, implementar un método de autenticación
+ vía Facebook simplemente agregando una nueva 
+\begin_inset Quotes fld
+\end_inset
+
+estrategia
+\begin_inset Quotes frd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-La conjunción de estos frameworks/librerías conforman el servidor de ingesta/con
-sulta de datos.
+La conjunción de estos frameworks/bibliotecas conforman la API.
  
 \end_layout
 
@@ -2518,9 +2510,10 @@ De la misma manera que el Subsistema de Ingesta y Procesamiento, la API
 \end_layout
 
 \begin_layout Standard
-Por otro lado, el deployment de la web se realiza mediante TravisCI, una
- vez finalizado el build, en donde se compila y minifica el código, este
- los copia a la carpeta correspondiente para su ejecución.
+Por otro lado, el despliegue de la web se realiza mediante TravisCI, una
+ vez finalizada la etapa do construcción del paquete, en donde se compila
+ y minifica el código, este los copia a la carpeta correspondiente para
+ su ejecución.
  
 \end_layout
 
@@ -2531,14 +2524,14 @@ Por otro lado, el deployment de la web se realiza mediante TravisCI, una
 \begin_layout Standard
 Como fue mencionado anteriormente, la API expone una interfaz en la cual
  cualquier cliente se puede conectar con facilidad y acceder a los datos
- del sistema, esta se encuentra debajo de la URL: 
+ del sistema, esta se encuentra bajo la URL: 
 \begin_inset CommandInset href
 LatexCommand href
 target "https://tix.innova-red.net/api"
 
 \end_inset
 
-, expone 4 contratos: 
+ y expone 4 contratos: 
 \end_layout
 
 \begin_layout Standard
@@ -2631,7 +2624,7 @@ user_id: ID del usuario que genero el reporte
 \end_layout
 
 \begin_layout Standard
-y expone los siguientes métodos: 
+También expone los siguientes métodos: 
 \end_layout
 
 \begin_layout Standard
