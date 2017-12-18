@@ -445,6 +445,7 @@ La Prueba de Carga está apuntada a medir la carga máxima del Sistema TiX
  y encontrar los cuellos de botella del mismo.
  Además, sirve como experimento para entender cómo es que se comporta un
  Sistema Complejo como esto y cuales son sus posibles mejoras.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -458,6 +459,7 @@ Debido a la dinámica operativa de TiX, el servicio genera un gran nivel
  conocer con gran precisión cuál es el máximo número de usuarios que la
  plataforma puede soportar bajo la infraestructura en la cual se encuentra
  corriendo el servicio.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -465,19 +467,21 @@ Indicadores propuestos
 \end_layout
 
 \begin_layout Standard
-Para esta Prueba se considera una única
+Para esta Prueba se considera una única 
 \end_layout
 
 \begin_layout Enumerate
 Cantidad máxima de usuarios con el sistema saturado.
+ 
 \end_layout
 
 \begin_layout Standard
 Si bien existen muchas otras métricas que podrían resultar interesantes,
  como tiempo de funcionamiento para el sistema saturado, o degradación de
  la calidad del servicio con el sistema saturado, se entiende que el objetivo
- del presente Proyecto no es hacer una auditoría exahustiva del Sistema,
+ del presente Proyecto no es hacer una auditoría exhaustiva del Sistema,
  sino asegurar métricas mínimas de funcionamiento.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -498,22 +502,6 @@ reference "tab:server-specs"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Itemize
-La arquitectura fue desplegada con una réplica de cada servicio a excepción
- del tix-time-processor, para el cual fueron desplegados más de un contenedor.
- Para este último servicio se desplegó un contenedor en modo 
-\noun on
-beat
-\noun default
- para programar la ejecución de las tareas y luego se desplegaron dos contenedor
-es en modo 
-\noun on
-worker
-\noun default
- para atender a dichas tareas.
- 
 \end_layout
 
 \begin_layout Itemize
@@ -918,9 +906,9 @@ Metodología
 \end_layout
 
 \begin_layout Standard
-La metodología para realizar la prueba de stress consiste en dos partes:
- por un lado la generación de clientes para realizar la prueba, y por el
- otro lado el análisis de los resultados para saber si la prueba fue exitosa
+La metodología para realizar la prueba de carga consta de dos partes: por
+ un lado la generación de clientes para realizar la prueba, y por el otro
+ el análisis de los resultados para saber si la prueba fue exitosa.
  
 \end_layout
 
@@ -932,21 +920,72 @@ Generación de Clientes
 
 \begin_layout Standard
 Para la Generación de clientes, se utiliza una versión modificada del cliente
- actual, la cual cumple el mismo rol que el cliente estándar (loguearse
- al servicio, crear una instalación y llamar al servidor para comenzar a
- generar reportes).
- Esto permite poder correr múltiples instancias del cliente en el mismo
- dispositivo, con un consumo de memoria moderado.
- Por otro lado, se utiliza JMeter, una herramienta especializada en generación
- de pruebas de stress.
- JMeter, mediante un archivo de configuración, permite crear miles de instancias
- del cliente que son corridas en simultáneo, y al terminar la prueba genera
- un informe básico sobre las pruebas corridas.
- Finalmente, se necesita un dispositivo para poder correr la prueba de stress.
+ actual, la cual cumple el mismo rol que el cliente estándar (autenticarse
+ al servicio, crear una instalación y generar reportes).
+ Esto permite correr múltiples instancias del cliente en el mismo dispositivo,
+ con un consumo de recursos menor.
+ 
+\end_layout
+
+\begin_layout Standard
+Por otro lado se utiliza JMeter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jmeter"
+
+\end_inset
+
+, una herramienta especializada en generación de pruebas de carga.
+ Esta permite crear múltiples instancias del cliente, las cuales son ejecutadas
+ en simultáneo y genera un reporte basado en el resultado de su ejecución.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, se necesita un servidor para poder correr la prueba de stress.
  Dada la carga generada y la necesidad de mantener el servicio en funcionamiento
- por, al menos 24 horas, es recomendable que se realice en un servidor donde
- se pueda monitorear su funcionamiento, aunque también puede ser realizado
- en cualquier PC.
+ por al menos 24 horas, es recomendable que se realice en un servidor donde
+ se pueda monitorear su funcionamiento.
+ Aunque también puede ser realizado en cualquier PC.
+ 
+\end_layout
+
+\begin_layout Standard
+Encontramos dos indicadores clave para conocer si la prueba podía ser corrida
+ de manera exitosa: 
+\end_layout
+
+\begin_layout Enumerate
+Cantidad de operaciones de E/S en el cliente.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Estado del consumo de CPU en el servidor de los clientes.
+ 
+\end_layout
+
+\begin_layout Standard
+El primero es necesario para asegurarse que la prueba está efectivamente
+ corriendo al ratio que le fue solicitado.
+ Por ejemplo, si se encuentra corriendo aproximadamente 1000 instancias,
+ entonces tendrían que haber aproximadamente 1000 escrituras en archivo
+ por segundo.
+ 
+\end_layout
+
+\begin_layout Standard
+En segundo lugar, el estado de consumo de CPU es un factor clave para conocer
+ si el servidor donde están corriendo los clientes se encuentra al límite
+ de procesamiento.
+ Al momento en que este se quede sin recursos, los clientes se volverán
+ más lentos.
+ 
+\end_layout
+
+\begin_layout Standard
+Si alguno de estos indicadores muestra algún problema, entonces prueba no
+ está corriendo correctamente y sus resultados no pueden ser fiables.
  
 \end_layout
 
@@ -958,84 +997,60 @@ Analisis de Resultados
 
 \begin_layout Standard
 El análisis de resultados comprende todas aquellas herramientas que pueden
- ser utilizadas para conocer cómo está funcionando internamente el servicio.
- Esto incluye el análisis de logs, análisis de carga del sistema y finalmente
- análisis del estado de las colas de procesamiento, siendo este último el
- crítico para conocer si el sistema está funcionando correctamente o se
- encuentra pasado del límite.
- 
-\end_layout
-
-\begin_layout Standard
-Encontramos tres indicadores clave para conocer si la prueba de stress fue
- corrida exitosamente y poder conocer los resultados de la misma: 
+ ser utilizadas para conocer cómo está funcionando internamente el Servicio.
+ Esto incluye: 
 \end_layout
 
 \begin_layout Itemize
-Cantidad de operaciones de IO en el cliente y CPU consumido.
+Análisis de logs.
  
 \end_layout
 
 \begin_layout Itemize
-Estado del consumo de CPU en el servidor.
+Análisis de carga del sistema.
  
 \end_layout
 
 \begin_layout Itemize
-Estado de la cola de procesamiento.
+Análisis del estado de las colas de procesamiento.
  
 \end_layout
 
 \begin_layout Standard
-El primero es necesario para asegurarse que el stress-test está efectivamente
- corriendo al ratio que le fue solicitado, por ejemplo, si se encuentra
- corriendo aproximadamente 1000 instancias, tendrían que haber aproximadamente
- 1000 escrituras en archivo por segundo, así mismo, el nivel de CPU consumido
- tendría que ser estable.
- Si alguno de estos indicadores muestra algo distinto, entonces el stress
- test no está corriendo correctamente y sus resultados no pueden ser fiables.
+Siendo este último en particularmente crítico para conocer si el sistema
+ está funcionando correctamente o se encuentra saturado.
  
 \end_layout
 
 \begin_layout Standard
-En segundo lugar, el estado de consumo de CPU es un factor clave para conocer
- si el servidor se encuentra al límite de procesamiento.
- Al momento en el que el servidor se queda sin más recursos de procesamiento,
- las respuestas comienzan a ser más lentas, lo cual termina generando cuellos
- de botella y finalmente el eventual colapso del sistema.
+El Análisis de logs se hace utilizando Docker Compose y su comando para
+ visualizar logs.
+ La principal idea de esto es detectar problemas en la y excepciones arrojadas
+ por los servicios.
+ También es entender el funcionamiento de cada uno de los servicios bajo
+ estrés de manera más específica.
  
 \end_layout
 
 \begin_layout Standard
-Finalmente, el estado de la cola de procesamiento es el factor determinante
- para conocer si el stress test fue exitoso o no.
- En términos generales, dada la característica de TiX, en donde el tráfico
- es constante.
- Si la cantidad de paquetes que se están encolando para procesamiento es
- mayor que la capacidad de procesarlos, entonces el sistema se va a ir acercando
+El Análisis de carga del sistema incluye medir y monitorear el uso de recursos,
+ como CPU, memoria y operaciones de entrada y salida.
+ La finalidad de esto es ver cuál es el cuello de botella general del Sistema.
+ Si es intensivo en capacidad de cómputo, en memoria o tráfico de red y
+ operaciones de lecto-escritura.
+ Para este análisis se usaron herramientas como htop, atop e iotop.
+ 
+\end_layout
+
+\begin_layout Standard
+Finalmente, Analizar el estado de la cola de procesamiento es el factor
+ determinante para entender el resultado de la prueba.
+ En términos generales, dada la característica de TiX en donde el tráfico
+ es constante, si la cantidad de paquetes que se están encolando para procesamie
+nto es mayor que la capacidad de procesarlos, el sistema se va a ir acercando
  lentamente al colapso.
- Esto se puede visualizar analizando el gráfico que provee Rabbit-MQ sobre
- el estado de la cola, por ejemplo:
-\end_layout
-
-\begin_layout Standard
-Este gráfico muestra un comportamiento estable, en donde el encolado de
- mensajes no es constante, pero el ratio de consumo (violeta) supera el
- ratio de ingreso (dorado) sobre un rango de tiempo determinado.
- Este gráfico claramentemuestra que el sistema, si no se agregan nuevos
- clientes, se encuentra estable y es capaz de continuar produciendo reportes
- sin problema.
- Pero, si se agregan nuevos clientes, ocurre lo siguiente: 
-\end_layout
-
-\begin_layout Standard
-En este gráfico claramente se puede ver que el consumo de mensajes está
- estable en un promedio de 100/s mientras que el encolamiento de mensajes
- es superior.
- Finalmente esto se refleja en el primer gráfico donde no termina de consumir
- todos los mensajes y ya está encolando el nuevo grupo.
- En esta situación se puede considerar que el sistema está sobrecargado
- y que llegó al límite.
+ Esto se puede visualizar analizando el gráfico que provee RabbitMQ sobre
+ el estado de la cola.
  
 \end_layout
 
@@ -1044,13 +1059,744 @@ Resultados
 \end_layout
 
 \begin_layout Standard
-Luego de correr el stress-test multiples veces, la conclusion es que el
- sistema, bajo las condiciones actuales, es capaz de soportar 1900 usuarios
+Luego de correr la prueba de carga múltiples veces, la conclusión es que
+ el sistema, en las condiciones actuales, es capaz de soportar 2200 usuarios
  concurrentes.
+ 
 \end_layout
 
-\begin_layout Subsection
-Beta-testing
+\begin_layout Standard
+Durante las distintas pruebas se pudo ver si bien la carga del servidor
+ aumenta conforme aumenta la cantidad de clientes, el servidor no está todo
+ el tiempo consumiendo al máximo sus recursos.
+ Sino que por el contrario, que durante el tiempo de máxima carga hay momentos
+ de actividad baja y momentos de saturación.
+ 
+\end_layout
+
+\begin_layout Standard
+El momento de mayor consumo de recursos o de saturación es cuando se están
+ procesando las métricas, como se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:max-usage-saturado"
+
+\end_inset
+
+.
+ Esto se debe a que además del procesamiento, la API está recibiendo las
+ métricas generadas e insertándolas en la base de datos.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/max-usage-saturado.png
+	lyxscale 50
+	scale 33
+	BoundingBox 0bp 0bp 1750bp 500bp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Captura de Pantalla mostrando la salida de HTOP al momento en que hay un
+ pico de consumo de recursos en el Servidor del Sistema
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:max-usage-saturado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Luego, el momento de baja actividad corresponde con el régimen regular del
+ Sistema de Ingesta, como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:min-usage-saturado"
+
+\end_inset
+
+.
+ Esto es, la toma de paquetes desde el tix-time-server, el procesamiento
+ de los datos en el tix-time-condenser y los consultados generadas contra
+ la tix-api.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/min-usage-saturado.png
+	lyxscale 33
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Captura de Pantalla mostrando la salida de HTOP al momento en que hay un
+ consumo moderado a bajo de recursos en el Servidor del Sistema
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:min-usage-saturado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lo lleva a la conclusión que existen tres servicios bien diferenciados con
+ distintos niveles de requerimientos.
+ Por un lado la tix-api, debido a su conexión con la base de datos.
+ Por otro el tix-time-server y el tix-time-condenser, que realizan un trabajo
+ más rutinario y monótono con una carga constante del sistema.
+ Y finalmente el tix-time-processor, que realiza un trabajo de procesamiento
+ por lotes con un consumo fuerte en cortos periodos, y un consumo nulo el
+ tiempo restante.
+ 
+\end_layout
+
+\begin_layout Standard
+También, a partir de estas imágenes podemos ver que el Sistema es intensivo
+ en Procesamiento, pero no en memoria.
+ Ocupando en momentos de máxima saturación el 34% de la memoria disponible
+ con una configuración de una instancia de cada servicio, como se ve en
+ la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:mem-usage-saturado"
+
+\end_inset
+
+.
+ Para esta configuración es que el sistema logró procesar 1900 usuarios
+ concurrentes.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename img/report-tests/mem-usage-saturado.png
+	lyxscale 33
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Captura de Pantalla mostrando la salida de HTOP al momento en que hay un
+ pico de consumo de recursos en el Servidor del Sistema con los procesor
+ ordenados por consumo de memoria
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:mem-usage-saturado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El sistema entero no satura los recursos del servidor, sino que el tiempo
+ de respuesta para atender los mensajes que llegan en la cola no es el suficient
+e.
+ 
+\end_layout
+
+\begin_layout Standard
+La primera cola en saturarse, como se puede ver en las imágenes XXX e YYY
+ es la que conecta el tix-time-server con el tix-time-condenser.
+ Agregar más instancias de este último servicio permite mejorar el rendimiento
+ general del sistema.
+ Pero cada instancia nueva lo mejora marginalmente.
+ Las razones de esto no fueron profundizadas, pero las hipótesis que surgieron
+ son: 
+\end_layout
+
+\begin_layout Itemize
+Un problema de configuración del mismo servicio tix-time-condenser, que
+ no le permite tomar una mayor cantidad de mensajes de la cola.
+ 
+\end_layout
+
+\begin_layout Itemize
+Un problema de configuración de alguno de los otros servicios con los que
+ interactúa (RabbitMQ y tix-api), que no le permite escalar linealmente.
+ 
+\end_layout
+
+\begin_layout Itemize
+Un problema de infraestructura, consecuencia directa de estar corriendo
+ todo en un mismo servidor.
+ Es decir, la misma infraestructura es el cuello de botella.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/report-tests/server-condenser-stage-saturado.png
+	lyxscale 50
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Panel de Control de RabbitMQ mostrando la cola que conecta el tix-time-server
+ con el tix-time-condenser saturada
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename img/report-tests/celery-saturado.png
+	lyxscale 50
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Panel de Control de RabbitMQ mostrando la cola que usa Celery al momento
+ de saturación del sistema
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para poder hacer esto se debe hacer un perfilado más específico de estos
+ servicios con herramientas como NewRelic, Pingdom Server Monitor o DataDog.
+ 
+\end_layout
+
+\begin_layout Standard
+Como se menciona, se probaron varias configuraciones con distintos resultados,
+ mostradas en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:stress-test-configs"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="6">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+server
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+condenser
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+processor (
+\noun on
+beat
+\noun default
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+processor (
+\noun on
+worker
+\noun default
+)
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Entre paréntesis figura el periodo de procesamiento.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+API
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Usuarios
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 (1 min)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1800
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2 (1 min)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1800
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 (5 min)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1800
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 (5 min)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1900
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1 (5 min)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2200
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Configuraciones usadas para la prueba de carga
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:stress-test-configs"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
