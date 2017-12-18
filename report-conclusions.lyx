@@ -127,7 +127,6 @@ Después de mucho trabajo se logró cumplir con las metas propuestas.
  con casi dos mil usuarios concurrentes.
  Esto está avalado por los distintos ensayos que se presentan en el capítulo
  dedicado a ellos.
- 
 \end_layout
 
 \begin_layout Standard
@@ -226,7 +225,7 @@ Cabe destacar, que si bien el objetivo principal del proyecto era soportar
 \end_layout
 
 \begin_layout Standard
-Finalmente, el grupo plantea las siguientes propuestas: 
+Finalmente, el grupo plantea las siguientes propuestas:
 \end_layout
 
 \begin_layout Itemize
@@ -284,8 +283,7 @@ Analizar la posibilidad de hacer el procesamiento por lotes con herramientas
 \end_layout
 
 \begin_layout Itemize
-Implementar mejoras a Ip2As que permita hacer queries más eficientemente.
- 
+Implementar mejoras a IP2AS que permita hacer queries más eficientemente.
 \end_layout
 
 \begin_layout Itemize
