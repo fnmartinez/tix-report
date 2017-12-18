@@ -1281,7 +1281,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/uml-tix-time-server.png
+	filename img/report-implementation/uml-tix-time-server.png
 	scale 50
 
 \end_inset
@@ -1389,7 +1389,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/uml-tix-time-condenser.png
+	filename img/report-implementation/uml-tix-time-condenser.png
 	scale 50
 
 \end_inset
@@ -1436,7 +1436,7 @@ e en Python3.
 Celery es una cola de trabajos asíncrona y distribuida hecha casi en su
  totalidad en Python.
  Tiene una importante interoperabilidad con el servicio de cola de mensajes
- RabbitMQ, aunque puede utilizar otros servicios similares también.
+ RabbitMQ, aunque puede utilizar otros similares también.
  Una de sus principales características es la posibilidad de programar la
  ejecución de tareas y distribuirla entre sus distintos esclavos.
  Esto es lo que hizo que Celery sea una respuesta acertada al trabajo por
@@ -1531,7 +1531,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/uml-tix-time-processor.png
+	filename img/report-implementation/uml-tix-time-processor.png
 	scale 50
 
 \end_inset
@@ -1571,7 +1571,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/uml-tix-time-processor-analysis.png
+	filename img/report-implementation/uml-tix-time-processor-analysis.png
 	scale 30
 
 \end_inset
@@ -1611,7 +1611,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/uml-tix-time-processor-reports.png
+	filename img/report-implementation/uml-tix-time-processor-reports.png
 	scale 50
 
 \end_inset

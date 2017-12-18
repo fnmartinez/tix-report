@@ -868,8 +868,10 @@ La metodología para realizar la prueba de stress consiste en dos partes:
  
 \end_layout
 
-\begin_layout Paragraph*
-4.2.4.1 Generación de Clientes 
+\begin_layout Standard
+
+\series bold
+Generación de Clientes 
 \end_layout
 
 \begin_layout Standard
@@ -892,8 +894,10 @@ Para la Generación de clientes, se utiliza una versión modificada del cliente
  
 \end_layout
 
-\begin_layout Paragraph*
-4.2.4.2 Analisis de Resultados 
+\begin_layout Standard
+
+\series bold
+Analisis de Resultados 
 \end_layout
 
 \begin_layout Standard

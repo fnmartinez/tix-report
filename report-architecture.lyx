@@ -105,7 +105,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/tix-old-architecture.png
+	filename img/report-architecture/tix-old-architecture.png
 	scale 33
 
 \end_inset
@@ -560,7 +560,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename img/tix-new-architecture.png
+	filename img/report-architecture/tix-new-architecture.png
 	scale 33
 
 \end_inset
