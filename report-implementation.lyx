@@ -109,6 +109,18 @@ key "Postel1981"
  
 \end_layout
 
+\begin_layout Standard
+El código y la historia de esta librería se encuentra en el repositorio
+ 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-core"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection
 Diseño​ ​ general​ ​ del​ ​ Protocolo 
 \end_layout
@@ -1187,7 +1199,14 @@ Servicio​ ​tix-time-server
 
 \begin_layout Standard
 Este es un micro-servicio que está implementado enteramente en Java.
- 
+ Su código se encuentra en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-server"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1316,7 +1335,15 @@ Servicio​ ​tix-time-condenser
 \end_layout
 
 \begin_layout Standard
-Al igual que el servicio tix-time-server, este micro-servicio está hecho
+Alojado en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-condenser"
+
+\end_inset
+
+.
+ Al igual que el servicio tix-time-server, este micro-servicio está hecho
  enteramente en Java.
  Pero en vez de ser estar hecho desde cero usando varias bibliotecas, éste
  usa el entorno de trabajo SpringBoot.
@@ -1427,7 +1454,14 @@ Servicio​ tix-time-processor
 A diferencia de los otros dos micro-servicios, este está implementado enterament
 e en Python3.
  Se basa en el entorno de trabajo Celery.
- 
+ Su código se encuentra alojado en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-processor"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1676,6 +1710,18 @@ Este documento se encuentra en el repositorio tix-time-deploy y cuenta también
  
 \end_layout
 
+\begin_layout Standard
+Un ejemplo de esto se encuentra en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-deploy"
+
+\end_inset
+
+, donde está la configuración mínima para dejar corriendo todo el Subsistema
+ junto con documentación para hacerlo.
+\end_layout
+
 \begin_layout Subsection
 El Subsistema Cliente
 \end_layout
@@ -1686,7 +1732,14 @@ Aplicación Cliente
 
 \begin_layout Standard
 El Cliente es uno de los subsistemas del proyecto que está programado en
- lenguaje Java.
+ lenguaje Java y se encuentra alojado en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-client"
+
+\end_inset
+
+.
  Esto permite crear una única versión de la aplicación y despreocuparse
  por las diferencias de programar en código nativo para los distintos sistemas
  operativos.
@@ -2253,6 +2306,21 @@ El subsistema de presentación de datos se puede dividir en dos servicios,
  los cuales funcionan de manera totalmente autónoma, el sistema encargado
  de guardar los datos y entregarlos a quien lo solicite (la API) y la web,
  cuyo fin es presentar los datos de forma concisa al usuario.
+ Los repositorios para dichos componentes son 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-api"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-web"
+
+\end_inset
+
+, respectivamente.
 \end_layout
 
 \begin_layout Standard
@@ -2381,7 +2449,7 @@ key "ramdajs"
 
 .
  Finalmente, esta parte del proyecto tiene como dependencia IP2AS, el cual
- dada una IP, se encarga de resolver el AS que le corresponde.
+ dada una IP, se encarga de resolver el AS que le corresponde
 \end_layout
 
 \begin_layout Standard
@@ -2463,7 +2531,7 @@ Despliegue y puesta en producción
 
 \begin_layout Standard
 De la misma manera que el Subsistema de Ingesta y Procesamiento, la API
- utiliza el sistema de docker-compose para su proceso de deployment, bajo
+ utiliza el sistema de docker-compose para su proceso de despliegue, bajo
  este compose, se encuentra también la base de datos (MySQL) e IP2AS.
  De esta forma, una vez que se corre el comando de ejecución, la API ya
  cuenta con todas las dependencias que necesita para correr correctamente.
@@ -2476,6 +2544,17 @@ Por otro lado, el despliegue de la web se realiza mediante TravisCI, una
  y minifica el código, este los copia a la carpeta correspondiente para
  su ejecución.
  
+\end_layout
+
+\begin_layout Standard
+En el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-api-deploy"
+
+\end_inset
+
+ se encuentra un archivo YAML como ejemplo para desplegar la API.
 \end_layout
 
 \begin_layout Subsubsection*

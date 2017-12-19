@@ -372,6 +372,18 @@ Tras la finalización de la mismas se ejecutan las consultas que se encuentran
  
 \end_layout
 
+\begin_layout Standard
+El código para poder replicar parte de esta prueba junto con instrucciones,
+ se encuentra en el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-system-test"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection
 Resultados
 \end_layout
@@ -1085,6 +1097,19 @@ La metodología para realizar la prueba de carga consta de dos partes: por
 \end_layout
 
 \begin_layout Standard
+Las configuraciones y algunos de los requerimientos básicos para correr
+ esta prueba, junto con las instrucciones para hacerla, se encuentran en
+ el repositorio 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/tix-time-stress-test"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 
 \series bold
 Generación de Clientes 
@@ -1456,7 +1481,7 @@ reference "fig:server-condenser-staging-saturado"
 
 \end_inset
 
- e 
+ y 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:celery-queue-saturado"

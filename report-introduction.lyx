@@ -315,6 +315,15 @@ En la sección de Implementación se explica a bajo nivel cada una de las
 dad con el resto de las partes del sistema.
  Es necesario aclarar que dicha sección está pensada como documentación
  explícita para desarrolladores del sistema.
+ Todos los repositorios necesarios se encuentran en el grupa TiX Measurements
+ de GitHub, bajo la URL 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/TiX-measurements/"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
